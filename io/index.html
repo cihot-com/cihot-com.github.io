@@ -64,6 +64,27 @@
 
 <script>
 let rows=[];
+let methods={
+  onCenter:function(e){
+    e.target.scrollIntoView({
+      behavior:`smooth`,
+      // behavior:`auto`,
+      // block:`center`,
+      // inline:`center`
+      // inline:`nearest`
+    });
+  },
+  onText:function(e){
+    // console.log(e.type,e.target, e.target.textContent)
+    console.log(e.target.textContent)
+    e.target.textContent = e.target.innerText.trim()
+  },
+  onInput:function(e){
+    console.log(e.target.innerText);
+    console.log(e.target.outerHTML);
+  }
+};
+
 let vm=new Vue({
   el:'#works',
   data:{
@@ -79,28 +100,9 @@ let vm=new Vue({
     rows,
     opts:{
       editContentAutoCenter:true
-    }
-  },
-  methods:{
-    onCenter:function(e){
-      e.target.scrollIntoView({
-        behavior:`smooth`,
-        // behavior:`auto`,
-        // block:`center`,
-        // inline:`center`
-        // inline:`nearest`
-      });
     },
-    onText:function(e){
-      // console.log(e.type,e.target, e.target.textContent)
-      console.log(e.target.textContent)
-      e.target.textContent = e.target.innerText.trim()
-    },
-    onInput:function(e){
-      console.log(e.target.innerText);
-      console.log(e.target.outerHTML);
-    }
   }
+  methods,
 });
 
 let i=1;
