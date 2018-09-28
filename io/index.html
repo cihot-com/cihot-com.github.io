@@ -39,11 +39,15 @@
 }
 #works pre {
   min-width: 24em;
-  border:1px solid #eee;
+  border:inset 2px solid #ccc;
   border-radius:3.33px;
   margin-top: 1px;
   white-space: pre-wrap;
-  /*word-break: break-all;*/
+  word-break: break-all;
+  background: #eee;
+}
+#works pre:focus {
+  background: #fffe;
 }
 #works pre::before {
   content: attr(id);
@@ -51,19 +55,24 @@
   color: #666;
   border-radius: 3px;
   transform: rotate(-12deg) translate(-120%,-66%);
-  transition: all 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  transition: all .5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   position: absolute;
 }
 #works pre:focus::before {
-  background: #ff9e;
-  transition: initial;
+  background: #ccfc;
+  transform: rotate(-6deg) translate(-10%,-125%) scale(1.2);
+  color:#00fc;
+  font-weight: bold;
+}
+#works pre:hover {
+  background: #fff;
 }
 </style>
 
 <div id="works">
   <label><input type="checkbox" v-model="opts.editContentAutoCenter">중심이동</label>
   <hr>
-  <pre class="modify" v-for="(e,i) in rows" v-on:focus.prevent="onCenter" v-on:blur.prevent="onText" v-bind:id="`id${i}`" v-on:input="onInput">{{e}}</pre>
+  <p class="source modify" v-for="(e,i) in rows" v-on:focus.prevent="onCenter" v-on:blur.prevent="onText" v-bind:id="`id${i}`" v-on:input="onInput">{{e}}</p>
   <hr>
 </div>
 
