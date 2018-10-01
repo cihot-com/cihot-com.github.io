@@ -8,7 +8,7 @@
 <body>
 <style>
 * {
-	font-family: D2Coding, NSimSun, Dotum, MSGhotic;
+	font-family: Arial,Verdana,NSimSun, Dotum, MSGhotic;
 	border: none;
 	outline: none;
 	margin: 0;
@@ -90,13 +90,16 @@
 	border-bottom-left-radius: 5px; 
 	border-bottom-right-radius: 5px; 
 }
-.t:focus:prev
+.t ~.s {
+  background: #ff0;
+}
 </style>
 
 <div id="works">
 	<div class="stPair" v-for="(row) in rows">
 		<p class="s" v-on:focus.prevent="onCenter">{{row.s}}</p>
-		<p class="t modify" v-on:focus.prevent="onCenter" v-on:input="onInput">{{row.t}}</p>
+    <p class="t modify" v-on:focus.prevent="onCenter" v-on:input="onInput" v-on:change="onChange">{{row.t}}</p>
+		<p class="length">{{row.s.length}},{{row.t.length}}</p>
 	</div>
 </div>
 
@@ -129,6 +132,13 @@ let methods={
   onInput:function(e){
     // console.log(e.target.innerText);
     // console.log(e.target.outerHTML);
+    console.log(e.type)
+    console.log(this.ros)
+  },
+  onChange:function(e){
+    console.log(e.type)
+    // console.log(this);
+    // this.e.target.innerText
   }
 };
 
@@ -181,7 +191,29 @@ function randomString(len=1,caps=true){
   return s;
 }
 
+Array.prototype.extends
+function remove(o,a){
+  let i;
+  i=a.indexOf(o);
+  while(i!==-1){
+    a.splice(i,1);
+    i=a.indexOf(o);
+  }
+  return a;
+}
 
+
+Object.prototype.ddb=function(...args){
+  let thisArg=this;
+  if(!thisArg.__proto__.ddb) thisArg.__proto__.ddb=Object.create(null);
+  args.forEach(f=>{
+    thisArg.__proto__.ddb[f.name||'_']=f;
+  });
+};
+
+a=[1,2,3]
+aa=[11,22,33]
+a.ddb(function (){return this;});
 
 
 </script>
