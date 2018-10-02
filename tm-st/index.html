@@ -71,34 +71,33 @@
   background: #fff;
 }
 .stPair {
-	background:#00f;
+	background:#ccf;
 	width: 24em;
 	margin: 1px auto;
 	border-radius: 5px;
 }
 .s, .t {
 	background: #fffc;
-	padding: 3px;
+  padding: 3px;
+  resize: none;
+  width: 100%;
 }
 .s {
-	border-bottom: 1px dashed #fff;
+  border-bottom: 1px dashed #fff;
 }
 .t:focus {
-	background: #fff;
-	outline-color: #f00c;
-	outline-width: 2px;
-	border-bottom-left-radius: 5px; 
-	border-bottom-right-radius: 5px; 
-}
-.t ~.s {
-  background: #ff0;
+  background: #fff;
+  outline-color: #f00c;
+  outline-width: 2px;
+  border-bottom-left-radius: 5px; 
+  border-bottom-right-radius: 5px; 
 }
 </style>
 
 <div id="works">
 	<div class="stPair" v-for="(row) in rows">
 		<p class="s" v-on:focus.prevent="onCenter">{{row.s}}</p>
-    <p class="t modify" v-on:focus.prevent="onCenter" v-on:input="onInput" v-on:change="onChange">{{row.t}}</p>
+    <textarea class="t" v-on:focus.prevent="onCenter" v-on:input="onInput" v-on:change="onChange" v-model="row.t"></textarea>
 		<p class="length">{{row.s.length}},{{row.t.length}}</p>
 	</div>
 </div>
@@ -214,6 +213,10 @@ Object.prototype.ddb=function(...args){
 a=[1,2,3]
 aa=[11,22,33]
 a.ddb(function (){return this;});
+
+
+
+
 
 
 </script>
