@@ -98,6 +98,26 @@ console.log('%s',c);
 // 	enumerable:true,
 // 	configurable:true
 // })
+
+
+
+let i=0,s;
+while(i++<1000000){
+	s=String.fromCharCode(Math.floor(Math.random()*65536));
+	o[Math.random()]=s;
+}
+// 测试localforage存储
+const l=localforage;
+l.config({name:'test'});
+l.setItem('obj',o,(e,v)=>{
+	console.log(e,v)
+
+	l.getItem('obj',(e,v)=>{
+		console.log(e, Object.keys(v).length);
+	});
+});
+
+
 </script>
 </body>
 </html>
