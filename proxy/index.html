@@ -62,9 +62,6 @@ let h={
 			console.groupEnd('调用函数apply');
 		}
 		return result;
-	},
-	call:function(tar,thisArg,args){
-		console.log('**call')
 	}
 };
 let p=new Proxy(o,h);
