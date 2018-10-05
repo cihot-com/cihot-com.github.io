@@ -2,6 +2,7 @@
 <html>
 <head>
 <script src="/lib/jquery-1.12.0.min.js"></script>
+<script src="/lib/similarText.js"></script>
 <script src="/lib/vue.min.js"></script>
 <title>mission list</title>
 </head>
@@ -63,6 +64,9 @@
   color:#00fc;
   font-weight: bold;
 }*/
+#works .t,#works .s {
+  color: #999;
+}
 #works .modify {
   -webkit-user-modify: read-write-plaintext-only;
   user-modify: read-write-plaintext-only;
@@ -72,7 +76,7 @@
 }
 .stPair {
 	background:#ccf;
-	width: 24em;
+	width: calc(32vw);
 	margin: 1px auto;
 	border-radius: 5px;
 }
@@ -92,12 +96,45 @@
   border-bottom-left-radius: 5px; 
   border-bottom-right-radius: 5px; 
 }
+
 </style>
 
+
+<style>
+#leftUI, #rightUI {
+  position: absolute;
+  width: calc(32vw);
+  min-height: 2px;
+  color:#000;
+  /*z-index: -1;*/
+}
+#leftUI {
+  text-align: right;
+  background: #fcc;
+}
+#rightUI {
+  text-align: left;
+  background: #cfc;
+  transform: translateX(66vw);
+}
+.current {
+  color:#000;
+}
+</style>
+<div id="leftUI">
+</div>
+<div id="rightUI">
+</div>
+
 <div id="works">
+
 	<div class="stPair" v-for="(row) in rows">
 		<p class="s" v-on:focus.prevent="onCenter">{{row.s}}</p>
-    <textarea class="t" v-on:focus.prevent="onCenter" v-on:input="onInput" v-on:change="onChange" v-model="row.t"></textarea>
+    <textarea class="t"
+      v-on:focus.prevent="onFocus"
+      v-on:blur.prevent="onBlur"
+      v-on:input="onInput"
+      v-model="row.t"></textarea>
 		<p class="length">{{row.s.length}},{{row.t.length}}</p>
 	</div>
 </div>
@@ -112,28 +149,82 @@
 </div> -->
 
 <script>
+let x;
 let rows=[];
 let methods={
-  onCenter:function(e){
+  onFocus:function(e){
+    let target=e.target;
+    x=target;
+
     if(v.opts.editContentAutoCenter) e.target.scrollIntoView({
-      behavior:`smooth`,
+      // behavior:`smooth`,
       // behavior:`auto`,
       // block:`center`,
       inline:`center`
       // inline:`nearest`
     });
+
+    {// leftUI自动跟随
+      // let rect=e.target.getBoundingClientRect();
+      let leftUI=document.querySelector('#leftUI');
+      leftUI.style.top=target.offsetTop+'px';
+
+      let rightUI=document.querySelector('#rightUI');
+      rightUI.style.top=target.offsetTop+'px';
+    }
+
+    {
+      // 当前stPair高亮
+      target.parentElement.classList.add('current');
+    }
+
+    {
+      // 左边显示出所有原文中匹配度差不多的内容
+      let target=e.target;
+      let t=target.previousElementSibling.innerText;
+      let leftUI=document.querySelector('#leftUI');
+      leftUI.innerHTML='';
+
+      document.querySelectorAll('#works .s').forEach(e=>{
+        let v=similarText(t,e.innerText,true);
+        console.log(v)
+        if (v>50) {
+          let p=document.createElement('p');
+          p.innerText=e.innerText;
+          leftUI.appendChild(p);
+        }
+      });
+
+      similarText()
+      // leftUI.appendChild();
+    }
   },
+
+  onBlur(e){
+    let target=e.target;
+
+    {
+      // 解除当前stPair高亮
+      target.parentElement.classList.remove('current');
+    }
+  },
+
   onText:function(e){
     // console.log(e.type,e.target, e.target.textContent)
     console.log(e.target.textContent);
     e.target.textContent=e.target.innerText.trim();
   },
+
   onInput:function(e){
-    // console.log(e.target.innerText);
-    // console.log(e.target.outerHTML);
-    console.log(e.type)
-    console.log(this.ros)
+    {
+      // 功能：<textarea>标签自适应高度
+      let target=e.target;
+      let style=e.target.style;
+      style.height='auto';
+      style.height=target.scrollHeight+'px';
+    }
   },
+
   onChange:function(e){
     console.log(e.type)
     // console.log(this);
@@ -213,6 +304,7 @@ Object.prototype.ddb=function(...args){
 a=[1,2,3]
 aa=[11,22,33]
 a.ddb(function (){return this;});
+
 
 
 

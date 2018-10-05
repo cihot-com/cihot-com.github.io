@@ -22,6 +22,8 @@
 .sp:before{ content:'·'; position:absolute; color:#999; }
 .LF { background:#eee; }
 .LF:before{ content:'↵'; position:absolute; color:#999;}
+.NL{ background:#ccc; }
+
 .az{ background:#eee; }
 .number{background:#ccf;}
 label input { border: none; }
@@ -44,15 +46,16 @@ let v=new Vue({
 	computed:{
 		preValue:function(){
 			let space=this.space;
-			return this.value.replace(/ |<|\n|[a-z]|\d/gi, function(e,i,a,f){
+			return this.value.replace(/ |<+|\n+|(\/)[a-z\d%]+|\d+|\\n+/gi, function(e,i,a,f){
 				if(e===' '){
 					return `<span class="sp"> </span>`;
+				}else if(e==='\\n'){
+					return `<span class="NL">\\n</span>`;
 				}else if(e==='<'){
 					return '&lt;'
 				}else if(e==='\n'){
 					return `<span class="LF">\n</span>`;
 				}else if(/\d/.test(e)){
-					console.log(e)
 					return `<span class="number">${e}</span>`;
 				}else{
 					return `<span class="az">${e}</span>`;
@@ -67,6 +70,9 @@ let v=new Vue({
 // 	// v.preValue=rp(n)	// '\u2027',
 // 	document.querySelector('#tar pre').innerHTML=(rp(n))
 // });
+
+
+
 
 </script>
 </body>
