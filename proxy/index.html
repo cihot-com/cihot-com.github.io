@@ -1,120 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-<script src="/lib/jquery.min.js"></script>
-<script src="/lib/localforage.min.js"></script>
-<title>proxy</title>
-</head>
-<body>
+<!DOCTYPE html><html><head><script src="/lib/jquery.min.js"></script><script src="/lib/localforage.min.js"></script><title>proxy</title></head><body><script>
+let tags=['a','b',['c']];
+let p=new Proxy(tags,{
+	get:function(o,k,p){
+		if(!Array.isArray(o.method)) o.method=[];
 
-<script>
-let useDebug=true;
-let o={name:'object'};
-let h={
-	get:function(tar,k,p){
-		// this 就是h。这个。
-		let v=tar[k];
-		let vType=typeof v;
-		if(useDebug){
-			console.group('读');
-			// console.log('对象',tar);
-			console.log('键',k);
-			console.log('值',v);
-			console.log('类型',vType);
-			console.log(Object.getOwnPropertyDescriptor(tar,k));
-			console.groupEnd('读');
-		}
-		return vType==='function' ? v.bind(tar): v;
-	},
-	set:function(tar,k,v,p){
-		if(useDebug){
-			let desc=Object.getOwnPropertyDescriptor(tar,k);
-			let writable=!(desc.writable||desc.get);
-			console.group('写');
-			console.log('对象',tar);
-			console.log('键',k);
-			console.log('旧值',tar[k]);
-			console.log('新值',v);
-			console.log(desc);
-			if(writable) throw new Error('该键为只读属性');
-			console.groupEnd('写');
-		}
-		tar[k]=v;
-	},
-	construct:function(tar,args,p){
-		let obj=new tar(...args);
-		if(useDebug){
-			console.group('新建实例');
-			// console.log('自己',tar);
-			console.log('参数:',...args);
-			console.log('结果:',obj);
-			console.groupEnd('新建实例');
-		}
-		return obj;
-	},
-	apply:function(tar,thisArg,args){
-		let result=tar.apply(thisArg,args);
-		if(useDebug){
-			console.group('调用函数apply');
-			console.log('自己',thisArg);
-			console.log('参数:',...args);
-			console.log('结果',result);
-			console.groupEnd('调用函数apply');
-		}
-		return result;
+		let v=o[k];
+		let t=typeof v;
+
+		// if(t==='function'){
+		// 	if(o.method.indexOf(k)===-1){
+		// 		o.method.push(k);
+		// 		o[k]=new Proxy(v,{
+		// 			apply(f,args){
+		// 				console.log(...args);
+		// 				return f.bind(o)(...args);
+		// 			}
+		// 		});
+		// 		console.log('值为(新)',o[k]);
+		// 	}else{
+		// 		console.log('值为',o[k]);
+		// 	}
+		// }
+		console.log('属性',k,v,t, o);
+		return o[k];
 	}
-};
-let p=new Proxy(o,h);
-
-
-function C(name='object C'){
-	if(!(this instanceof C)) return new C(name);
-	this.name=name;
-	return this;
-}
-let c=new Proxy(C,h);
-
-
-
-// useDebug=false;
-console.log('%s',c);
-
-
-
-// let od={}
-// Object.defineProperty(od,'n',{
-// 	// get:function(){
-// 	// 	return this._n;
-// 	// },
-// 	// set:function(v){
-// 	// 	console.log(v)
-// 	// 	this._n=v;
-// 	// },
-// 	// value:444,
-// 	writable:true,
-// 	enumerable:true,
-// 	configurable:true
-// })
-
-
-
-let i=0,s;
-while(i++<1000000){
-	s=String.fromCharCode(Math.floor(Math.random()*65536));
-	o[Math.random()]=s;
-}
-// 测试localforage存储
-const l=localforage;
-l.config({name:'test'});
-l.setItem('obj',o,(e,v)=>{
-	console.log(e,v)
-
-	l.getItem('obj',(e,v)=>{
-		console.log(e, Object.keys(v).length);
-	});
 });
-
-
 </script>
 </body>
 </html>
