@@ -41,12 +41,13 @@ label input { border: none; }
 let v=new Vue({
 	el:'#app',
 	data:{
-		value:'abc abc aaa',
+		value:'abc abc [#ef12cc] 汉字\\naaa',
 	},
 	computed:{
 		preValue:function(){
 			let space=this.space;
-			return this.value.replace(/ |<+|\n+|(\/)[a-z\d%]+|\d+|\\n+/gi, function(e,i,a,f){
+			return this.value.replace(/ |<+|\n+|(\/)?[\[\]\-#%A-Za-z0-9]+|\d+|\\n+/gi, function(e,i,a,f){
+				console.log(e)
 				if(e===' '){
 					return `<span class="sp"> </span>`;
 				}else if(e==='\\n'){
@@ -64,6 +65,10 @@ let v=new Vue({
 		}
 	}
 });
+
+
+
+
 
 // v.$watch('value', (n,o)=>{
 // 	// console.log(n,o);
