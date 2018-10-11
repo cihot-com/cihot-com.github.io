@@ -1,8 +1,9 @@
+let x;
 if('indexedDB' in window) {
   // 支持
   console.log('support indexedDB');
 
-  console.log(idb('test1'));
+  x=idb('test1');
 } else {
   // 不支持
   alert('no support indexedDB');
@@ -10,19 +11,16 @@ if('indexedDB' in window) {
 
 
 
-function idb(dbname='test',version=1){
+function idb(dbname='test',version=undefined){
 	// success：打开成功。
 	// error：打开失败。
 	// upgradeneeded：第一次打开该数据库，或者数据库版本发生变化。
 	// blocked：上一次的数据库连接还未关闭。
-	var ret = {};
 
-	ret.req = indexedDB.open(dbname,version);
-	ret.db;
-	ret.t;
-	ret.o;
+	let req=indexedDB.open(dbname,version);
+	var ret = {req};
 
-	ret.req.onupgradeneeded = function(e) {
+	req.onupgradeneeded = function(e) {
 		// 创建只能在版本升级中进行。
 		console.log("Upgrading...");
 		var db=ret.db=ret.req.result;
@@ -33,9 +31,10 @@ function idb(dbname='test',version=1){
 
 		console.log(db.objectStoreNames);
 
-		if(!db.objectStoreNames.contains("main")) {
- 		    db.createObjectStore("main", {keyPath:'title'});
-		}
+		// if(!db.objectStoreNames.contains("main")) {
+ 	// 	    db.createObjectStore("main", {keyPath:'title'});
+		// }
+		ret.main=db.createObjectStore("main2", {keyPath:'title'});
 
 
 
@@ -51,14 +50,79 @@ function idb(dbname='test',version=1){
 		// }
 	}
 	 
-	ret.req.onsuccess = function(e) {
+	req.onsuccess = function(e) {
 		req.db = e.target.result;
 		console.info("Success!", req.db.name);
 	}
 	 
-	ret.req.onerror = function(e) {
+	req.onerror = function(e) {
 		console.error(e);
 		req.error=e;
 	}
 	return ret;
 }
+
+
+
+
+
+let dbs=[];
+
+function conn(name,version) {
+	return new Promise(function (y,n){
+		let request=indexedDB.open(name,version);
+		request.addEventListener('upgradeneeded',(e)=>{
+			console.log(e.type);
+			e.target.removeEventListener(e.type,e.callee);
+			y({e,request});
+			uq=request; db=request.result; console.log(uq,db);
+			dbs.push(db);
+
+			db.createObjectStore('book');
+
+			db.onversionchange=function(e){
+				console.log('db.onversionchange', e);
+			}
+		});
+		request.addEventListener('success',(e)=>{
+			e.target.removeEventListener(e.type,e.callee);
+			console.warn(e.type, request.readyState);
+			dbs.push(db);
+			q=e.target;db=e.target.result;console.log(q,db);
+
+			y(request);
+		});
+		request.addEventListener('error',(e)=>{
+			console.log(e.type,request.error);
+			e.target.removeEventListener(e.type,e.callee);
+			n(request.error);
+		});
+		// request.addEventListener('blocked',(e)=>{
+		// 	console.warn(e.type, e.oldVersion, e.newVersion, e.dataLoss, e.dataLossMessage);
+		// 	e.target.removeEventListener(e.type,e.callee);
+		// 	n({e,request});
+		// 	q=e.target; console.log(q,db);
+		// });
+	});
+}
+
+
+// conn('test');
+// conn('test',2);
+// conn('test',5);
+
+
+/*
+
+lang==>
+
+macthing--->
+
+tag
+lang
+
+<segment> {md5, language:'cn', translations:{ ...<segment> }, }
+
+
+
+*/
