@@ -126,3 +126,24 @@ lang
 
 
 */
+
+
+
+
+class aForm {
+	constructor(sel){
+		this.element=document.querySelector(sel);
+
+		this.elem=new Proxy(this.element, {
+			get(o,k,p){
+				console.log(k)
+				return o.querySelector(k);
+			},
+			set(o,k,v,p){
+				o.querySelector(k).value=v;
+			}
+		})
+	}
+}
+
+let af=new aForm('[name=form]')
