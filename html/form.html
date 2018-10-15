@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+</head>
+<body>
+<style>
+form { background:#ccc; margin:1px; padding:0px;
+  border-radius:3px;
+  box-shadow: 2px 2px 10px #000;
+  display:grid;
+  grid:repeat(3, [line1 line2 line3] auto) / auto-flow;
+  /*grid-template-columns:1fr 1fr;*/
+}
+
+/*::-webkit-scrollbar              { width:2px;height:2px; }
+::-webkit-scrollbar-button       { background:#f00; }
+::-webkit-scrollbar-track        { background: #f00; }
+::-webkit-scrollbar-track-piece  { background: #ff0; }
+::-webkit-scrollbar-thumb        { height:20px; }
+::-webkit-scrollbar-corner       { transform:translateX(-8px);display: none; }
+::-webkit-resizer                { display: none; }
+*/
+textarea { resize:none; }
+</style>
+
+
+<form name="form1" autocomplete="off">
+  <input name="input">
+  <input name="input">
+  <input name="input">
+  <input name="input">
+  <input name="input">
+</form>
+
+<form name="form2">
+  <textarea name="textarea"></textarea>
+  <textarea name="textarea"></textarea>
+</form>
+
+<form name="form3" action="_">
+  <input name="input">
+  <input name="input">
+</form>
+
+
+<style>
+#app1::before {
+  content: attr(id);
+  font-weight: bold;
+  position: absolute;
+  transform: translate(-14px,-100%);
+}
+
+#app1 {
+  background:#ccc;
+  padding:1em;
+  display: grid;
+  grid:repeat(2,auto) / auto-flow 200px;
+}
+#app1 div {
+  -webkit-user-modify: read-write-plaintext-only;
+  user-modify: read-write-plaintext-only;
+  border: 1px solid #ccc;
+  margin: 1px;
+}
+#item1 {background:#0003;color:#ff0;}
+#item2 {background:#0006;color:#ff0;}
+#item3 {background:#0009;color:#ff0;}
+#item4 {background:#000c;color:#ff0;}
+#item5 {background:#000f;color:#ff0;}
+</style>
+<div id="app1">
+  <div id="item1">1</div>
+  <div id="item2">2</div>
+  <div id="item3">3</div>
+  <div id="item4">4</div>
+  <div id="item5">5</div>
+</div>
+
+
+
+<div id="grid">
+  <p id="item1" contenteditable="true">1</p>
+  <p id="item2" contenteditable="true">2</p>
+  <p id="item3" contenteditable="true">3</p>
+  <p id="item4" contenteditable="true">4</p>
+  <p id="item5" contenteditable="true">5</p>
+  <p id="item6" contenteditable="true">6</p>
+  <p id="item7" contenteditable="true">7</p>
+</div>
+<style>
+p { background:#060; margin:1px; border-radius:6px;
+  box-shadow:2px 2px 3px #000;
+  color:#fff;
+  text-shadow:1px 1px 3px #000;
+}
+#grid {
+  background:#ccc;
+  display: grid;
+  grid-template-columns: repeat(2,50%);
+
+/*   grid-template-rows: 20px 20px; */
+/*   grid-template-columns: repeat(2,200px); */
+/*   word-break;break-all; */
+  resize: vertical;
+}
+
+#item1 {
+  background-color: red;
+
+}
+#item2 {
+  background-color: yellow;
+}
+
+#item3 {
+  background-color: blue;
+}
+</style>
+
+
+
+<script type="text/javascript">
+
+
+function get1(name){
+  return document.forms.namedItem(name);
+  return document.forms[name];
+}
+
+function get2(index=0){
+  for(let i=0,len=document.forms.length; i<len; i++){
+    console.log(document.forms.item(i));
+  }
+  return document.forms.item(index);
+  return document.forms[index];
+}
+
+
+// console.log(get1('form1'))
+
+// console.log(get2(1));
+
+
+function q(q){
+  return document.querySelectorAll(q);
+}
+
+
+q('input').forEach((e)=>{
+  e.addEventListener('contextmenu',(e)=>{
+    e.preventDefault();
+    e.target.readOnly=!e.target.readOnly;
+  });
+});
+
+// q('textarea').forEach(e=>{
+//   e.addEventListener('input',e=>{
+//     let t=e.target;
+//     t.style.height='1px';
+//     t.style.height=t.scrollHeight+'px';
+//   });
+// });
+
+q('textarea')[0].value=`aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`
+
+
+q('textarea').forEach(e=>{e.style.height='auto';e.style.height=e.scrollHeight+'px';});
+
+q('textarea').forEach(e=>{e.addEventListener('input',e=>{
+  e.preventDefault();let t=e.target;
+  t.style.height='auto';t.style.height=t.scrollHeight+'px';
+})});
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
