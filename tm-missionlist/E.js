@@ -53,7 +53,7 @@ window.addEventListener('keypress', onKeyboardEvent);
 
 
 function onKeyboardEventTest(e){
-	if(!e.originalEvent.repeat) console.log(e.type, e.keyMap);
+	if(!e.originalEvent.repeat) console.log(e.type, e.keyMap, e.originalEvent);
 	e.preventDefault();
 }
 
