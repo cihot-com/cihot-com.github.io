@@ -1,16 +1,11 @@
 
 
-function f(i){
 
-    return i+i;
+
+let a=1;
+let i=0;
+
+while (i++<10){
+    a+=a;
 }
-
-
-
-
-let a=f(f(10));
-
-let b=f(a);
-
-
 
