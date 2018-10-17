@@ -1,57 +1,16 @@
-.tip1,
-.tip2,
-.tip3,
-.tip4,
-.tip5,
-.tip6,
-.tip7,
-.tip8,
-.tip9,
-.tip10,
-.tip11,
-.tip12 {
+.tip1, .tip2, .tip3, .tip4, .tip5, .tip6, .tip7, .tip8, .tip9, .tip10, .tip11, .tip12 {
 	position: relative;/* 这个父级必须绝对定位 */
 }
 
-.tip1:hover::before,
-.tip2:hover::before,
-.tip3:hover::before,
-.tip4:hover::before,
-.tip5:hover::before,
-.tip6:hover::before,
-.tip7:hover::before,
-.tip8:hover::before,
-.tip9:hover::before,
-.tip10:hover::before,
-.tip11:hover::before,
-.tip12:hover::before,
-.tip1:hover::after,
-.tip2:hover::after,
-.tip3:hover::after,
-.tip4:hover::after,
-.tip5:hover::after,
-.tip6:hover::after,
-.tip7:hover::after,
-.tip8:hover::after,
-.tip9:hover::after,
-.tip10:hover::after,
-.tip11:hover::after,
-.tip12:hover::after {
+.tip1:hover::before, .tip2:hover::before, .tip3:hover::before, .tip4:hover::before, .tip5:hover::before, .tip6:hover::before,
+.tip7:hover::before, .tip8:hover::before, .tip9:hover::before, .tip10:hover::before, .tip11:hover::before, .tip12:hover::before,
+.tip1:hover::after, .tip2:hover::after, .tip3:hover::after, .tip4:hover::after, .tip5:hover::after, .tip6:hover::after,
+.tip7:hover::after, .tip8:hover::after, .tip9:hover::after, .tip10:hover::after, .tip11:hover::after, .tip12:hover::after {
 	opacity: 1;
 }
 
-.tip1::before,
-.tip2::before,
-.tip3::before,
-.tip4::before,
-.tip5::before,
-.tip6::before,
-.tip7::before,
-.tip8::before,
-.tip9::before,
-.tip10::before,
-.tip11::before,
-.tip12::before {
+.tip1::before, .tip2::before, .tip3::before, .tip4::before, .tip5::before, .tip6::before,
+.tip7::before, .tip8::before, .tip9::before, .tip10::before, .tip11::before, .tip12::before {
 	font-size:12px;
 	color: #fff;
 	background-color: #000;
@@ -65,18 +24,8 @@
 	height:6px;
 }
 
-.tip1::after,
-.tip2::after,
-.tip3::after,
-.tip4::after,
-.tip5::after,
-.tip6::after,
-.tip7::after,
-.tip8::after,
-.tip9::after,
-.tip10::after,
-.tip11::after,
-.tip12::after {
+.tip1::after, .tip2::after, .tip3::after, .tip4::after, .tip5::after, .tip6::after,
+.tip7::after, .tip8::after, .tip9::after, .tip10::after, .tip11::after, .tip12::after {
 	font-size:12px;
 	color: #fff;
 	background-color: #000;
