@@ -64,3 +64,6 @@
 #works p:hover {
   background: #fff;
 }
+textarea {
+  width: 24em;
+}

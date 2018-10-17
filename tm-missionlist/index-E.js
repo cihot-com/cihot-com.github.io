@@ -1,20 +1,19 @@
-E.test.mouseTypes=new Set(['mousedown']);
-E.test.start();
-
-E.start();
-
+$(e => {
+    E.test.mouseTypes = new Set(['mousedown']);
+    E.test.keyboardTypes = new Set(['keydown']);
 
 
-function onTest(e) {
-    let target = e.originalEvent.target;
-    console.log(this);
+    let textarea = $('textarea').get(0);
+    textarea.readOnly = true;
+
+    E.test.mouseHandles.push(e => {
+        textarea.value = (`[${e.type} (x:${e.originalEvent.offsetX},y:${e.originalEvent.offsetY})]` + '\n' + textarea.value).slice(0, 4000);
+    });
     
+    E.test.keyboardHandles.push(e => {
+        textarea.value = (`[${e.type}] ${e.keyMap}` + '\n' + textarea.value).slice(0, 4000);
+    });
 
-    // if (target instanceof Element && target.nodeName === 'P') {
-    //     e.originalEvent.preventDefault();
-    //     console.log(e.originalEvent.defaultPrevented);
-    // }
-}
-
-E.addEventListener('input',onTest);
-E.addEventListener('keydown',onTest);
+    E.test.start();
+    E.start();
+});
