@@ -1,0 +1,94 @@
+#app {
+
+	background-color: #ccc;
+	margin: 0 auto;
+	width:400px;
+}
+
+.tip {
+	background: #ff0;
+	position: relative;/* 这个父级必须绝对定位 */
+	top:10px;
+}
+
+.tip::before {
+	content: '';
+	width: 6px;
+	height: 6px;
+	transform: translate(-50%, -128%) rotate(45deg);
+}
+
+.tip::after {
+	content: attr(data-tip);
+	transform: translate(-50%, 0);
+	padding: 3px 9px;
+	border-radius: 3px;
+	bottom: 100%;
+}
+
+.tip::before, .tip::after {
+	pointer-events: none;
+	color: #fff;
+	background-color: #000;
+	position: absolute;
+	left: 50%;
+	z-index: 10;
+	margin-bottom: 5px;
+	opacity: 1;
+}
+
+.box {
+	height: 10vh;
+	background: #336;
+}
+
+.tip:hover::before, p:hover::after {
+	opacity: 1;
+}
+
+.left::before {
+	transform: translate(6px,-128%) rotate(45deg);
+	left:auto;
+	top:auto;
+	bottom:auto;
+	right: auto;
+}
+.left::after {
+	transform: none;
+	top:auto;
+	right: auto;
+	bottom:100%;
+	left:0;
+}
+
+.right::before {
+    transform: translate(0,-128%) rotate(45deg);
+    left: auto;
+    top: auto;
+    bottom: auto;
+    right: 6px;
+}
+.right::after {
+	transform: none;
+    top: auto;
+    right: 0;
+    bottom: 100%;
+    left: auto;
+}
+
+.bottomRight::before {
+	content:'';
+	transform: translate(0,100%) rotate(45deg);
+	top: auto;
+	right: 6px;
+	bottom: -6px;
+	left: auto;
+}
+.bottomRight::after {
+    content: attr(data-tip);
+    transform: translate(0, calc(100% + 9px));
+    left: auto;
+    top: auto;
+    bottom: 0;
+    right: 0;
+}
