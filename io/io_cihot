@@ -1,0 +1,1 @@
+nohup node /home/io.cihot.com/index.js 1>/home/logs/io_cihot_log 2>/home/logs/io_cihot_err_log &

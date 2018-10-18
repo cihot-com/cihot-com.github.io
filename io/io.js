@@ -5,13 +5,13 @@ const SocketIO=require('socket.io');
 
 
 // 创建服务器参数
-let port='80';
+let port='3001';
 let option={
   path:'/chat',// 捕获路径名
   serveClient:false,// 客户端文件
   // adapter:undefined,// 适配器(socket.io-adapter)
   // origins:'*',// 来源域名
-  origins:['http://d','http://aonun.com','https://aonun.com','http://cihot.com','https://cihot.com','http://172.30.1.229'],// 来源域名
+//   origins:['http://d','http://aonun.com','https://aonun.com','http://cihot.com','https://cihot.com','http://d'],// 来源域名
   // parser:undefined,// 解析器(socket.io-parser)
   // pingTimeout:1e3,// 超时5000ms向客户端发送ping
   // pingTimeout:1e7,// 超时5000ms向客户端发送ping
@@ -104,6 +104,7 @@ io.engine.generateId=(req)=>{
 
 // 侦听连接
 sockets.on('connect', (socket)=>{
+  console.log(socket.handshake);
   console.log('io@connect','检测到客户端连接...',socket.nsp.name,socket.id,socket.handshake.query.token);
 });
 
@@ -115,7 +116,7 @@ io.on('connection', (socket)=>{
   socket.on('message',(...a)=>{
     a=Array.from(a);
     socket.broadcast.send(socket.id,...a);// 其他所有人聊天(不包括自己)
-    // console.log('s@message', Object.keys(socket.rooms), a);
+    console.log('s@message', Object.keys(socket.rooms), a);
   });
   socket.on('broadcast',(...a)=>{
     sockets.send(socket.id,...a);// 所有人聊天(包括自己)
