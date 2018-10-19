@@ -9,89 +9,79 @@
 <body>
 <style>
 * {
-  font-family: Consolas,Verdana,"Microsoft Yahei";
+	font-family: Consolas,Verdana,"Microsoft Yahei";
 }
 .box  {width:100%;height:100%;background:#ccc;display:grid;grid-row-gap: 50px;}
 .line {height:100%;background:red;display:inline-grid;}
 #works{
-  height: 100%;
+	height: 100%;
 }
 #works td{
-  background: #9f9;
-  min-width: 8em;
-  text-align: center;
+	background: #9f9;
+	min-width: 8em;
+	text-align: center;
 }
 #works * {
-  margin: 0 auto;
-  padding: 3px;
-  width: 24em;
-  overflow-y:visible;
-  display: block
+	margin: 0 auto;
+	padding: 3px;
+	width: 24em;
+	overflow-y:visible;
+	display: block
 }
 #works hr {
-  border:1px solid #ccc;
-  width:24em;
-  margin:20% auto;
+	border:1px solid #ccc;
+	width:24em;
+	margin:20% auto;
 }
 #works .modify {
-  -webkit-user-modify: read-write-plaintext-only;
-  user-modify: read-write-plaintext-only;
+	-webkit-user-modify: read-write-plaintext-only;
+	user-modify: read-write-plaintext-only;
 }
 #works pre {
-  min-width: 24em;
-  border:inset 2px solid #ccc;
-  border-radius:3.33px;
-  margin-top: 1px;
-  white-space: pre-wrap;
-  word-break: break-all;
-  background: #eee;
+	min-width: 24em;
+	border:inset 2px solid #ccc;
+	border-radius:3.33px;
+	margin-top: 1px;
+	white-space: pre-wrap;
+	word-break: break-all;
+	background: #eee;
 }
 #works pre:focus {
-  background: #fffe;
+	background: #fffe;
 }
 #works pre::before {
-  content: attr(id);
-  background: #ccc;
-  color: #666;
-  border-radius: 3px;
-  transform: rotate(-12deg) translate(-120%,-66%);
-  transition: all .5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  position: absolute;
+	content: attr(id);
+	background: #ccc;
+	color: #666;
+	border-radius: 3px;
+	transform: rotate(-12deg) translate(-120%,-66%);
+	transition: all .5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+	position: absolute;
 }
 #works pre:focus::before {
-  background: #ccfc;
-  transform: rotate(-6deg) translate(-10%,-125%) scale(1.2);
-  color:#00fc;
-  font-weight: bold;
+	background: #ccfc;
+	transform: rotate(-6deg) translate(-10%,-125%) scale(1.2);
+	color:#00fc;
+	font-weight: bold;
 }
 #works pre:hover {
-  background: #fff;
+	background: #fff;
 }
 </style>
 
 <div id="app">
-  <form name="form" onsubmit="false">
-    <input type="text" name="message" v-on:keyup.prevent="onSendMessaeg">
-    
-    <input type="submit">
-    <input type="button" value="Connect" v-on:click="onConnect">
-    <input type="button" value="Close" v-on:click="onClose">
-  </form>
-
-  <div id="messages" v-for="m in ms">
-    <pre>[{{m.id}}] {{m}}</pre>
-
-  </div>
-
-
+	<h6>id:{{id}}</h6>
+		<input type="text" name="message" v-on:keyup.prevent="onSendMessaeg" autocomplete="off">
+		<input type="button" value="Connect" v-on:click="onConnect">
+		<input type="button" value="Close" v-on:click="onClose">
+	<div >
+		<pre v-for="m in ms">{{m.id}}  {{m.data}}</pre>
+	</div>
 </div>
 
 <script>
-
-
-
 let url,path,opts,s,socket;
-url='io.cihot.com:3001';
+url='http://io.cihot.com:3001';
 // url=':3000';
 // url='http://d:3900';
 // url='http://d:3900/room-1/?token=A';
@@ -104,32 +94,33 @@ url='io.cihot.com:3001';
 // let opts={
 //   port,
 //   path,
-  // transportOptions: {polling:{extraHeaders:{'x-clientid':'abc'}}},
+	// transportOptions: {polling:{extraHeaders:{'x-clientid':'abc'}}},
 // };
+
 opts={
-  hostname:'d',
-  policyPort:'3900',
-  path:'/chat',
-  // path:'/private',
-  // reconnection:false,
-  // reconnectionAttempts:1,
-  // reconnectionDelay:15000,
-  // reconnectionDelayMax:25000,
-  // timeout:1000,
-  transports:['websocket'],
-  // query:{token:'AAA'},
-  // upgrade:false,
-  // forceJSONP:false,
-  // jsonp:false,
-  // forceBase64:false,
-  // enablesXDR:false,
-  // forceNew:true,// 永远创建不同的实例
-  // timestampRequests:false,
-  // transportOptions: {polling:{extraHeaders:{'x-clientid':'abc'}}},
-  // transportOptions:{},
-  // rememberUpgrade:false,
-  // requestTimeout:1000,
-  autoConnect:false,
+	hostname:'d',
+	// policyPort:'3900',
+	path:'/chat',
+	// path:'/private',
+	reconnection:false,
+	// reconnectionAttempts:2,
+	// reconnectionDelay:5000,
+	// reconnectionDelayMax:10000,
+	// timeout:1000,
+	transports:['websocket'],
+	// query:{token:'AAA'},
+	// upgrade:false,
+	// forceJSONP:false,
+	// jsonp:false,
+	// forceBase64:false,
+	// enablesXDR:false,
+	// forceNew:true,// 永远创建不同的实例
+	// timestampRequests:false,
+	// transportOptions: {polling:{extraHeaders:{'x-clientid':'abc'}}},
+	// transportOptions:{},
+	// rememberUpgrade:false,
+	// requestTimeout:1000,
+	// autoConnect:false,
 };
 
 s=socket=io(url,opts);
@@ -143,22 +134,24 @@ s=socket=io(url,opts);
 
 // 自定义事件
 socket.on('hi',(e)=>{
-  console.log(e,arguments.length);
+	console.log(e,arguments.length);
 });
 
 socket.on('connect',()=>{
-  // socket.binary(false).send('非二进制');
-  // socket.emit('hi','你好');
-  // socket.emit('binary',1,'2',{3:'4',5:new ArrayBuffer(6)})
-  socket.emit('join','room-1');
-  // socket.emit('rooms');
+	vm.id=socket.id;
+	
+	// socket.binary(false).send('非二进制');
+	// socket.emit('hi','你好');
+	// socket.emit('binary',1,'2',{3:'4',5:new ArrayBuffer(6)})
+	socket.emit('join','room-1');
+	// socket.emit('rooms');
 
-  // console.group('socket');
-  // console.log('id=',socket.id);
-  // console.log('connected=', socket.connected);
-  // console.log('disconnected=', socket.disconnected);
-  // console.log('io.opts=',socket.io.opts);
-  // console.groupEnd('socket');
+	// console.group('socket');
+	// console.log('id=',socket.id);
+	// console.log('connected=', socket.connected);
+	// console.log('disconnected=', socket.disconnected);
+	// console.log('io.opts=',socket.io.opts);
+	// console.groupEnd('socket');
 });
 
 // socket.on('reconnect_attempt', (num)=>{
@@ -167,7 +160,12 @@ socket.on('connect',()=>{
 //   socket.io.opts.transports=['polling','websocket'];
 // });
 
-socket.on('message',(...a)=>console.log('e:message',...a));
+socket.on('message',(...a)=>{
+	console.log('e:message',...a);
+
+	if(vm.ms.length>10) vm.ms.length=10;
+	vm.ms.unshift({id:a[0], data:a[1]})
+});
 
 // socket.on('error',(error)=>console.warn('error',error));// 没有该事件
 // socket.on('connection');// 没有该事件
@@ -182,29 +180,31 @@ socket.on('reconnect_attempt',(attemptNumber)=>console.log('reconnect_attempt',a
 socket.on('ping',()=>console.log('ping'));
 socket.on('pong',(latency)=>console.log('pong',latency));
 socket.on('disconnect',(reason)=>{
-  console.log(reason);
-  // socket.open();
+	console.log(reason);
+	// socket.open();
 });
-
+socket.on('error',(err)=>{
+	console.log(err);
+})
 
 s.__proto__.join=function (name='room-9'){
-  return this.emit('join',name);
+	return this.emit('join',name);
 };
 s.__proto__.leave=function (name='room-9'){
-  return this.emit('leave',name);
+	return this.emit('leave',name);
 };
 s.__proto__.broadcast=function (message='广播'){
-  return this.emit('broadcast',message);
+	return this.emit('broadcast',message);
 };
 s.__proto__.rooms=function (){
-  return this.emit('rooms');
+	return this.emit('rooms');
 };
 s.__proto__.to=function (room,...a){
-  return this.emit('to',room,...a);
+	return this.emit('to',room,...a);
 };
 
 s.on('command',function(e){
-  console.log(e);
+	console.log(e);
 });
 
 cmd=s.emit.bind(s,'command');
@@ -231,31 +231,36 @@ cmd=s.emit.bind(s,'command');
 // });
 
 
-
+</script>
+<script>
 let vm=new Vue({
-  el:'#app',
-  data:{
-    ms:[]
-  },
-  methods:{
-    onSendMessaeg(e){
-      if(e.keyCode===13){
-        e.preventDefault();
-        let t=e.target, v=t.value;
-        console.log(v);
-        this.ms.length=9;
-        this.ms.unshift(v);
-        s.send(v);
-      }
-    },
-    onConnect(){
-      s.connect();
-    },
-    onClose(){
-      s.close();
-    }
-  }
-})
+	el:'#app',
+	data:{
+		id:-1,
+		ms:[]
+	},
+	methods:{
+		onSendMessaeg(e){
+			if(e.keyCode===13){
+				e.preventDefault();
+				let t=e.target, v=t.value;
+				// console.log(v);
+				// this.ms.length=9;
+				// this.ms.unshift(v);
+				s.send(v);
+			}
+		},
+		onConnect(){
+			s.connect();
+		},
+		onClose(){
+			s.close();
+		}
+	}
+});
+
+
+
 
 </script>
 </body>
