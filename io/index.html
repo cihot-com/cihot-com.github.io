@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="./dist/jquery-1.12.0.min.js"></script>
-<script src="./dist/vue.min.js"></script>
-<script src="./dist/socket.io.js"></script>
+<script src="/lib/jquery.min.js"></script>
+<script src="/lib/vue.min.js"></script>
+<script src="/lib/socket.io.js"></script>
 <title>Socket.IO</title>
 </head>
 <body>
@@ -69,106 +69,26 @@
 }
 </style>
 
-<div id="works">
-  <label><input type="checkbox" v-model="opts.editContentAutoCenter">중심이동</label>
-  <hr>
-  <p class="source modify" v-for="(e,i) in rows" v-on:focus.prevent="onCenter" v-on:blur.prevent="onText" v-bind:id="`id${i}`" v-on:input="onInput">{{e}}</p>
-  <hr>
+<div id="app">
+  <form name="form" onsubmit="false">
+    <input type="text" name="message" v-on:keyup.prevent="onSendMessaeg">
+    
+    <input type="submit">
+    <input type="button" value="Connect" v-on:click="onConnect">
+    <input type="button" value="Close" v-on:click="onClose">
+  </form>
+
+  <div id="messages" v-for="m in ms">
+    <pre>[{{m.id}}] {{m}}</pre>
+
+  </div>
+
+
 </div>
 
-<!-- <div id="works">
-  <hr>
-  <textarea v-for="(row) in rows" type="text"
-  contenteditable="plaintext-only" 
-  v-bind:value="row" v-bind:id="`i${row}`"
-  v-on:focus.prevent="onCenter"></textarea>
-  <hr>
-</div> -->
-
 <script>
-let rows=[];
-let methods={
-  onCenter:function(e){
-    if(v.opts.editContentAutoCenter) e.target.scrollIntoView({
-      behavior:`smooth`,
-      // behavior:`auto`,
-      // block:`center`,
-      inline:`center`
-      // inline:`nearest`
-    });
-  },
-  onText:function(e){
-    // console.log(e.type,e.target, e.target.textContent)
-    console.log(e.target.textContent)
-    e.target.textContent = e.target.innerText.trim()
-  },
-  onInput:function(e){
-    // console.log(e.target.innerText);
-    // console.log(e.target.outerHTML);
-  }
-};
-
-let v=new Vue({
-  el:'#works',
-  data:{
-    v1:'VALUE1',
-    v2:'VALUE2',
-    v3:'VALUE3',
-    items:[
-      [0,'a'],
-      [1,'b'],
-      // {index:0, item:'a'},
-      // {index:1, item:'b'},
-    ],
-    rows,
-    opts:{
-      editContentAutoCenter:true
-    },
-  },
-  methods,
-});
-
-let i=1;
-while(i<100){
-  v.rows.push(i + '-'+randomString(10));
-  i++;
-}
 
 
-let p=new Proxy(rows, {
-  set:function(target,k,v){
-    console.log(k,v);
-    return target[k]=v;
-  },
-  get:function(target,k){
-    return target[k];
-  },
-  apply:function(target,thisArg,args){
-    console.log( args);
-    return 1
-  }
-});
-
-
-
-function randomString(len=1,caps=true){
-  len=Math.max(1,len), s='';
-  while(len-->0){
-    if(caps){
-      s+=String.fromCharCode(Math.floor(Math.random()*26)+97);
-    }else{
-      s+=String.fromCharCode(Math.floor(Math.random()*26)+65);
-    }
-  }
-  return s;
-}
-
-
-
-
-</script>
-
-<script>
 
 let url,path,opts,s,socket;
 url='io.cihot.com:3001';
@@ -310,6 +230,32 @@ cmd=s.emit.bind(s,'command');
 //   s2.emit('message','我s2');
 // });
 
+
+
+let vm=new Vue({
+  el:'#app',
+  data:{
+    ms:[]
+  },
+  methods:{
+    onSendMessaeg(e){
+      if(e.keyCode===13){
+        e.preventDefault();
+        let t=e.target, v=t.value;
+        console.log(v);
+        this.ms.length=9;
+        this.ms.unshift(v);
+        s.send(v);
+      }
+    },
+    onConnect(){
+      s.connect();
+    },
+    onClose(){
+      s.close();
+    }
+  }
+})
 
 </script>
 </body>
