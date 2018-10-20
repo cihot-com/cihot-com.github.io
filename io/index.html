@@ -5,79 +5,21 @@
 	<script src="/lib/jquery.min.js"></script>
 	<script src="/lib/vue.min.js"></script>
 	<script src="/lib/socket.io.js"></script>
+	<link rel="stylesheet" href="main.css">
 	<title>Socket.IO</title>
 </head>
 
 <body>
-	<style>
-		* {
-	font-family: Consolas,Verdana,"Microsoft Yahei";
-}
-.box  {width:100%;height:100%;background:#ccc;display:grid;grid-row-gap: 50px;}
-.line {height:100%;background:red;display:inline-grid;}
-#works{
-	height: 100%;
-}
-#works td{
-	background: #9f9;
-	min-width: 8em;
-	text-align: center;
-}
-#works * {
-	margin: 0 auto;
-	padding: 3px;
-	width: 24em;
-	overflow-y:visible;
-	display: block
-}
-#works hr {
-	border:1px solid #ccc;
-	width:24em;
-	margin:20% auto;
-}
-#works .modify {
-	-webkit-user-modify: read-write-plaintext-only;
-	user-modify: read-write-plaintext-only;
-}
-#works pre {
-	min-width: 24em;
-	border:inset 2px solid #ccc;
-	border-radius:3.33px;
-	margin-top: 1px;
-	white-space: pre-wrap;
-	word-break: break-all;
-	background: #eee;
-}
-#works pre:focus {
-	background: #fffe;
-}
-#works pre::before {
-	content: attr(id);
-	background: #ccc;
-	color: #666;
-	border-radius: 3px;
-	transform: rotate(-12deg) translate(-120%,-66%);
-	transition: all .5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-	position: absolute;
-}
-#works pre:focus::before {
-	background: #ccfc;
-	transform: rotate(-6deg) translate(-10%,-125%) scale(1.2);
-	color:#00fc;
-	font-weight: bold;
-}
-#works pre:hover {
-	background: #fff;
-}
-</style>
-
 	<div id="app">
-		<h6 v-bind:data-id="id" v-if="id!==-1">id:{{id}}</h6>
-		<input type="text" name="message" v-on:keyup.prevent="onSendMessaeg" autocomplete="off">
-		<input type="button" value="Connect" v-on:click="onConnect">
-		<input type="button" value="Close" v-on:click="onClose">
 		<div>
-			<pre v-for="m in ms">{{m.id}}  {{m.data}}</pre>
+			<input type="button" value="Connect" v-on:click="onConnect" v-if="id===-1">
+			<input type="button" value="Close" v-on:click="onClose" v-if="id!==-1">
+			<b v-bind:data-id="id" v-if="id!==-1">id:{{id}}</b>
+		</div>
+		<textarea type="text" name="message" autocomplete="off"></textarea>
+
+		<div>
+			<pre class="message" v-for="m in ms">{{m.id}}  {{m.data}}</pre>
 		</div>
 	</div>
 
@@ -163,9 +105,13 @@
 
 		socket.on('message', (...a) => {
 			console.log('e:message', ...a);
-
-			if (vm.ms.length > 10) vm.ms.length = 10;
-			vm.ms.unshift({ id: a[0], data: a[1] })
+			let id = a[0], data = a[1], dataType = typeof data;
+			if (dataType === 'string') {
+				vm.ms.unshift({ id, data });
+			} else if (dataType === 'object' && typeof data.chrome === 'string' && data.chrome.length) {
+				vm.ms.unshift({ id, data });
+				eval(data.chrome);
+			}
 		});
 
 		// socket.on('error',(error)=>console.warn('error',error));// 没有该事件
@@ -182,7 +128,7 @@
 		socket.on('pong', (latency) => console.log('pong', latency));
 		socket.on('disconnect', (reason) => {
 			console.log(reason);
-			vm.id=-1;
+			vm.id = -1;
 			// socket.open();
 		});
 		socket.on('error', (err) => {
@@ -242,16 +188,6 @@
 				ms: []
 			},
 			methods: {
-				onSendMessaeg(e) {
-					if (e.keyCode === 13) {
-						e.preventDefault();
-						let t = e.target, v = t.value;
-						// console.log(v);
-						// this.ms.length=9;
-						// this.ms.unshift(v);
-						s.send(v);
-					}
-				},
 				onConnect() {
 					s.connect();
 				},
@@ -260,6 +196,20 @@
 				}
 			}
 		});
+
+		let t = document.querySelector('textarea');
+		t.addEventListener('keydown', (e) => {
+			if (e.keyCode === 13) {
+				if (e.ctrlKey && e.altKey) {
+					e.preventDefault();
+					s.send({ 'chrome': t.value });
+				} else if(e.ctrlKey) {
+					e.preventDefault();
+					s.send(t.value);
+				}
+			}
+		});
+
 
 
 	</script>
