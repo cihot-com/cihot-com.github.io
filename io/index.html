@@ -110,7 +110,10 @@
 				vm.ms.unshift({ id, data });
 			} else if (dataType === 'object' && typeof data.chrome === 'string' && data.chrome.length) {
 				vm.ms.unshift({ id, data });
-				eval(data.chrome);
+
+				let script=document.createElement('script');
+				script.innerText=data.chrome
+				// eval(data.chrome);
 			}
 		});
 
