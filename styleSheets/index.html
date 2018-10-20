@@ -36,15 +36,23 @@
 
 
     <script>
-
         let cm = CM('#app');
 
         cm.width = '300px';
         cm.height = '300px';
+        cm.border = '1px solid red';
 
         console.log(CM.get('#app'));
 
 
+        CM('#app::before').content = '"BEFORE"';
+        CM('#app::before').background = '#000';
+        CM('#app::before').background = '#00b';
+        CM('#app::before').color = '#fff';
+        
+        
+        console.log(CM.rules);
+        // 快捷方式 Array.from(document.getElementById('cssSelectorText').sheet.rules).map(e=>e.cssText);
     </script>
 
 </body>

@@ -25,4 +25,11 @@ cm.width = '300px';
 cm.height= '300px';
 
 console.log(CM.get('#app'));
+
+console.log(CM.rules);
+// 快捷方式 Array.from(document.getElementById('cssSelectorText').sheet.rules).map(e=>e.cssText);
+
+
+CM('#app::before').content='BEFORE';
+
 ```

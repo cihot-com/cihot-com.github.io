@@ -58,7 +58,7 @@ CM.get = function (selectorText, ignoreInitial = true) {
 
 Object.defineProperty(CM, 'tag', {
     get() {
-        let id = '#cssManagerTag', tag = document.querySelector(id);
+        let id = 'cssManagerTag', tag = document.getElementById(id);
         if (!tag) {
             tag = document.createElement('style');
             tag.setAttribute('id', id);
@@ -68,15 +68,52 @@ Object.defineProperty(CM, 'tag', {
     }
 });
 
+Object.defineProperty(CM, 'sheet', {
+    get() {
+        return CM.tag.sheet;
+    }
+});
+
+Object.defineProperty(CM, 'rules', {
+    get() {
+        return Array.from(CM.sheet.rules).map(e=>e.cssText);
+    }
+});
+
 Object.defineProperty(CM,'createManager',{
     value(selectorText) {
+        console.log(selectorText);
+        
         return new Proxy(CM.tag.sheet, {
             get(o,k,p){
                 return CM.get(selectorText)[k];
             },
             set(o,k,v,p){
-                return o.addRule(selectorText, `${k}: ${v}`);
-                // return CM.tag.sheet.addRule(selectorText, `${k}: ${v}`);
+                let rule, hasRule=false;
+                for(let i=0,len=o.rules.length; i<len; i++) {
+                    rule=o.rules.item(i);
+                    console.log(rule);
+                    
+                    hasRule=rule.selectorText===selectorText
+                    if(hasRule) {
+                        break;
+                    }
+                    console.log(hasRule, rule.selectorText, selectorText);
+                    
+                }
+                if(!hasRule) {
+                    o.addRule(selectorText, `${k}: ${v}`);
+                }else{
+                    if(v!==undefined){
+                        rule.style[k]=v;
+                    }else{
+                        let deleteList = Array.from(o.rules).map((e,i)=>e.selectorText===selectorText);
+                        let len=deleteList.length;
+                        if(len--) {
+                            o.removeRule(deleteList[len]);
+                        }
+                    }
+                }
             }
         });
     }
