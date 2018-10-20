@@ -1,4 +1,4 @@
-http://cihot.com/styleSheet
+http://cihot.com/styleSheets
 
 
 获取选择器样式:
