@@ -82,8 +82,6 @@ Object.defineProperty(CM, 'rules', {
 
 Object.defineProperty(CM,'createManager',{
     value(selectorText) {
-        console.log(selectorText);
-        
         return new Proxy(CM.tag.sheet, {
             get(o,k,p){
                 return CM.get(selectorText)[k];
@@ -98,8 +96,6 @@ Object.defineProperty(CM,'createManager',{
                     if(hasRule) {
                         break;
                     }
-                    console.log(hasRule, rule.selectorText, selectorText);
-                    
                 }
                 if(!hasRule) {
                     o.addRule(selectorText, `${k}: ${v}`);
