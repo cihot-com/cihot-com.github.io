@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <style>
+        #app {
+            background: yellow;
+        }
+    </style>
+
+    <style>
+        #app {
+            height: 100px;
+            width: 100px;
+        }
+
+        #app:hover {
+            background: tomato;
+        }
+    </style>
+
+    <div id="app"></div>
+
+
+    <script>
+
+        const CM = function (selectorText, ignoreInitial = true) {
+            let styleSheets = document.styleSheets,
+                styleSheetsIndex, styleSheetsLength,
+                rules,
+                rulesIndex, rulesLength,
+                rule,
+                result = [],
+                style,
+                styleIndex, styleLength;
+            styleSheetsIndex = 0;
+            styleSheetsLength = styleSheets.length;
+            while (styleSheetsIndex < styleSheetsLength) {
+                rules = styleSheets.item(styleSheetsIndex).rules;
+                rulesIndex = 0;
+                rulesLength = rules.length;
+                while (rulesIndex < rulesLength) {
+                    rule = rules.item(rulesIndex);
+                    if (rule.selectorText === selectorText) {
+                        let o = Object.create(null);
+                        style = rule.style;
+                        styleIndex = 0;
+                        styleLength = style.length;
+                        while (styleIndex < styleLength) {
+                            let name = style.item(styleIndex);
+                            let value = style[style.item(styleIndex)];
+                            o[name] = value;
+                            styleIndex++;
+                        }
+                        result.push(o);
+                    }
+                    rulesIndex++;
+                }
+
+                styleSheetsIndex++;
+            }
+
+            if (ignoreInitial) {
+                result = result.map(e => {
+                    let o = Object.create(null);
+                    for (let k in e) {
+                        let v = e[k];
+                        if (v !== 'initial') {
+                            o[k] = v;
+                        }
+                    }
+                    return o;
+                })
+            }
+
+            return result.length ? Object.assign(...result): null;
+        }
+
+
+        console.log(CM('#app'));
+
+
+    </script>
+
+</body>
+
+</html>
