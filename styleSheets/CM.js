@@ -1,6 +1,8 @@
 function CM(selectorText){
-    return CM.createManager(selectorText);
-}
+    if(this instanceof CM) return CM.createManager(selectorText);
+    else return CM.get(selectorText);
+};
+
 
 CM.get = function (selectorText, ignoreInitial = true) {
     let styleSheets = document.styleSheets,
