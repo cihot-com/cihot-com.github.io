@@ -1,0 +1,1 @@
+http://cihot.com/css-tip
