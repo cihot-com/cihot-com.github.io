@@ -1,4 +1,8 @@
-const CM = function (selectorText, ignoreInitial = true) {
+function CM(selectorText){
+    return CM.createManager(selectorText);
+}
+
+CM.get = function (selectorText, ignoreInitial = true) {
     let styleSheets = document.styleSheets,
         styleSheetsIndex, styleSheetsLength,
         rules,
@@ -47,5 +51,32 @@ const CM = function (selectorText, ignoreInitial = true) {
         })
     }
 
-    return result.length ? Object.assign(...result): null;
-}
+    return result.length ? Object.assign(...result) : null;
+};
+
+
+Object.defineProperty(CM, 'tag', {
+    get() {
+        let id = '#cssManagerTag', tag = document.querySelector(id);
+        if (!tag) {
+            tag = document.createElement('style');
+            tag.setAttribute('id', id);
+            document.body.appendChild(tag);
+        }
+        return tag;
+    }
+});
+
+Object.defineProperty(CM,'createManager',{
+    value(selectorText) {
+        return new Proxy(CM.tag.sheet, {
+            get(o,k,p){
+                return CM.get(selectorText)[k];
+            },
+            set(o,k,v,p){
+                return o.addRule(selectorText, `${k}: ${v}`);
+                // return CM.tag.sheet.addRule(selectorText, `${k}: ${v}`);
+            }
+        });
+    }
+});
