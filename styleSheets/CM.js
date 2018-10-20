@@ -1,4 +1,4 @@
-function CM(selectorText){
+function CM(selectorText) {
     return CM.createManager(selectorText);
 };
 
@@ -76,36 +76,34 @@ Object.defineProperty(CM, 'sheet', {
 
 Object.defineProperty(CM, 'rules', {
     get() {
-        return Array.from(CM.sheet.rules).map(e=>e.cssText);
+        return Array.from(CM.sheet.rules).map(e => e.cssText);
     }
 });
 
-Object.defineProperty(CM,'createManager',{
+Object.defineProperty(CM, 'createManager', {
     value(selectorText) {
         return new Proxy(CM.tag.sheet, {
-            get(o,k,p){
+            get(o, k, p) {
                 return CM.get(selectorText)[k];
             },
-            set(o,k,v,p){
-                let rule, hasRule=false;
-                for(let i=0,len=o.rules.length; i<len; i++) {
-                    rule=o.rules.item(i);
-                    console.log(rule);
-                    
-                    hasRule=rule.selectorText===selectorText
-                    if(hasRule) {
+            set(o, k, v, p) {
+                let rule, hasRule = false;
+                for (let i = 0, len = o.rules.length; i < len; i++) {
+                    rule = o.rules.item(i);
+                    hasRule = rule.selectorText === selectorText;
+                    if (hasRule) {
                         break;
                     }
                 }
-                if(!hasRule) {
+                if (!hasRule) {
                     o.addRule(selectorText, `${k}: ${v}`);
-                }else{
-                    if(v!==undefined){
-                        rule.style[k]=v;
-                    }else{
-                        let deleteList = Array.from(o.rules).map((e,i)=>e.selectorText===selectorText);
-                        let len=deleteList.length;
-                        if(len--) {
+                } else {
+                    if (v !== undefined) {
+                        rule.style[k] = v;
+                    } else {
+                        let deleteList = Array.from(o.rules).map((e, i) => e.selectorText === selectorText);
+                        let len = deleteList.length;
+                        if (len--) {
                             o.removeRule(deleteList[len]);
                         }
                     }
