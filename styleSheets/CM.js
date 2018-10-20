@@ -1,6 +1,5 @@
 function CM(selectorText){
-    if(this instanceof CM) return CM.createManager(selectorText);
-    else return CM.get(selectorText);
+    return CM.createManager(selectorText);
 };
 
 
