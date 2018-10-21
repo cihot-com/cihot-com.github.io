@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script src="pageUnique.js"></script>
+	<script src="/lib/vue.min.js"></script>
+	<title>Unique Page</title>
+</head>
+
+<body>
+	<style>
+		body::before {
+			content:'BEFORE';
+			background: #ff0;
+		}
+		body::after {
+			content:'AFTER';
+			background: #ff0;
+		}
+	</style>
+	<script>
+		document.body.insertAdjacentText('beforeBegin', 'beforeBegin');
+		document.body.insertAdjacentText('afterBegin', 'afterBegin');
+		document.body.insertAdjacentText('beforeEnd', 'beforeEnd');
+		document.body.insertAdjacentText('afterEnd', 'afterEnd');
+
+		s=document.body.querySelector('script');
+		console.log(s);
+	</script>
+</body>
+
+</html>
