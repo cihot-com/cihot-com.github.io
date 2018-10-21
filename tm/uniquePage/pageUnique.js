@@ -4,23 +4,37 @@ let port = sw.port;
 port.o = Object.create(null);
 // port.start();
 
-port.send = function(message) {
-	port.postMessage({message});
+port.send = function (message) {
+	port.postMessage({ message });
 };
 
 port.onmessage = function (e) {
-	let data=e.data;
-	
+	let data = e.data;
+
 	// sharedWorker会发来一个checkUnique, 如果该值与
-	if(data.checkUnique) {
-		console.log(`服务器命令唯一性认证. ${data.checkUnique}`);
-		
-		if(port.o.id!==data.checkUnique) location.replace('about:blank');
+	if (data.checkUnique) {
+
+		let result = port.o.id !== data.checkUnique;
+
+		document.body.insertAdjacentText(
+			'afterbegin',
+			`唯一性认证结果为:${result?'关闭':'保留'}页面.`
+		);
+
+		if (result) {
+			setTimeout(e=>{
+				location.replace('about:blank');
+			},2000);
+		}
 	}
 
-	if(data.set) {
+	if (data.set) {
 		Object.assign(port.o, data.set);
-		console.log(`获得了ID: ${port.o.id} (${port.o.upline})`);
+		document.body.insertAdjacentText(
+			'afterbegin',
+			`获得了ID: ${port.o.id} (${port.o.upline})`
+		);
+
 	}
 };
 
