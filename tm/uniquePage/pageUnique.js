@@ -16,25 +16,20 @@ port.onmessage = function (e) {
 
 		let result = port.o.id !== data.checkUnique;
 
-		document.body.insertAdjacentText(
-			'afterbegin',
-			`唯一性认证结果为:${result?'关闭':'保留'}页面.`
-		);
-
+		
 		if (result) {
+			document.getElementById('message').innerText=`认证结果: 2秒后关闭`;
 			setTimeout(e=>{
 				location.replace('about:blank');
 			},2000);
+		}else{
+			document.getElementById('message').innerText=`认证结果: 保持现状`;
 		}
 	}
 
 	if (data.set) {
 		Object.assign(port.o, data.set);
-		document.body.insertAdjacentText(
-			'afterbegin',
-			`获得了ID: ${port.o.id} (${port.o.upline})`
-		);
-
+		document.getElementById('message').innerText=`获得了ID: ${port.o.id} (${port.o.upline})`;
 	}
 };
 
