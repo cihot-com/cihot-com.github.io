@@ -30,6 +30,7 @@ port.onmessage = function (e) {
 		location.replace('about:blank');
 	}
 	if(data.checkUnique) {
+		// if(port.o.id!==data.checkUnique) location.replace('about:blank');
 		if(port.o.id!==data.checkUnique) location.replace('about:blank');
 	}
 };
