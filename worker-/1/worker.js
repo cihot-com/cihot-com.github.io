@@ -17,6 +17,9 @@ w.addEventListener('message', function(e){
 });
 
 postMessage('WORKER: hi, main~!');
+
+console.log(o);
+
 // setTimeout(function(){
 // 	console.log('worker.close()');
 // 	w.close();// 结束自己进程

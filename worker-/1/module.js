@@ -1,11 +1,11 @@
-"use strict";
 
-(function(g){
 let o={
 	name:'module',
 	version:Date.now()
 };
 
-g.o=o;
-// console.log(this);// DedicatedWorkerGlobalScop
-})(this);
+
+importScripts('/lib/sha3.min.js');
+
+
+console.log(shake_256('jinxidong', 16));
