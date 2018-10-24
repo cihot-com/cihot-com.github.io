@@ -8,6 +8,6 @@ function maskScreen() {
 		})
 		// .on('contextmenu',(e)=>{ e.preventDefault() mask.detach() })
 	}
-	mask.appendTo('body')
+	mask.appendTo('body');
 	return mask;
 }

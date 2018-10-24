@@ -24,8 +24,4 @@ Dropzone.prototype.on = function(e) {
 }
 Dropzone.prototype.off = function(type, handle)
 
-
-
 Dropzone
-
-
