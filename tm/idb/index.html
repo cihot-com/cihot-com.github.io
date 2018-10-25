@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>indexedDB</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    let q;
+
+    function openIDB(dbname, version) {
+        q = indexedDB.open(dbname, version);
+
+        q.onupgradeneeded = e => {
+            console.log('q.on' + e.type, q.readyState);
+
+        };
+
+        q.onblocked = e => {
+            console.log('q.on' + e.type, q.readyState);
+
+        };
+
+        q.onerror = e => {
+            console.log('q.on' + e.type, q.readyState);
+
+        };
+
+        q.onsuccess = e => {
+            let db = q.result;
+            db.onabort = e => {
+                console.log('db.on' + e.type);
+            };
+            db.onclose = e => {
+                console.log('db.on' + e.type);
+            };
+            db.onerror = e => {
+                console.log('db.on' + e.type);
+            };
+            db.onversionchange = e => {
+                console.log('db.on' + e.type);
+            };
+            db.onblocked = e => {
+                console.log('db.on' + e.type);
+            };
+            db.onsuccess = e => {
+                console.log('db.on' + e.type);
+            };
+            db.onupgradeneeded = e => {
+                console.log('db.on' + e.type);
+            };
+
+            try {
+                db.createObjectStore('role', {
+                    keyPath: "keyPath",
+                    autoIncrement: true,
+                });
+            } catch (err) {
+                console.log(err);
+                db.close();
+                q = openIDB(dbname, version);
+            }
+
+            console.log(e.type, q.readyState, db.name, db.version, new Set(db.objectStoreNames));
+        };
+    }
+
+
+    openIDB('test');
+
+    
+
+
+
+</script>
+
+</html>
