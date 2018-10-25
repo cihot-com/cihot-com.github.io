@@ -10,66 +10,29 @@ let obj = {
 		dmp_2: new diff_match_patch(),
 	},
 	computed: {
-		main: function () {
-			let v = dmp.diff_main(this.text102, this.text202);
-			console.log('diff_main', this.text102, this.text202, JSON.stringify(v));
-			return v;
-		},
-		patches: function () {
-			let v = dmp.patch_make(this.text102, this.text202);
-			return v;
-		},
-		html: function () {
-			let v = dmp.diff_prettyHtml(this.main);
-			return v;
-		},
-		length_1(){
-			return this.text1.length;
-		},
-		length_2(){
-			return this.text2.length;
-		},
-		text103() {
-			let a=this.text102;
-			let b=this.text202;
-			if(a.length===0||b.length===0) return '';
-			let dmp = new diff_match_patch();
-			let main = dmp.diff_main(b,a);
-			let html = dmp.diff_prettyHtml(main);
-			console.log(html);
-			return html;
-		},
-		text203() {
-			let a = this.text102;
-			let b = this.text202;
-			if(a.length===0||b.length===0) return '';
-			let dmp = new diff_match_patch();
-			let main = dmp.diff_main(a,b);
-			return dmp.diff_prettyHtml(main);
-		},
-		text104(){
-			let a = this.text102;
-			let b = this.text202;
-			if (a.length === 0 || b.length === 0) return '';
-			let dmp = new diff_match_patch();
-			let main = dmp.diff_main(b, a);
-			return JSON.stringify(main);
-		},
-		text204() {
-			let a = this.text102;
-			let b = this.text202;
-			if (a.length === 0 || b.length === 0) return '';
-			let dmp = new diff_match_patch();
-			let main = dmp.diff_main(a, b);
-			return JSON.stringify(main);
-		},
-		diff_main_1(){
-			
-		},
-		diff_main_2(){},
-		diff_cleanupSemantic_1(){
+		patche_1(){ return this.dmp_1.patch_make(this.text1, this.text2); },
+		patche_2(){ return this.dmp_1.patch_make(this.text2, this.text1); },
 
-		}
+		length_1(){ return this.text1.length; },
+		length_2(){ return this.text2.length; },
+
+		prettyHtml_1(){ return this.dmp_1.diff_prettyHtml(this.main_1); },
+		prettyHtml_2(){ return this.dmp_1.diff_prettyHtml(this.main_2); },
+
+		main_1() { return this.dmp_1.diff_main(this.text1, this.text2); },
+		main_2() { return this.dmp_1.diff_main(this.text2, this.text1); },
+
+		cleanupSemantic_1(){ return this.dmp_1.diff_cleanupSemantic(this.main_1); },
+		cleanupSemantic_2(){ return this.dmp_2.diff_cleanupSemantic(this.main_2); },
+
+		cleanupEfficiency1() { return this.dmp_1.diff_cleanupEfficiency(this.main_1); },
+		cleanupEfficiency2() { return this.dmp_2.diff_cleanupEfficiency(this.main_2); },
+
+		levenshtein1() { return this.dmp_1.diff_levenshtein(this.main_1); },
+		levenshtein2() { return this.dmp_2.diff_levenshtein(this.main_2); },
+
+		toText1() { return this.dmp_1.patch_toText(this.text1, this.text2); },
+		toText2() { return this.dmp_2.patch_toText(this.text2, this.text1); },
 	},
 	watch: {
 		timeout: {
@@ -83,7 +46,6 @@ let obj = {
 
 		// text102: {
 		// 	handler(n) {
-
 		// 		console.log(n)
 		// 		dr.bind(this)();
 		// 	}
