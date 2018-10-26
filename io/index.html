@@ -13,9 +13,13 @@
 <body>
 	<div id="app">
 		<div>
-			<input type="button" value="Connect" v-on:click="onConnect" v-if="id===-1">
-			<input type="button" value="Close" v-on:click="onClose" v-else>
-			<input type="button" value="Send" v-on:click="onSend" v-else>
+			<div v-if="id===-1">
+				<input type="button" value="Connect" v-on:click="onConnect">
+			</div>
+			<div v-else>
+				<input type="button" value="Close" v-on:click="onClose" v-else>
+				<input type="button" value="Send" v-on:click="onSend" v-else>
+			</div>
 			<b v-bind:data-id="id" v-if="id!==-1">id:{{id}}</b>
 		</div>
 		<textarea type="text" name="message" autocomplete="off"></textarea>
