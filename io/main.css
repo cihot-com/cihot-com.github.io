@@ -1,12 +1,12 @@
 html,body { margin: 0; padding: 0; }
 
 .message {
-    background: #000;
-    color: #fff;
+    background: #ccc;
+    color: #000;
     border-radius: 3px;
     font-size: 9pt;
     margin: 0;
-    padding: 0;
+    padding-top: 3px;
 }
 
 textarea {
@@ -16,4 +16,11 @@ textarea {
     min-height: 100px;
     display: block;
     resize: vertical;
+}
+
+
+
+#app {
+    width: 60vw;
+    margin: 0 auto;
 }
