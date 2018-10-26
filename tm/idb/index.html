@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -15,20 +15,17 @@
 
     function openIDB(dbname, version) {
         q = indexedDB.open(dbname, version);
-
         q.onupgradeneeded = e => {
-            console.log('q.on' + e.type, q.readyState);
-
+            console.log('q.on' + e.type, q.readyState, q.source);
         };
 
         q.onblocked = e => {
-            console.log('q.on' + e.type, q.readyState);
-
+            console.log('q.on' + e.type, q.readyState, q.source);
         };
 
         q.onerror = e => {
-            console.log('q.on' + e.type, q.readyState);
-
+            // 打开低版本时
+            console.log('q.on' + e.type, q.readyState, q.source);
         };
 
         q.onsuccess = e => {
@@ -55,23 +52,23 @@
                 console.log('db.on' + e.type);
             };
 
-            try {
-                db.createObjectStore('role', {
-                    keyPath: "keyPath",
-                    autoIncrement: true,
-                });
-            } catch (err) {
-                console.log(err);
-                db.close();
-                q = openIDB(dbname, version);
-            }
+            // try {
+            //     db.createObjectStore('role', {
+            //         keyPath: "keyPath",
+            //         autoIncrement: true,
+            //     });
+            // } catch (err) {
+            //     console.log(err);
+            //     db.close();
+            //     q = openIDB(dbname, version);
+            // }
 
-            console.log(e.type, q.readyState, db.name, db.version, new Set(db.objectStoreNames));
+            console.log(e.type, q.readyState, q.source, db.name, db.version, new Set(db.objectStoreNames));
         };
     }
 
 
-    openIDB('test');
+    openIDB('test',7);
 
     
 

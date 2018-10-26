@@ -15,6 +15,7 @@
 		<div>
 			<input type="button" value="Connect" v-on:click="onConnect" v-if="id===-1">
 			<input type="button" value="Close" v-on:click="onClose" v-else>
+			<input type="button" value="Send" v-on:click="onSend" v-else>
 			<b v-bind:data-id="id" v-if="id!==-1">id:{{id}}</b>
 		</div>
 		<textarea type="text" name="message" autocomplete="off"></textarea>
@@ -27,7 +28,7 @@
 	<script>
 		let url, path, opts, s, socket, autoConnect;
 		
-		autoConnect=false;
+		autoConnect=true;
 		
 		url = 'http://io.cihot.com:3001';
 		// url=':3000';

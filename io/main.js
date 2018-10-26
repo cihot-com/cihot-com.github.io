@@ -10,6 +10,15 @@ let vm = new Vue({
         },
         onClose() {
             s.close();
+        },
+        onSend(){
+            if (e.ctrlKey && e.altKey) {
+                e.preventDefault();
+                s.send({ 'chrome': t.value });
+            } else if (e.ctrlKey) {
+                e.preventDefault();
+                s.send(t.value);
+            }
         }
     }
 });
