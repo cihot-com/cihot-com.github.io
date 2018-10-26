@@ -25,9 +25,12 @@
 		</div>
 		<textarea type="text" name="message" autocomplete="off"></textarea>
 
-		<div>
-			<pre class="message" v-for="m in ms">{{m.id}}  {{m.data}}</pre>
-		</div>
+		<table>
+			<tr class="message" v-for="m in ms">
+				<th>{{m.id}}</th>
+				<td>{{m.data}}</td>
+			</tr>
+		</table>
 	</div>
 
 	<script>
