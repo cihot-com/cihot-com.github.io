@@ -2,75 +2,192 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>indexedDB</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>indexedDB</title>
 </head>
 
 <body>
 
 </body>
 <script>
-    let q;
+	let q, db, os, v = 9;
 
-    function openIDB(dbname, version) {
-        q = indexedDB.open(dbname, version);
-        q.onupgradeneeded = e => {
-            console.log('q.on' + e.type, q.readyState, q.source);
-        };
+	function openIDB(dbname, version) {
+		// indexedDB;// IDBFactory
 
-        q.onblocked = e => {
-            console.log('q.on' + e.type, q.readyState, q.source);
-        };
+		q = indexedDB.open(dbname, version);// IDBOpenDBRequest
+		q.onupgradeneeded = e => {
+			db = e.target.result;
 
-        q.onerror = e => {
-            // 打开低版本时
-            console.log('q.on' + e.type, q.readyState, q.source);
-        };
+			{
+				let name = 'k';
+				let b = db.objectStoreNames.contains(name);
+				if(!b) {
+					db.createObjectStore(name, {keyPath:'k'});
+				}
+			}
 
-        q.onsuccess = e => {
-            let db = q.result;
-            db.onabort = e => {
-                console.log('db.on' + e.type);
-            };
-            db.onclose = e => {
-                console.log('db.on' + e.type);
-            };
-            db.onerror = e => {
-                console.log('db.on' + e.type);
-            };
-            db.onversionchange = e => {
-                console.log('db.on' + e.type);
-            };
-            db.onblocked = e => {
-                console.log('db.on' + e.type);
-            };
-            db.onsuccess = e => {
-                console.log('db.on' + e.type);
-            };
-            db.onupgradeneeded = e => {
-                console.log('db.on' + e.type);
-            };
+			{
+				let name = 'ki';
+				let b = db.objectStoreNames.contains(name);
+				if(!b) {
+					db.createObjectStore(name, {keyPath:'k',autoIncrement:true});
+				}
+			}
 
-            // try {
-            //     db.createObjectStore('role', {
-            //         keyPath: "keyPath",
-            //         autoIncrement: true,
-            //     });
-            // } catch (err) {
-            //     console.log(err);
-            //     db.close();
-            //     q = openIDB(dbname, version);
-            // }
+			{
+				let name = 'kii';
+				let b = db.objectStoreNames.contains(name);
+				if(!b) {
+					let o = db.createObjectStore(name, {keyPath:'k',autoIncrement:true});
+					o.createIndex('i','i');
+					o.createIndex('iu','iu', {unique:true});
+				}
+			}
+			console.log(b, db.objectStoreNames);
+			console.log('q-' + e.type, q.readyState, q.source, db);
+		};
 
-            console.log(e.type, q.readyState, q.source, db.name, db.version, new Set(db.objectStoreNames));
-        };
-    }
+		q.onblocked = e => {
+			console.log('q-' + e.type, q.readyState);
+		};
+
+		q.onerror = e => {
+			db = e.target.result;
+			// 打开低版本时
+			console.log('q-' + e.type, q.readyState, q.source, db);
+		};
+
+		q.onsuccess = e => {
+			db = e.target.result;
+			db.onabort = e => {
+				console.log('db-' + e.type, q.error, q.readyState);
+			};
+			db.onclose = e => {
+				console.log('db-' + e.type, q.error, q.readyState);
+			};
+			db.onerror = e => {
+				console.log('db-' + e.type, q.error, q.readyState);
+			};
+			db.onversionchange = e => {
+				console.log('db-' + e.type, q.error, q.readyState);
+			};
+			db.onblocked = e => {
+				console.log('db-' + e.type, q.error, q.readyState);
+			};
+			db.onsuccess = e => {
+				console.log('db-' + e.type, q.error, q.readyState);
+			};
+
+			if (db.version < v) {
+				// 当前版本不正确
+				db.close();// 关闭当前数据库
+				db=null;
+				openIDB(dbname, v);// 重新打开数据库, 并指定为新版本号
+			}
+
+			// transaction   {db, error, mode, objectStoreNames, objectStore, onabort, oncomplete, onerror }
+			os = (name,isWrite=true)=>{
+				let tx=db.transaction(db.objectStoreNames, isWrite?'readwrite':'readonly');
+				tx.onabort = tx.oncomplete = tx.onerror = e=>{
+					console.info('transaction-'+e.type);
+				};
+
+				// return {
+				// 	objectStore:tx.objectStore(name),
+				// 	add(...args){
+				// 		let q = this.objectStore.add(...args);
+				// 		this.hand(q);
+				// 	},
+				// 	delete(...args){
+				// 		let q = this.objectStore.delete(...args);
+				// 		this.hand(q);
+				// 	},
+				// 	put(...args){
+				// 		let q = this.objectStore.put(...args);
+				// 		this.hand(q);
+				// 	},
+				// 	get(...args){
+				// 		let q = this.objectStore.put(...args);
+				// 		this.hand(q);
+				// 	},
+				// 	getAll(...args){
+				// 		let q = this.objectStore.put(...args);
+				// 		this.hand(q);
+				// 	},
+				// 	hand(q) {// IDBRequest  { error, result, source, readyState, transaction }
+				// 		q.onsuccess=e=>{
+				// 			console.group('IDBRequest-'+e.type);
+				// 			console.log(q.readyState, q.error, q.result);
+				// 			// console.log(q);
+				// 			// console.log(e);
+				// 			console.groupEnd('IDBRequest-'+e.type);
+				// 		};
+				// 		q.onerror = e=>{
+				// 			console.group('IDBRequest-'+e.type);
+				// 			console.log(q.readyState, q.error, q.result);
+				// 			// console.log(q.error, q.readyState);
+				// 			// console.log(q);
+				// 			// console.log(e);
+				// 			console.groupEnd('IDBRequest-'+e.type);
+				// 		};
+				// 	}
+				// };
+
+				return new Proxy({}, {
+					get(o,k,p){
+						let os = tx.objectStore(name);
+						let v = os[k];
+						if(typeof v==='function'){
+							
+							return new Proxy(v, {
+								apply(f,t,a){
+									// let _ = f(...a);// Error
+									let _ = os[k](...a);
+									_.onsuccess=e=>{
+										console.group('IDBRequest-'+e.type);
+										console.log(_.result, q.readyState, q.error, q.result);
+										// console.log(q);
+										// console.log(e);
+										console.groupEnd('IDBRequest-'+e.type);
+									};
+									_.onerror = e=>{
+										console.group('IDBRequest-'+e.type);
+										console.log(_.result, q.readyState, q.error, q.result);
+										// console.log(q.error, q.readyState);
+										// console.log(q);
+										// console.log(e);
+										console.groupEnd('IDBRequest-'+e.type);
+									};
+									return _;
+								}
+							});
+						}else{
+							return typeof v;
+						}
+					}
+				})
+			}
+
+			// objectStore.openCursor()
+
+			console.log('q-'+e.type, q.readyState, q.source===null, db.name, db.version, new Set(db.objectStoreNames));
+		};
+	}
 
 
-    openIDB('test',7);
+	openIDB('test');
 
-    
+	
+
+	
+	// setTimeout(()=>{
+	// 	// os('k').put({k:'jinxidong1', t:Date.now()})
+	// },1000);
+
+
+
 
 
 

@@ -38,7 +38,6 @@
 		
 		autoConnect=true;
 		
-		// url = 'http://d:3001';
 		url = 'http://d:3001';
 		// url = 'http://io.cihot.com:3001';
 		// url=':3000';
@@ -57,12 +56,12 @@
 		// };
 
 		opts = {
-			hostname: 'd',
+			// hostname: 'd',
 			// policyPort:'3900',
 			path: '/chat',
 			// path:'/private',
 			reconnection: true,
-			reconnectionAttempts:1,
+			reconnectionAttempts:2,
 			// reconnectionDelay:5000,
 			// reconnectionDelayMax:10000,
 			// timeout:1000,
@@ -96,20 +95,20 @@
 			console.log(e, arguments.length);
 		});
 
-		socket.on('connect', () => {
+		socket.on('connect', (e) => {
 			vm.id = socket.id;
 			// socket.binary(false).send('非二进制');
 			// socket.emit('hi','你好');
 			// socket.emit('binary',1,'2',{3:'4',5:new ArrayBuffer(6)})
 			socket.emit('join', 'room-1');
+			
 			// socket.emit('rooms');
-
-			// console.group('socket');
-			// console.log('id=',socket.id);
-			// console.log('connected=', socket.connected);
-			// console.log('disconnected=', socket.disconnected);
-			// console.log('io.opts=',socket.io.opts);
-			// console.groupEnd('socket');
+			console.group('socket-connect');
+			console.log('id=',socket.id);
+			console.log('connected=', socket.connected);
+			console.log('disconnected=', socket.disconnected);
+			console.log('io.opts=',socket.io.opts);
+			console.groupEnd('socket-connect');
 		});
 
 		// socket.on('reconnect_attempt', (num)=>{
@@ -133,13 +132,34 @@
 			}
 		});
 
+		// 没有事件: socket.onerror, socket.onconnection
 		// socket.on('error',(error)=>console.warn('error',error));// 没有该事件
 		// socket.on('connection');// 没有该事件
+
+		
 		socket.on('connect', () => console.info('connect'));
-		// socket.on('connect_error',(err)=>console.warn('connect_error',err));
+		socket.on('connect_error',(err)=>{
+			// socket.io.uri = 'http://io.cihot.com:3001';// 可以转变
+			console.error('connect_error',err);
+		});
 		// socket.on('connect_timeout',(err)=>console.log('connect_timeout'));
-		socket.on('reconnect', (attemptNumber) => console.log('reconnect', attemptNumber));
-		socket.on('reconnect_attempt', (attemptNumber) => console.log('reconnect_attempt', attemptNumber));
+			socket.on('reconnect_attempt', (attemptNumber) => {
+				switch(attemptNumber) {
+					case 1:
+						socket.io.uri = 'http://io.cihot.com:3001';
+						break;
+					case 2:
+						socket.io.uri = 'http://io.aonun.com:3001';
+						break;
+					default:
+						socket.io.uri = 'http://io.cihot.com:3001';
+						break;
+				}
+				console.log('reconnect_attempt', attemptNumber);
+			});
+		socket.on('reconnect', (attemptNumber) => {
+			console.log('reconnect', attemptNumber);
+		});
 		// socket.on('reconnecting',(attemptNumber)=>console.log('reconnecting',attemptNumber));
 		// socket.on('reconnect_error',(err)=>console.warn('reconnect_error',err));
 		// socket.on('reconnect_failed',()=>console.log('reconnect_failed'));
