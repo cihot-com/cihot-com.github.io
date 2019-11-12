@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="/lib/jquery.js"></script>
+	<script src="/ddb/h.js"></script>
+	<script src="/ddb/drop.js"></script>
+	<script src="/ddb/cssd/cssd.js"></script>
+</head>
+<style>
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+		tab-size: 2em;
+	}
+
+	body {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: 1fr 1fr;
+		height: 100vh;
+	}
+
+	textarea {
+		resize: none;
+		white-space: pre-line;
+		width: 100%;
+		height: 100%;
+		font-size: 1em;
+	}
+
+	.drop {
+		width: 200px;
+		height: 100px;
+		border: 2px solid #eee;
+	}
+
+	.drop:hover {
+		border-color: #00f;
+	}
+</style>
+
+<body>
+	<div style="position:relative">
+		<textarea id="ta" autofocus style="position:absolute;left:0;top:0">11111</textarea>
+		<span id="pre" style="position:absolute;left:0;top:0; white-space: pre-line;"></span>
+	</div>
+	<div id="div">
+		<form name="setRangeText">
+			<label>text<input name="text" type="text"></label>
+			<label><input name="mode" type="radio" value="select" checked>select</label>
+			<label><input name="mode" type="radio" value="start">start</label>
+			<label><input name="mode" type="radio" value="end">end</label>
+			<label><input name="mode" type="radio" value="preserve">preserve</label>
+		</form>
+		<br>
+		<div class='drop'></div>
+	</div>
+
+
+	<div id="dups"></div>
+</body>
+
+<script>
+	let { log, debug } = console
+
+	// onbeforeunload = () => { localStorage.setItem('value', ta.value) }
+
+	// ta.value = localStorage.getItem('value')
+
+	// function createButton(name, onmouseleave) {
+	// 	let e = document.createElement('button')
+	// 	e.title = onmouseleave.toString().replace(/\t/g, '  ')
+	// 	e.innerText = name
+	// 	e.onmouseleave = onmouseleave
+	// 	div.appendChild(e)
+	// }
+
+	// createButton('setRangeText(text)', () => {
+	// 	let text = setRangeText.text.value
+	// 	let mode = setRangeText.mode.value
+	// 	log('setRangeText(', text, 1, 4, mode, ')')
+	// 	ta.setRangeText(text, 1, 4, mode)
+	// })
+
+
+	// createButton('setSelectionRange()', () => {
+	// 	function random(max) {
+	// 		return Math.floor(Math.random() * (1 + max))
+	// 	}
+
+	// 	let max = random(ta.value.length)
+	// 	let min = random(max)
+	// 	ta.setSelectionRange(min, max, 'none')
+	// 	log(ta.selectionStart, ta.selectionEnd, min, max)
+	// })
+
+	// createButton('selection', () => {
+	// 	log(ta.selectionStart, ta.selectionEnd, ta.selectionDirection)
+	// })
+
+	// // ta.addEventListener('keydown', )
+
+	// function patternSettingMergeOrBreakForTextarea(e, ...args) {
+	// 	e.stopPropagation()
+	// 	e.stopImmediatePropagation()
+	// 	switch (e.keyCode) {
+	// 		case 37:
+	// 		case 38:
+	// 		case 39:
+	// 		case 40:
+	// 			return;
+	// 	}
+	// 	if (e.keyCode === 13) {
+	// 		let i = ta.value.lastIndexOf('\n', ta.selectionEnd + 1)
+	// 		if (e.shiftKey) {
+	// 			e.preventDefault()
+	// 			if (i > -1) {
+	// 				ta.setRangeText('', i, i + 1, 'preserve')
+	// 			}
+	// 		} else if (ta.value.charAt(ta.selectionEnd) === '\n' || ta.value.charAt(ta.selectionEnd - 1) === '\n') {
+	// 			e.preventDefault()
+	// 		}
+	// 	} else {
+	// 		e.preventDefault()
+	// 	}
+	// 	return false
+	// }
+
+	// function showThis(e) {
+	// 	log('2', e.defaultPrevented)
+	// }
+
+
+
+	// H.on('keydown')
+	// H.add('keydown', 'textarea', patternSettingMergeOrBreakForTextarea, [{a:1,b:2}, {c:3, d:4}])
+
+	// function logvalue(e) {
+	// 	let {target} = e
+	// 	if(target.labels) log(Array.from(target.labels).map(e=>e.textContent).join())
+	// 	if(target.tagName==='LABEL') log(target.for)
+	// }
+
+
+
+	DDBDrop.on(document.querySelector('.drop'), log)
+
+
+
+
+
+
+</script>
+
+
+<style>
+	#dups {
+		position: relative;
+		height: 500px;
+	}
+
+	#dups textarea {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width:100%;
+		height: 100%;
+		background: none;
+		font-family: D2Coding, Tahoma;
+		color: #0000;
+	}
+</style>
+<script>
+	// {
+		let dups = document.getElementById('dups')
+
+		let e
+		for (let i = 100; i>=0; i--) {
+			e = document.createElement('textarea')
+			dups.appendChild(e)
+			e.dataset.name = `ta${i}`
+			e.readOnly = true
+		}
+		
+		e.readOnly = false
+		e.style.color = '#000'
+		console.log(e)
+
+
+		let ta1 = dups.querySelector('[data-name="ta1"]')
+		ta1.style.color = '#777'
+		e.oninput = function(_) {
+			// ta1.value = e.value
+			// ta1.value = e.value.replace(/[^ ]/g, '　').replace(/ /g, '·')
+			ta1.value = e.value.replace(/ /g, '·')
+		}
+	// }
+</script>
+
+</html>

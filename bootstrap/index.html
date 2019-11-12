@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Bootstrap 101 Template</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<script src="/lib/jquery.min.js"></script>
+	<script src="/lib/tweenmax.js"></script>
+	<!-- <link href="css/bootstrap-theme.min.css" rel="stylesheet"> -->
+	<!-- <link href="css/docs.css" rel="stylesheet"> -->
+</head>
+
+<body>
+	<h1>你好，世界！</h1>
+
+	<div class="bs-callout bs-callout-warning">
+		<table calss="table table-hover">
+			<tbody>
+				<tr class="success">
+					<td>
+						<button class="btn btn-default">btn btn-default</button><br>
+						<button class="btn btn-primary">btn btn-primary</button><br>
+						<button class="btn btn-success">btn btn-success</button><br>
+						<button class="btn btn-info">btn btn-info</button><br>
+						<button class="btn btn-warning">btn btn-warning</button><br>
+						<button class="btn btn-danger">btn btn-danger</button><br>
+						<button class="btn btn-link">btn btn-link</button><br>
+					</td>
+					<td>
+						<button class="btn btn-default" disabled>btn btn-default</button><br>
+						<button class="btn btn-primary" disabled>btn btn-primary</button><br>
+						<button class="btn btn-success" disabled>btn btn-success</button><br>
+						<button class="btn btn-info" disabled>btn btn-info</button><br>
+						<button class="btn btn-warning" disabled>btn btn-warning</button><br>
+						<button class="btn btn-danger" disabled>btn btn-danger</button><br>
+						<button class="btn btn-link" disabled>btn btn-link</button><br>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<form class="form-inline">
+		<div class="form-group">
+			<label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+			<div class="input-group">
+				<div class="input-group-addon">$</div>
+				<input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+				<div class="input-group-addon">.00</div>
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary">Transfer cash</button>
+	</form>
+	<div>
+		<kbd>kbd</kbd>
+		<code>code</code>
+		<pre>pre</pre>
+	</div>
+	<div class="progress">
+		<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40"
+			aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+			<span class="sr-only">40% Complete (success)</span>
+		</div>
+	</div>
+	<p class="bg-primary">...</p>
+	<p class="bg-success">...</p>
+	<p class="bg-info">...</p>
+	<p class="bg-warning">...</p>
+	<p class="bg-danger">...</p>
+
+	<div class="form-group has-success has-feedback">
+		<label class="control-label" for="inputSuccess4">Input with success</label>
+		<input type="text" class="form-control" id="inputSuccess4" aria-describedby="inputSuccess4Status">
+		<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+		<span id="inputSuccess4Status" class="sr-only">(success)</span>
+	</div>
+
+	<div class="var">
+		<div class="one" disabled>1</div>
+		<div class="two">2
+			<div class="three">3</div>
+		</div>
+		<div class="bg-primary">4</div>
+	</div>
+	<style>
+		:root {
+			--bg-primary: #337ab7;
+			--b-primary: #2e6da4;
+		}
+
+		* {
+			font-family: inherit;
+		}
+
+		.one {
+			--size: 24px;
+			font-size: var(--size)
+		}
+
+		.two {
+			--bg: red;
+		}
+
+		.three {
+			background-color: var(--bg);
+			color: yellow;
+		}
+
+		.bg-primary {
+			background-color: var(--bg-primary);
+			border-color: var(--b-primary);
+			color: white;
+		}
+
+		*[disabled] {
+			cursor: not-allowed;
+			user-select: none;
+		}
+	</style>
+
+	<div id="box0" style="position:relative">
+		<div id="box" style="position: absolute">box</div>
+		<div id="box2" style="position: absolute">2</div>
+		<div id="box3" style="position: absolute">3</div>
+		<div id="box4" style="position: absolute">4</div>
+		<div id="box5" style="position: absolute">5</div>
+	</div>
+	<script>
+		console.log(CSS.supports('--bg-primary', '100px'))
+
+		// TweenLite.to('.progress-bar', .5, { css: {width:'100%'}, ease: Bounce.easeOut })
+
+
+		TweenLite.to(box0, .2, { css: { x: 100, y: 100 } })
+		TweenLite.to(box2, .2, { css: { x: 0, y: 0 } })
+		TweenLite.to(box3, .2, { css: { x: 50, y: 50 } })
+		TweenLite.to(box4, .2, { css: { x: 0, y: 100 } })
+		TweenLite.to(box5, .2, { css: { x: -50, y: 50 } })
+
+		let t = new TimelineMax({ repeat: -1, onComplete: () => console.log('ok') })
+
+		t.add(TweenLite.set(box, { css: { x: 0, y: 0, width: 10, height: 10, backgroundColor: 'red', overflow: 'hidden' } }))
+
+		let r = 50
+		let values = [
+			{ x: r * Math.SQRT1_2, y: r * (1 - Math.SQRT1_2) }, { x: r, y: r },
+			{ x: r * Math.SQRT1_2, y: r * (1 + Math.SQRT1_2) }, { x: 0, y: 2 * r },
+			{ x: - r * Math.SQRT1_2, y: r * (1 + Math.SQRT1_2) }, { x: -r, y: r },
+			{ x: - r * Math.SQRT1_2, y: r * (1 - Math.SQRT1_2) }, { x: 0, y: 0 },
+		];
+		t.add(TweenLite.to(box, 2, {
+			bezier: {
+				immediateRender: false,
+				// type: 'thru',
+				values
+			},
+			ease: Linear.easeNone,
+		}))
+		// t.add(TweenLite.to(box, 2, {
+		// 	immediateRender: false,
+		// 	bezier: {
+		// 		type: 'thru',
+		// 		values: [{ x: r * Math.SQRT1_2, y: 2 * r - r * Math.SQRT1_2 }, { x: 0, y: 2 * r }]
+		// 	}
+		// }))
+
+		// t.add(TweenLite.to(box, 2, {
+		// 	immediateRender: false,
+		// 	bezier: {
+		// 		type: 'thru',
+		// 		values: [{ x: - r * Math.SQRT1_2, y: 2 * r - r * Math.SQRT1_2 }, { x: -r, y: r }]
+		// 	}
+		// }))
+
+		// t.add(TweenLite.to(box, 2, {
+		// 		immediateRender: false,
+		// 		bezier: {
+		// 			type: 'thru',
+		// 			values: [{ x: - r * Math.SQRT1_2, y: r - r * Math.SQRT1_2 }, { x: 0, y: 0 }]
+		// 		}
+		// 	}))
+
+	</script>
+
+
+	<!-- <script src="js/bootstrap.min.js"></script> -->
+</body>
+
+</html>

@@ -1,0 +1,204 @@
+* { font-size: 10pt; }
+*[lang="ko"] { font-family: Dotum; }
+*[lang="zh-CN"] { font-family: nsimsun; }
+
+body {
+	min-height: 80vh;
+}
+
+.fullscreen {
+	width: 100vh;
+	height: 100vh;
+}
+
+.cpanel {
+	background: #ff07;
+	box-shadow: 1px 1px 1px #999e;
+}
+
+.cpanel input[type=button] {
+	border: none;
+	background: #333;
+	color: #fff;
+}
+
+.cpanel input[type=button]:hover {
+	color: initial;
+	background: #ff0;
+}
+
+#mainPanel input[type=text] {
+	border: none;
+	outline: none;
+	background-color: #fff0;
+}
+#mainPanel {
+	height: calc(100vh - 2em);
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 4fr auto 2fr 1fr;
+	grid-template-areas:
+	'works'
+	'editor'
+	'tips'
+	'records';
+	/* works, editor,tips,records,foot */
+}
+#works { grid-area: works; }
+#editor { grid-area: editor; }
+#tips { grid-area: tips; }
+#records { grid-area: records; }
+#foot { grid-area: foot; }
+
+
+.workSearch input[type=text] {
+	border: none;
+	outline: none;
+	background-color: #fff7!important;
+	text-align: center!important;
+}
+.workSearch { background-color: #000!important; color: #fff!important; }
+
+.winsize {
+	height: calc(100vh - 2em);
+}
+
+.gamedex-logo {
+	height: 3em;
+}
+
+.col2a1 { display: grid; grid-template-columns: auto 1fr; }
+.col2 { display: grid; grid-template-columns: 1fr 1fr; }
+.col3 { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+.row3 { display: grid; grid-template-rows: 2fr auto 1fr; }
+.row4 { display: grid; grid-template-rows: auto 2fr auto 1fr; }
+
+.title { font-weight: bold; }
+
+#editor {
+	background: #ccc;
+}
+#source, #target {
+    color: #000;
+    background: #eee;
+    height: 5em;
+    text-align: initial;
+    outline: none;
+    border: none;
+    resize: none;
+    padding: 1em .5em;
+}
+
+#source::selection, #target::selection {
+	background-color: #006;
+	color: #fff;
+	padding: .5em;
+}
+#source,.source { text-align: right; }
+
+#sourceDict, #targetDict {
+	background: #003;
+	color: #ccf;
+	font-size: 9pt;
+	padding: auto .5em;
+}
+#sourceDict {
+	text-align: right;
+}
+
+
+.done { background-color: #3d3!important; color:#000!important; }
+.warn { background-color: #dd3!important; color:#000!important; }
+.error { background-color: #d33!important; color:#000!important; }
+.hide { display: none!important; }
+
+#tips, #editor, #works {
+    overflow-y: scroll;
+}
+#tips {
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	align-content: start;
+}
+#workTargetSearch, #workTargetReplace, #workSourceSearch {
+	background-color: #fff;
+	color: #333;
+	width: 6em;
+	height: 2em;
+}
+#status {
+	position: fixed;
+	bottom: .5em;
+	width: 100%;
+	height: 1em;
+	background-color: #fff7;
+}
+
+.percent {
+	background-color: #faa;
+	color: #000;
+	border-radius: 1em;
+	text-align: center;
+	font-size: 9pt;
+    font-family: arial;
+}
+
+.workrow {
+	display: grid;
+	grid-template-columns: 50% 50%;
+}
+
+.source, .target {
+	margin: 0 .5em;
+	padding: .5em 0;
+	border-bottom: 1px solid #ddd;
+}
+
+#records {
+	display: grid;
+	/* justify-items: center; */
+	align-items: start;
+	align-content: center;
+	grid-template-columns: 1fr auto 1fr;
+	overflow-y: scroll;
+	background: #eee;
+}
+#records .source, #records .percent, #records .target {
+	font-size: 9pt;
+	color: #333;
+}
+
+
+.active {
+	border: 1px dashed #ccc;
+	background: #eee;
+}
+.active .source, .active .target {
+	border-bottom: none!important;
+}
+
+/* 高亮 */
+i { color: #d33; background-color: #ff0; font-style: normal; }
+#foot {
+	position: fixed;
+	right:0;
+	bottom: 0;
+	display: flex;
+}
+
+#hasTargetSourceChar, #totalSourceChar {
+	background-color: #6f6;
+	font-style: normal;
+}
+#hasTargetSourceChar {
+	border-radius: 3px 0 0 3px;
+	padding-left: 1em;
+	border: 2px solid #060;
+	border-right: 1px solid #060;
+}
+#totalSourceChar {
+	border-radius: 0 3px 3px 0;
+	padding-right: 1em;
+	border: 2px solid #060;
+	border-left: 1px solid #060;
+}

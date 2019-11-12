@@ -1,0 +1,17 @@
+div::before {
+	/* content: calc('title=' + attr(title)); */
+	content: 'title = ' attr(title);
+	background: #f00;
+	color: #ff0;
+	white-space: pre-line;
+	word-break: break-all;
+}
+
+div {
+	border: 1px solid #000;
+}
+
+.black {
+	background: #000;
+	color: #fff;
+}

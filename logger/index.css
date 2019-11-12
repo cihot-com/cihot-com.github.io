@@ -1,0 +1,6 @@
+* {
+	box-sizing: border-box;
+}
+#log {
+	user-select: none;
+}

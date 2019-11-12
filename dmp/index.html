@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<HTML>
+
+<HEAD>
+	<TITLE>DIFF MATCH PATCH</TITLE>
+	<script src="/lib/vue.min.js"></script>
+	<script src="/lib/diff_match_patch.min.js"></script>
+	<link href="index.css" rel="stylesheet">
+</HEAD>
+
+<BODY>
+	<!-- app begin -->
+	<H1>DIFF MATCH PATCH</H1>
+	<div id="app">
+		<div>
+			<label>timeout</label><input v-model="timeout" type="number"></label>
+			<label>editcost</label><input v-model="editcost" type="number"></label>
+		</div>
+		<div class="col2">
+			<div>
+				<h5>text1</h5>
+				<textarea v-model="text1" autofocus></textarea>
+			</div>
+			<div>
+				<h5>text2</h5>
+				<textarea v-model="text2"></textarea>
+			</div>
+			<div>
+				<h5>text3</h5>
+				<textarea v-model="text3"></textarea>
+			</div>
+			<div>
+				<h5>text4</h5>
+				<textarea v-model="text4" readonly></textarea>
+			</div>
+			<label><input type="checkbox" @click="onclick" value="diff_cleanupSemantic"
+					v-model="cleanupSemantic">diff_cleanupSemantic(main)</label>
+			<label><input type="checkbox" @click="onclick" value="diff_cleanupEfficiency"
+					v-model="cleanupEfficiency">diff_cleanupEfficiency(main)</label>
+		</div>
+		<div class="preview">
+			<pre title="main=diff_main(text1,text2)" v-html="main"></pre>
+			<pre title="diff_prettyHtml(main)" v-html="prettyHtml"></pre>
+			<pre title="diff_levenshtein(main)" v-html="levenshtein"></pre>
+			<pre title="make=patch_make(text1,text2)|(main)|(text1,main)" v-html="make"></pre>
+			<pre title="toText=patch_toText(make)" v-html="toText"></pre>
+			<pre title="patch_fromText(toText):patches" v-html="fromText"></pre>
+			<pre title="patch_apply(patchs,text1):[text2,results]" v-html="apply"></pre>
+		</div>
+	</div>
+	<!-- app end -->
+</BODY>
+<script src="index.js"></script>
+
+</HTML>

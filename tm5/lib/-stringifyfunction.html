@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+</head>
+
+<body>
+	<script src="stringifyfunction.js"></script>
+	<script>
+		let { log } = console
+
+		{
+			let o = {
+				f(){
+					return 'o.f()'
+				}
+			}
+			log(stringifyFunction(o.f))
+		}
+
+		log(stringifyFunction(() => { "箭头函数（带花括号）" }))
+		log(stringifyFunction(() => "箭头函数（不带花括号）"))
+
+		log(stringifyFunction(function () { "函数（匿名）" }))
+		log(stringifyFunction(function f() { "函数" }))
+
+		log(stringifyFunction({ f() { "对象的属性函数" } }.f))
+		log(stringifyFunction({ f: function () {
+			"对象的属性函数（匿名）" }
+		}.f))
+
+		log(stringifyFunction({ f: (s) => {
+			"对象的属性箭头函数（带花括号）"
+		} }.f))
+
+
+
+		log(stringifyFunction({ f: () => "对象的属性箭头函数（不带花括号）" }.f))
+
+		log(stringifyFunction(false), '非函数')
+
+		log(stringifyFunction(function (a/*nihao*/,b/*aflasdfjkl*/)          { console.log(a,b); '/*带参数备注的函数*/' }))
+
+		let o = {}
+		Object.defineProperty(o, 'f', { value: function () { return '定义函数' } })
+		log(stringifyFunction(o.f))
+
+
+		// 内含箭头函数
+			log(stringifyFunction(() => { let f=(a)=>log(a); "箭头函数（带花括号）" }))
+			log(stringifyFunction(() => "箭头函数（不带花括号）"))
+
+			log(stringifyFunction(function (/*comment()*/) { let f = (a) => log(a);"函数（匿名）" }))
+			log(stringifyFunction(function f(/*comment()*/) { let f = (a) => log(a);"函数" }))
+
+			log(stringifyFunction({ f() { let f = (a) => log(a);"对象的属性函数" } }.f))
+			log(stringifyFunction({ f: function () { let f = (a) => log(a);"对象的属性函数（匿名）" } }.f))
+
+			log(stringifyFunction({ f: (s/*comment()*/) => { let f = (a) => log(a);"对象的属性箭头函数（带花括号）" } }.f))
+			log(stringifyFunction({ f: () => "对象的属性箭头函数（不带花括号）" }.f))
+
+			log(stringifyFunction(function (a/*comment()*/, b/*comment()*/) { let f = (a) => log(a); console.log(a, b); '/*带参数备注的函数*/' }))
+
+			log(stringifyFunction(arg=>"参数不被括号包起来的函数"));
+			log(stringifyFunction(arg=>{"参数不被括号包起来的函数"}));
+
+
+
+			log(stringifyFunction(arg=>{"参数不被括号包起来的函数"}));
+				/*
+				a=>a
+				a=>{}
+				()=>{}
+				(a)=>a
+				(a)=>{}
+				f(){}
+				function (){}
+				function f(){}
+				function f(a){}
+
+				*/
+
+				// comment 3 patern
+				// function /*comment*/ (){}
+				// function ( /*comment*/ ){}
+				// function (){ /*comment*/ }
+
+
+	</script>
+</body>
+
+</html>

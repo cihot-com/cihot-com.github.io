@@ -1,0 +1,151 @@
+:root{
+	--highnees: 24px;
+	--radius: 4px;
+	--icon-color: #eee;
+	--bg-color: #eee;
+	--color: #111;
+	--blue: #007bff;
+	--indigo: #6610f2;
+	--purple: #6f42c1;
+	--pink: #e83e8c;
+	--red: #dc3545;
+	--orange: #fd7e14;
+	--yellow: #ffc107;
+	--green: #28a745;
+	--teal: #20c997;
+	--cyan: #17a2b8;
+	--white: #fff;
+	--gray: #6c757d;
+	--gray-dark: #343a40;
+	--primary: #007bff;
+	--secondary: #6c757d;
+	--success: #28a745;
+	--info: #17a2b8;
+	--warning: #ffc107;
+	--danger: #dc3545;
+	--light: #f8f9fa;
+	--dark: #343a40;
+}
+
+html, body {
+	height: 100vh;
+}
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+.size8{ width:8px; height:8px; }
+.size16{ width:16px; height:16px; }
+.size24{ width:24px; height:24px; }
+.size32{ width:32px; height:32px; }
+.size64{ width:64px; height:64px; }
+
+.red { color: crimson; }
+.green { color: darkgreen; }
+.blue { color:deepskyblue; }
+.yellow { color: lightyellow; }
+.bg-red { background-color: crimson; }
+.bg-green { background-color: darkgreen; }
+.bg-blue { background-color:deepskyblue; }
+.bg-yellow { background-color: lightyellow; }
+
+.w8 { width: 8px; }
+.w12 { width: 12px; }
+.w16 { width: 16px; }
+.w24 { width: 24px; }
+.w32 { width: 32px; }
+.w64 { width: 64px; }
+.h8 { height: 8px; }
+.h12 { height: 12px; }
+.h16 { height: 16px; }
+.h24 { height: 24px; }
+.h32 { height: 32px; }
+.h64 { height: 64px; }
+
+.menu {
+	background-color: rgba(0,0,0,0.1);
+	position: fixed;
+	overflow: hidden;
+	text-align: center;
+	z-index: 9;
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: stretch;
+	user-select: none;
+}
+.menu-top {
+	top: 0;
+	right: var(--highnees);
+	height: var(--highnees);
+	border-radius: 0 0 var(--radius) var(--radius);
+	flex-direction: row;
+}
+.menu-bottom {
+	bottom: 0;
+	left: var(--highnees);
+	height: var(--highnees);
+	border-radius: var(--radius) var(--radius) 0 0;
+	flex-direction: row;
+}
+.menu-left {
+	top: var(--highnees);
+	left: 0;
+	width: var(--highnees);
+	border-radius: 0 var(--radius) var(--radius) 0;
+	flex-direction: column;
+}
+.menu-right {
+	bottom: var(--highnees);
+	right: 0;
+	width: var(--highnees);
+	border-radius: var(--radius) 0 0 var(--radius);
+	flex-direction: column
+}
+
+.icon {
+	background-color: var(--bg-color);
+	color: var(--color);
+	/* display: inline-block; */
+}
+
+.main {
+	padding: var(--highnees);
+}
+.center-box {
+	width: 100vw;
+    height: 100vh;
+    margin: auto;
+    display: grid;
+    grid-template-rows: 100%;
+    align-items: center;
+	justify-items: center;
+	overflow: auto;
+}
+.center-item {
+	padding: var(--radius);
+	border-radius: var(--radius);
+    background-color: var(--light);
+}
+
+input[type="text"], input[type="password"], input[type="search"], input[type="number"]  {
+	width: 100%;
+	height: 100%;
+	border: none;
+	outline: auto var(--bg-color);
+	text-align: center;
+}
+input[type='button']:hover {
+	filter: brightness(1.5);
+}
+
+.disabled {
+	pointer-events: none;
+}
+
+/* 保持在最下面 */
+.hidden {
+	display: none;
+}

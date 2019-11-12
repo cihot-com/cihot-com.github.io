@@ -1,62 +1,72 @@
-let count=0, s=new Set(), ports, port;
+let autoIncrementInteger = 0;
+let ports = []
 
-addEventListener('connect',function(e) {
-	try{
+// 扩展portd的原型：send() emit() on() off()
+importScripts('./extend.MessagePort.js');
 
-	let id;
 
-	port=e.ports[0];
-
-	port.start();
-
-	s.add(port);
-
-	id = ++count;
-
-	// // port 是自己connect过来的sharedWorker端口
-	port.postMessage( {type:'connect', id , data:{id}});
-
-	// 广播
-	port.addEventListener('message', function(e) {
-		try{
-			let type, data, msg;
-			
-			type=e.data.type;
-			data=e.data.data;
-
-			if(type==='click') {
-				return broadcast({type:'message', id, data:'im click' });
-
-			}
-			else if(type==='wheel') {
-				// return broadcast({type:'message', id, data:'im click' });
-				importScripts('sw2.js');
-				f();
-			}
-		}catch(err){
-			broadcast(err.stack);
+// sharedWorker
+addEventListener('connect', function (e) {
+	let port = e.source;// e.ports[0] 是客户端 SharedWorker 实例
+	port.id = ++autoIncrementInteger;// 生成ID序号
+	port.events = Object.create({
+		broadcast(...args) {
+			if (typeof handle !== 'function') return;
+			ports.forEach((port) => {
+				port.send(...args);
+			})
 		}
+	})// 带broadcast默认事件句柄的对象
 
-		if(type==='throwError'){
-			broadcast(1);
-			// broadcast({type:'message', data:'throw'+type});
-			// throw new Error('throwError');
-		}
-		broadcast(1);
-    });
-
-   
-
-	}catch(err){
-		e.ports[0].postMessage(err.stack);
-	}	
-});
-
-
-function broadcast(msg) {
-	try{
-		s.forEach(port=>port.postMessage(msg));
-	}catch(err){
-		s.forEach(port=>port.postMessage(err.stack));
+	function debug(...args) {
+		port.postMessage(args);
 	}
-}
+
+
+	port.addEventListener('message', (e) => {
+		let { data } = e
+		if (Array.isArray(data)) {
+			// send() or emit()
+			let { type, args, ackId } = data
+
+			if (type === 'connection') {
+				port.id = args[0]
+			}
+
+			if (Array.isArray(port.events[type])) {
+				port.events[type].forEach((handle) => {
+					Reflect.apply(handle, port, args)
+				})
+			} else {
+				port.events[type] = []
+				debug('[Raw]', data)
+			}
+		} else {
+			debug('[Raw]', data)
+		}
+	})
+	port.start()
+	ports.push(port);
+
+	try {
+		port.postMessage(this.name);
+		port.emit('connect', port.id);
+
+		// 导入外部js
+		importScripts('./run_script.js')// 多次调用将重新运行
+		port.send('runScript', typeof runScript)
+		runScript(port, 'run script', runScript.desc)
+
+		// port.postMessage(typeof importScripts);// 'function'
+		port.send('onmessageerror', port.onmessageerror === null)
+
+		// port.emit(e.type, port.id)// Event: connect
+
+		port.on('desc', () => {
+			port.send('desc', runScript && runScript.desc)
+		})
+
+	} catch (err) {
+		port.postMessage(err.stack);
+	}
+});

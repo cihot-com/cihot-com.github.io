@@ -1,0 +1,15 @@
+[
+	{"filename":"./src/phaser.v3.19.0.min.js","cache":true},
+	{"filename":"./src/d3.v5.11.0.min.js","cache":true},
+	{"filename":"./src/socket.io.v2.2.0.min.js","cache":true},
+	{"filename":"./src/localforage.v1.5.4.min.js","cache":true},
+	{"filename":"./src/objectid.min.js","cache":true},
+	{"filename":"./src/similar.min.js","cache":true},
+	{"filename":"./src/hotkey.js","cache":true},
+	{"filename":"./src/highlight.v9.15.10.css","cache":true},
+	{"filename":"./src/highlight.v9.15.10.js","cache":true},
+	{"filename":"./lang.js","cache":false},
+	{"filename":"./main.css","cache":false},
+	{"filename":"./table.css","cache":false},
+	{"filename":"./main.js","cache":false}
+]

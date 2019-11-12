@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<script src="/lib/socket.io.js"></script>
+	<title>Socket.IO</title>
+</head>
+
+<body>
+	<script>
+		let { log } = console
+		let port, path, url, token, sid, opts, s, socket, autoConnect;
+
+		// port = 443;
+
+		// path = '/socket.io' // 与服务器不一致时将无法连接
+		// path = '/tm'
+		// url = `${location.protocol}//${location.hostname}:${port}`;
+		url = `${location.protocol}//${location.hostname}`
+		log('url', url)
+
+		opt = {
+			transports: ['websocket'],
+			// path: '/socket.io',
+			query: {
+				token: 'objectId',
+				name: 'ddb',
+			},
+			// forceNew: true,// 开启多个连接
+			reconnection: true,
+			reconnectionAttempts: Infinity,
+			reconnectionDelay: 1000,
+			reconnectionDelayMax: 5000,
+			randomizationFactor: 0.5,
+			timeout: 20000,
+			autoConnect: true,
+			// upgrade: true,
+			// forceJSONP: true,
+			// jsonp: true,
+			// forceBase64: true,
+		};
+
+
+
+		/* 【连接】
+		如果opt中的forceNew为true，则创建每个不同的连接。
+		*/
+		s = io(url, opt);
+		s.on('message', function (...a) { log(this.id, ...a); })
+		/* 【opt】
+		{
+			port: '443',
+			path: '/socket.io',
+			secure: true,
+			transports: ['websocket'],
+			hostname: 'test.cihot.com',
+			query: { token: 'objectId', name: 'ddb' }
+		}
+		*/
+		log('opt', opt)
+		s.send('你好')
+
+
+		/* 【事件】
+		s.on('connect',         fn())
+		s.on('connect_error',   fn(error))
+		s.on('connect_timeout', fn(timeout))
+		s.on('error',           fn(error))
+		s.on('disconnect',      fn(reason))
+		s.on('reconnect',              fn(attemptNumber))
+		s.on('reconnect_attempt',      fn(attemptNumber))
+		s.on('reconnecting',           fn(attemptNumber))
+		s.on('reconnect_error',        fn(error))
+		s.on('reconnect_failed',       fn())
+		s.on('ping',            fn())
+		s.on('pong',            fn(latency))                  毫秒
+		*/
+
+		/* 【方法】
+		s.on(type, fn(...data))
+		s.emit(type, ...data, ack)
+		s.send(...data, ack)
+		s.open( fn() ) || s.connect( fn() )
+		s.close( fn()) || s.disconnect( fn() )
+		*/
+
+		/* 【属性】
+		s.connected
+		s.disconnected
+		s.id
+		s.acks
+		*/
+
+		let s1 = io('/tm', opt)
+		s1.send('大家好')
+		s1.on('message', function (...a) { log(this.id, ...a); })
+
+		let s2 = io('/tm', opt)
+		s2.send('大家好')
+		s2.on('message', function (...a) { log(this.id, ...a); })
+
+
+
+		let s3 = io('/nsp1', opt);
+		s3.send('命名空间一号')
+		s3.on('message', function (...a) { log(this.id, ...a); })
+
+		let s4 = io('/admin', opt)
+		s4.on('message', function (...a) { log(this.id, ...a); })
+
+
+		function cmd(s) {
+			s4.emit('cmd', s)
+		}
+		function chat(to, msg) {
+			s4.emit('chat', to, msg)
+		}
+
+	</script>
+</body>
+
+</html>

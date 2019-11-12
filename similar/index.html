@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<HTML>
+
+<HEAD>
+	<TITLE>Diff Speed Test</TITLE>
+	<script src="cache-file.js"></script>
+	<script src="local-worker.js"></script>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		.tm,
+		.source,
+		.target {
+			width: 33%;
+			height: 90vh;
+			float: left;
+			margin: 0;
+		}
+
+		.title {
+			height: auto !important;
+		}
+
+		.key {
+			background: #9f9;
+		}
+
+		.value {
+			border: 1px solid #cfc;
+		}
+
+		.key,
+		.value {
+			background: #cfc;
+			font-family: 'Courier New', Courier, monospace;
+			font-weight: bold;
+			text-align: center;
+			min-width: 3em;
+			padding: 4px;
+		}
+
+		table {
+			height: auto!important;
+		}
+
+		
+	</style>
+</HEAD>
+
+<BODY>
+	<div id="app">
+		<div>
+			<strong class="title tm">번역기록의 원문</strong>
+			<strong class="title source">번안해야 할 원문</strong>
+			<strong class="title target">결과</strong>
+		</div>
+		<div>
+			<textarea id="tm" autofocus class="tm"></textarea>
+			<textarea id="source" autofocus class="source"></textarea>
+			<table class="target kvpairs">
+				<tr>
+					<th>Type</th>
+					<th>Character</th>
+					<th>Segment</th>
+				</tr>
+				<tr class="segment number">
+					<td class="key">100%</td>
+					<td class="value" id="character100"></td>
+					<td class="value" id="segmentp100"></td>
+				</tr>
+				<tr class="segment number">
+					<td class="key">95-99%</td>
+					<td class="value" id="character95_99"></td>
+					<td class="value" id="segmentp95_99"></td>
+				</tr>
+				<tr class="segment number">
+					<td class="key">85-94%</td>
+					<td class="value" id="character85_94"></td>
+					<td class="value" id="segmentp85_94"></td>
+				</tr>
+				<tr class="segment number">
+					<td class="key">75-84%</td>
+					<td class="value" id="character75_84"></td>
+					<td class="value" id="segmentp75_84"></td>
+				</tr>
+				<tr class="segment number">
+					<td class="key">50-74%</td>
+					<td class="value" id="character50_74"></td>
+					<td class="value" id="segmentp50_74"></td>
+				</tr>
+				<tr class="segment number">
+					<td class="key">No Match</td>
+					<td class="value" id="nomatchc"></td>
+					<td class="value" id="nomatch"></td>
+				</tr>
+				<tr class="segment number">
+					<td class="key">Total</td>
+					<td class="value" id="total">
+				</tr>
+				<tr class="segment number">
+					<td class="key">FileNet</td>
+					<td class="value" id="filenet">
+				</tr>
+				<tr class="segment number">
+					<td class="key">Inner No Match</td>
+					<td class="value" id="nomatch100counter">
+				</tr>
+				<tr class="segment number">
+					<td class="key">Inner Match</td>
+					<td class="value" id="match100counter">
+				</tr>
+			</table>
+		</div>
+	</div>
+	<script src="main.js"></script>
+
+</BODY>
+
+</HTML>

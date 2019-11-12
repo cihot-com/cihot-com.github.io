@@ -1,0 +1,19 @@
+{
+	"manifest_version": 2,
+	"name": "MemoQ",
+	"description": "用于导出MemoQ文档内容的插件。",
+	"version": "1.0",
+	"permissions": [
+		"*://sakura.memoq.com/*"
+	],
+	"content_scripts": [
+		{
+			"matches": [
+				"*://sakura.memoq.com/*"
+			],
+			"js": [
+				"index.js"
+			]
+		}
+	]
+}

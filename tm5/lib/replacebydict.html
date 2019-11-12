@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+</body>
+
+<script type="module">
+	import replaceByDict from './replacebydict.m.js'
+
+	!function test() {
+		let dict = [
+			['你好帅', 'You\'re handsome'],
+			['你好', 'hello'],
+			['好', 'good']
+		]
+
+		let str = '你好，很好，你好帅！'
+
+		let ret = replaceByDict(str, dict)
+		console.log(ret)
+	}()
+</script>
+
+</html>

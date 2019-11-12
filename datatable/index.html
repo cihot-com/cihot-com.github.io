@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+
+
+<script>
+
+	const { log } = console
+	
+	let table = document.createElement('table')
+	document.body.appendChild(table)
+
+	
+	let rows = []
+	for(let i=0; i<100; i++) {
+		let tr = document.createElement('tr')
+		table.appendChild(tr)
+
+		let no = document.createElement('th')
+		no.classList.add('no')
+		tr.appendChild(no)
+	}
+
+
+	table.onwheel = function(e) {
+		let { deltaX, deltaY } = e
+
+		log(deltaX, deltaY)
+	}
+
+	class DataTable extends EventTarget {
+		constructor(element) {
+			if(element instanceof Element && element.nodeName==='TABLE') {
+				this.table = element
+				this.headers = []
+				let thead = element.querySelectorAll('thead')
+
+
+				this.table
+			}else{
+				this.table = document.createElement('table')
+			}
+		}
+
+		thead(element) {
+			if(element instanceof Element && element.nodeName==='THEAD') {
+				this.table.querySelectorAll('>thead').forEach((thead)=>{
+					thead.remove()
+				})
+				this.table.appendChild(element)
+			}else{
+				element = table.querySelectorAll('>thead')
+				if(element.length > 0) {
+					element = element.item(0)
+				}else{
+					element = document.createElement('thead')
+					this.table.appendChild(element)
+				}
+			}
+			return element
+		}
+
+		tbody(element) {
+			if(element instanceof Element && element.nodeName==='TBODY') {
+				this.table.appendChild(element)
+			}else{
+				element = table.querySelectorAll('tbody')
+				if(element.length > 0) {
+					element = element.item(element.length-1)
+				}else{
+					element = document.createElement('tbody')
+					this.table.appendChild(element)
+				}
+			}
+			return element
+		}
+
+		th(value) {
+			let element = document.createElement('th')
+			element.textContent = value
+		}
+
+		td(element) {
+			if(element instanceof Element && element.nodeName==='TH') {
+				
+			}else{
+				element = document.createElement('td')
+			}
+			return element
+		}
+	}
+
+
+
+	let dt = new DataTable()
+	document.body.appendChild(dt)
+	let thead = dt.thead()
+	let th = dt.th()
+	th.textContent = 'title'
+
+
+
+
+</script>
+
+</html>

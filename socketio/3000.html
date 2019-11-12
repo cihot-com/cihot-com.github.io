@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="Description" content="test socket.io">
+	<meta name="viewport" content="width=device-width">
+
+	<!-- <script src="/ddb/cssd/cssd.js"></script> -->
+	<script src="/ddb/wopen.js"></script>
+
+	<script src="/lib/jquery.min.js"></script>
+	<script src="/lib/socket.io.js"></script>
+	<script src="/lib/localforage.min.js"></script>
+	<script src="/lib/diff_match_patch.js"></script>
+	<script src="/lib/similar_text.js"></script>
+	<script src="3000.wopen.js"></script>
+
+	<link rel="stylesheet" href="3000.css">
+	<title>room</title>
+</head>
+
+<body>
+	<div id="userPanel" class="cpanel hide">
+		<form method="POST">
+			<label class="title">用户：<input type="text" name="username" placeholder="用户" autocomplete="off"></label>
+			<label class="title">密码：<input type="password" name="password" placeholder="密码" autocomplete="off"></label>
+			<input type="button" name="connect" value="连接">
+			<span name="loginStatus"></span>
+		</form>
+	</div>
+
+	<div id="mainPanel" class="hide">
+		<div id="works"></div>
+		<div id="editor" class="col2">
+			<div class="workSort hide">
+				<input id="workSourceSortByLength" type="button" value="长度排序">
+				<input id="workSourceSortByOld" type="button" value="恢复排序">
+			</div>
+			<div class="workSort hide">
+				<input id="workTargetSortByLength" type="button" value="长度排序">
+
+			</div>
+			<div class="workSearch hide" title="[ENTER]重新搜索  [SHIFT+ENTER]添加搜索  [ALT+ENTER]排除搜索">
+				搜索 <input id="workSourceSearch" type="text">
+			</div>
+			<div class="workSearch hide">
+				搜索 <input id="workTargetSearch" type="text">
+				替换 <input id="workTargetReplace" type="text">
+			</div>
+			<textarea type="text" lang="ko" id="source" tabindex="1"></textarea>
+			<textarea type="text" lang="zh-CN" id="target" tabindex="0"></textarea>
+			<!-- 				<input type="text" id="sourceDict"> -->
+			<!-- 				<input type="text" id="targetDict"> -->
+			<div id="sourceDiff"></div>
+			<div id="targetDiff"></div>
+		</div>
+		<div id="tips"></div>
+		<div id="records"></div>
+	</div>
+	<div id="foot">
+		<input type="button" id="clearIDB" value="删除缓存">
+		<input type="button" id="downloadWorks" value="下载文本">
+		<input type="button" id="downloadTM4Dict" value="下载TM4词库">
+		<input type="button" id="workrowShowAllButton" value="显示所有原文">
+		<label><input type="checkbox" id="isUseNetReference">网络参考</label>
+		<var id="version"></var>
+		<var id="hasTargetSourceChar"></var><var id="totalSourceChar"></var>
+	</div>
+</body>
+
+
+<script src="3000.js"></script>
+
+</html>

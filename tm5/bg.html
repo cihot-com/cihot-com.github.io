@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+
+<body>
+	<style>
+		#div {
+			margin: 0;
+			padding: 0;
+			border: 2px solid #f00;
+			width: 800px;
+			height: 600px;
+		}
+
+		#div {
+			border-image-source: url(bg.png);
+			border-image-slice: 80;
+			border-image-width: 12px;
+			border-image-repeat: stretch;
+			border-image-outset: unset;
+
+			background-image: url(bg.png);
+			background-attachment: fixed;
+			background-position: -80px -80px;
+			background-size: calc(100% + 80px) calc(100% + 80px);
+		}
+	</style>
+
+	<div id="div">
+
+	</div>
+</body>
+
+</html>

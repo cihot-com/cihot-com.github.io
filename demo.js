@@ -1,0 +1,1 @@
+document.body.textContent='run static script /demo.js';

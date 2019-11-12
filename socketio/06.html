@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta name="Description" content="test socket.io">
+	<meta name="viewport" content="width=device-width">
+	<script src="/lib/socket.io.js"></script>
+	<title>custom event</title>
+</head>
+
+<body>
+	<h3>Welcome</h3>
+	<noscript>Your browser does not support JavaScript!</noscript>
+	<script>
+		let path, opt, msg;
+		opt = {
+			transports: ['websocket'],
+			path: undefined,
+			reconnection: false,
+		};
+		s = io('/', opt);
+		s.on('custom', function(...a){
+			msg = a;
+			console.log(a);
+		});
+
+		// 发送信息
+		{
+			let number = 999;
+			let string = '你好';
+			let object = {type:'消息'};
+			let array = [number,string,object];
+			let blob = new Blob(['Buffer文件'],{type:'text/plain'});
+			
+			s.emit('custom', number, string, object, array, blob);
+		}
+	</script>
+</body>
+
+</html>

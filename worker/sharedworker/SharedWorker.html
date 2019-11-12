@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>SharedWorkder Demo</title>
+</head>
+
+<body>
+	<div>
+		<h1>使用SharedWorkder:</h1>
+	</div>
+	<button style="padding: 10px; margin: 10px 0;">biu~ 一下</button>
+	<div>
+	   <span>一共Biu了 <span class="time">-</span> 下</span>
+	</div>
+
+	<script>
+		//
+		let button = document.querySelector('button');
+
+		// swp(shared worder process)
+		class SWP {
+			constructor(url) {
+				this.sharedWorker = new SharedWorker(url)
+				this.port = this.sharedWorker.port
+				this.port.start()
+				this.events = {}
+				this.acks = {}
+				this.ack = 0
+				this.port.addEventListener('message', ({ data })=>{
+					let ackHandle = (ack, ...args) => {
+						this.port.postMessage({type:'ack', args, ack})
+					}
+					
+					let { ack, type, args } = data
+
+					if (Array.isArray(this.events[type])) {
+						this.events[type].forEach((fn)=>{
+							Reflect.apply(fn, this.port, Array.isArray(args) ? args : [])
+						})
+					}
+				})
+				this.port.addEventListener('connect', function (e) {
+					console.log(e)
+				})
+			}
+			on(type, handle){
+				if(!Array.isArray(this.events[type])) {
+					this.events[type] = [handle]
+				}
+				this.events[type].push(handle)
+			}
+			off(type, handle) {
+				if (Array.isArray(this.events[type])) {
+					this.events[type] = this.events[type].filter(e=>e!==handle)
+				}
+			}
+			send(...args) {
+				let lastArg = args[-1]
+				let lastArgType = typeof lastArg
+				if(lastArgType==='function') {
+					let ack = ++this.ack
+					this.acks[ack] = lastArg
+					this.port.postMessage([ack, 'message', ...args.slice(0,-1)])
+				}else{
+					this.port.postMessage(['message', args])
+				}
+			}
+			async createWorker(url) {
+				this.port.postMessage(['createworker', url])
+			}
+		}
+
+		let swp = new SWP('SharedWorkerScript.js')
+
+		swp.on('message', function(data) {
+			console.log(data)
+		})
+
+		button.addEventListener('click', function () {
+			swp.port.postMessage([100,'message',1,2,3]);// 【必须】
+		});
+
+		let timeDom = document.querySelector('.time');
+		
+		
+
+
+
+
+
+	</script>
+</body>
+
+</html>

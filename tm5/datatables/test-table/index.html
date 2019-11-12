@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="/lib/d3.v5.11.0.min.js"></script>
+	<script src="/ddb/ss.js"></script>
+	<script src="../src/datatable.js"></script>
+	<script src="../src/util.js"></script>
+	<!-- <link rel="stylesheet" href="./table.css"> -->
+	<title>Table</title>
+	
+</head>
+
+<style>
+progress {
+	height: 12px;
+	width: 100px;
+	margin:0;
+	padding:0;
+}
+</style>
+
+<body>
+
+	<div id="progress"></div>
+	<table id="table">
+		<thead id="titles"></thead>
+		<tbody id="rows"></tbody>
+	</table>
+	<div class="scrollbox"></div>
+	<label for="p1">L1</label>
+	<label for="p1">L2</label>
+	<progress id="p1" value="0" max="10"></progress>
+	<pre>
+		progress tag
+		value
+		max
+		position
+
+	</pre>
+
+
+</body>
+
+<script>
+	let showStart = 0
+	let showLen = 20
+	let len = 100
+	let i = 0
+
+	let data = []
+	for (i = 0; i < len; i++) {
+		data.push({
+			no: i + 1,
+			source: randStr(20),
+			target: randStr(20),
+			textKey: randStr(8),
+		})
+	}
+
+	data[89].textKey = 'a'.repeat(1000)
+
+	let dt = new DataTable('#table')
+		.limit(10)
+		.data(data)
+		.head(['no', 'source', 'target'])
+		.start(89)
+		.progress()
+
+
+	let width = 200, height = 10
+	let svg = d3.select('body').append('svg')
+		.attr('width', width)
+		.attr('height', height)
+	let g = svg.append('g')
+	let bar = g.append('rect')
+		.attr('fill', '#060')
+		.attr('width', width)
+		.attr('height', height)
+	let pos = g.append('rect')
+		.attr('fill', '#ff0')
+		.attr('height', height)
+
+
+	dt.wheel(function (e) {
+		// svg版本
+		let { start, end } = e.currentTarget.dataset
+		start = +start
+		end = +end
+		// console.debug(this, start, end)
+		pos.attr('x', start * width)
+		pos.attr('width', (end - start) * width)
+
+
+		// div的css版本
+		start = Math.round(start*100)
+		end = Math.round(end*100)
+		let s = document.querySelector('#progress').style
+		let backgroundImage = `linear-gradient(to right, #fff ${start}%, #00f 0%, #00f ${end}%, #fff 0%);`
+		// console.debug(start,end)
+		console.debug(backgroundImage)
+		// console.debug('linear-gradient(to right, #fff 53%, red 0%, red 68%, #fff 0%);')
+		// console.debug(s.backgroundImage)
+		s.backgroundImage = backgroundImage
+		s.width='100%'
+		s.height='10px'
+
+		console.debug(e.key)
+	})
+
+
+
+	dt.body().addEventListener('keydown', function (e) {
+		if (!e.repeat && e.keyCode === 13 && e.ctrlKey) {
+			e.preventDefault()
+			let tr = e.target
+			while(tr.nodeName!=='TR') {
+				tr = tr.parentElement
+			}
+			if(tr) {
+				let d = data[tr.dataset.index]
+				tr.querySelectorAll('td').forEach((td)=>{
+					let k = td.dataset.name
+					let v = td.textContent
+					d[k] = v
+					console.debug('write')
+				})
+				console.debug(d,tr)
+			}
+		}
+	})
+
+</script>
+
+</html>

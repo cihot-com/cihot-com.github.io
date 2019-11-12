@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>auto saveload</title>
+</head>
+
+<style>
+	.autosave,
+	.autoload {
+		-webkit-user-modify: read-write-plaintext-only;
+		border: 1px solid #000;
+	}
+</style>
+
+<body>
+	<form>
+		<div name="div" class="autosave autoload">edit</div>
+		<input name="input" type="text" class="autosave autoload">
+
+		<select name="select" class="autosave autoload">
+			<option value="o1">O1</option>
+			<option value="o2">O2</option>
+			<option label="O3" value="o3"></option>
+		</select>
+	</form>
+</body>
+
+<script>
+	window.addEventListener('load', function onautoload() {
+		document.querySelectorAll('autoload').forEach((e) => {
+			localStorage
+		})
+	})
+
+
+	void function (global, undefined) {
+		const NAME = 'LocationLocalStorage'
+
+		function formatName(name = '') {
+			return name + '-' + location.pathname + location.search + location.hash
+		}
+		function revertName(name = '') {
+			let suffix = formatName()
+			let i = name.lastIndexOf(suffix)
+			if(i>=0) name = name.slice(0, i)
+			return name
+		}
+		function setLocalStorage(name, value) {
+			name = formatName(name)
+			if (value === undefined) {
+				localStorage.removeItem(name)
+			} else {
+				localStorage.setItem(name, JSON.stringify(value))
+			}
+		}
+		function getLocalStorage(name) {
+			name = formatName(name)
+			name = localStorage.getItem(name)
+			if (name !== null) return JSON.parse(name)
+		}
+		function eachLocalStorage(oneach, onfinish) {
+			let isEach = typeof oneach === 'function'
+			let isFinish = typeof onfinish === 'function'
+			if (!isEach) return;
+			let suffix = formatName()
+			for (let i = 0, len = localStorage.length; i < len; i++) {
+				let k = localStorage.key(i), v;
+				if (k.indexOf(suffix) >= 0) {
+					k = revertName(k)
+					v = getLocalStorage(k)
+					oneach(v, k, i, len)
+				}
+			}
+			if (isFinish) onfinish()
+		}
+		function removeLocalStorage(name) {
+			name = formatName(name)
+			return localStorage.removeItem(name)
+		}
+		function clearLocalStorage(onfinish) {
+			let suffix = formatName()
+			let ks = []
+			for (let i = 0, len = localStorage.length; i < len; i++) {
+				let k = localStorage.key(i);
+				if (k.indexOf(suffix) >= 0) {
+					ks.push(k)
+				}
+			}
+			ks.forEach((k)=>localStorage.removeItem(k))
+			let isFinish = typeof onfinish === 'function'
+			if (isFinish) onfinish()
+		}
+
+		global[NAME] = {
+			format: formatName,
+			set: setLocalStorage,
+			get: getLocalStorage,
+			each: eachLocalStorage,
+			delete: removeLocalStorage,
+			clear: clearLocalStorage,
+		}
+	}(this)
+
+
+	let DB = LocationLocalStorage
+
+</script>
+
+</html>

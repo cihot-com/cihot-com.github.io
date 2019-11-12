@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Worker - w</title>
+	<style>
+		* {
+			box-sizing: content-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		textarea {
+			margin: 0;
+			padding: 0;
+			width: 100vw;
+			height: 200px;
+		}
+	</style>
+</head>
+
+<body>
+	<textarea id="ta"></textarea>
+	<script>
+		let worker = new Worker('./worker.js', { type: 'classic', name: 'mainWorker' });
+
+		worker.addEventListener('message', (e) => {
+			console.warn(e.data, e);
+		});
+
+		function bulk(action, name, n = 10) {
+			let i = 0;
+			while (i++ < n) {
+				worker.postMessage({ action, name: name + i });
+			}
+		}
+
+		"其实该说谢谢的，应该是我。"
+
+		// setInterval(()=>{
+		// 	let name = String.fromCharCode('A'.charCodeAt(0)+Math.random()*('Z'.charCodeAt(0)-'A'.charCodeAt(0)));
+		// 	bulk('start', name, 10);
+		// 	setTimeout(()=>{
+		// 		bulk('stop', name, 10);
+		// 	},10);
+		// },100);
+
+
+		// setInterval(()=>{
+		// 	let workers = {};
+		// 	for(let i=0; i<10; i++) {
+		// 		workers[i] = new Worker('./calc.js', {name:'w'+i});
+		// 	}
+		// 	for(let i=0; i<10; i++) {
+		// 		setTimeout(()=>{
+		// 			workers[i].terminate();
+		// 		}, 10);
+		// 	}
+		// },100)
+
+
+		// bulk('start', 'kk', 1);
+		// setInterval(() => {
+		// 	worker.postMessage({
+		// 		action:'message',
+		// 		name:'kk1',
+		// 		data:String.fromCharCode(Math.random()*255)
+		// 		});
+		// }, 100);
+
+
+		let logWorker = new Worker('./log.js', { name: 'log' });
+		// logWorker.postMessage(new Blob(['abc'], { type: 'text/plain' }));// OK: Blob
+		// logWorker.postMessage(new File(['abc'], 'text.txt', { type: 'text/plain' }));// OK: File
+		// let arr = [1,2,3];
+		// logWorker.postMessage(arr);// OK: Array
+
+		// logWorker.postMessage({0:'A', 1:'B', 3:'C'});// OK: Object
+		
+		// OK: Blob, File, Array, Object, String, Boolean, Number
+		// NG: Function, Class Instance,
+
+		let ab = new ArrayBuffer(8);
+		logWorker.postMessage(ab, [ab]);
+		setInterval(() => {
+			console.log(ab);
+		}, 1000);
+
+		class A {
+			constructor(name){
+				this.name = name;
+			}
+			say(){
+				console.log(this.name)
+			}
+		}
+
+		logWorker.postMessage(new A('demoA'));
+
+	</script>
+</body>
+
+</html>

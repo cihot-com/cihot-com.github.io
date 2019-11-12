@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <script src="/lib/jquery.min.js"></script>
+    <script src="/lib/stringify_keyboard_event/stringify_keyboard_event.js"></script>
+    <script src="/icons/icons.js"></script>
+    <title>Auto save load</title>
+</head>
+
+<body>
+    <div id="settings">
+        <img class="icon settings"></img>
+        <dialog>
+            <form name="vars" method="dialog">
+                <input id="username" name="username" type="text" placeholder="用户名" required>
+                <input id="password" name="password" type="password" placeholder="密码" required>
+                <input name="name" type="text" placeholder="名称">
+                <input name="age" type="number" placeholder="年龄">
+                <menu>
+                    <input name="submit" type="submit" value="submit">
+                </menu>
+
+            </form>
+        </dialog>
+    </div>
+</body>
+
+<script src="index.js"></script>
+
+</html>

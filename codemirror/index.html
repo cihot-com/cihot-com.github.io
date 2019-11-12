@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>CodeMirror: Active Line Demo</title>
+	<meta charset="utf-8" />
+	<link rel=stylesheet href="doc/docs.css">
+	<link rel="stylesheet" href="lib/codemirror.css">
+	<script src="lib/codemirror.js"></script>
+	<!-- <script src="mode/xml/xml.js"></script> -->
+	<script src="mode/markdown/markdown.js"></script>
+	<script src="addon/selection/active-line.js"></script>
+	<script src="/lib/codemirror.min.js"></script>
+	<script src="/codemirror/addon/hint/show-hint.js"></script>
+	<script src="/codemirror/mode/javascript/javascript.js"></script>
+	<script src="/codemirror/keymap/sublime.js"></script>
+	<link href="/lib/codemirror.css" rel="stylesheet">
+	<!-- <script src="codemirror-show-markdown-line-breaks.js"></script>
+	<link rel="stylesheet" href="codemirror-show-markdown-line-breaks.css"> -->
+	<style>
+		.CodeMirror {
+			border-top: 1px solid black;
+			border-bottom: 1px solid black;
+			height: auto;
+		}
+	</style>
+</head>
+
+<body>
+
+	<textarea id="code" name="code"></textarea>
+</body>
+
+<script>
+	var nonEmpty
+	var editor
+
+
+	nonEmpty = false;
+	editor = CodeMirror.fromTextArea(document.querySelector('#code'), {
+		lineNumbers: true,
+		mode: 'spacemode',
+		keyMap: 'sublime',
+		autofocus: true,
+		fontFamily: 'd2coding,consolas,tahoma',
+		matchBrackets: true,
+		// styleActiveLine: false,
+		// showMarkdownLineBreaks: false,
+		// lineWrapping: false,
+	});
+	editor.setOption("extraKeys", {
+		'Tab': function (cm) {
+			event.preventDefault()
+			// cm.getCursor('from')// Pos {line: 0, ch: 1, sticky: "after"}
+			// cm.getCursor('to')  // Pos {line: 0, ch: 1, sticky: "before"}
+			// console.log(cm.doc.sel) // Selection {ranges: Array(1), primIndex: 0}
+			// console.log(cm.state)
+			// cm.setSelection({line: 0, ch: 1, sticky: "after"}, {line: 0, ch: 3, sticky: "before"});
+			// cm.setSelections([
+			// 	{anchor:{line: 0, ch: 1, sticky: "after"}, head:{line: 0, ch: 3, sticky: "before"}},
+			// 	{anchor:{line: 0, ch: 4, sticky: "after"}, head:{line: 0, ch: 6, sticky: "before"}},
+			// ])
+			// console.log(cm.getDoc())
+			// console.log(cm.getDoc().getEditor()==editor)
+			console.log()
+
+
+
+
+
+			// console.log()
+
+			// var from = cm.getCursor("from"), to = cm.getCursor("to");
+			// var fullWord = cm.state.sublimeFindFullWord == cm.doc.sel;
+			// if (CodeMirror.cmpPos(from, to) == 0) {
+			// 	var word = wordAt(cm, from);
+			// 	if (!word.word) return;
+			// 	cm.setSelection(word.from, word.to);
+			// 	fullWord = true;
+			// } else {
+			// 	var text = cm.getRange(from, to);
+			// 	var query = fullWord ? new RegExp("\\b" + text + "\\b") : text;
+			// 	var cur = cm.getSearchCursor(query, to);
+			// 	var found = cur.findNext();
+			// 	if (!found) {
+			// 		cur = cm.getSearchCursor(query, Pos(cm.firstLine(), 0));
+			// 		found = cur.findNext();
+			// 	}
+			// 	if (!found || isSelectedRange(cm.listSelections(), cur.from(), cur.to()))
+			// 		return CodeMirror.Pass
+			// 	cm.addSelection(cur.from(), cur.to());
+			// }
+			// if (fullWord)
+			// 	cm.state.sublimeFindFullWord = cm.doc.sel;
+		},
+		'Ctrl-Enter': function (cm) {
+			console.log(cm === editor)
+
+			// console.log(cm.getLine())
+			// setTimeout(()=>console.log(cm.hasFocus()), 2000)
+			// cm.execCommand()
+		},
+	});
+
+	editor.setValue(localStorage.getItem('code') || '')
+
+	// $(window).on('beforeunload', (e)=>{
+	// 	localStorage.setItem('code', editor.getValue())
+	// 	// e.preventDefault()
+	// 	console.log(1)
+	// })
+
+	// function toggleSelProp() {
+	// 	nonEmpty = !nonEmpty;
+	// 	editor.setOption("styleActiveLine", { nonEmpty: nonEmpty });
+	// 	var label = nonEmpty ? 'Disable nonEmpty option' : 'Enable nonEmpty option';
+	// 	document.getElementById('toggleButton').innerText = label;
+	// }
+	// CodeMirror.commands.autocomplete = function (cm) {
+	// 	cm.showHint({ hint: CodeMirror.hint.anyword });
+	// }
+
+	(function (mod) {
+		if (typeof exports == "object" && typeof module == "object") // CommonJS
+			mod(require("../../lib/codemirror"), require("./runmode"));
+		else if (typeof define == "function" && define.amd) // AMD
+			define(["../../lib/codemirror", "./runmode"], mod);
+		else // Plain browser env
+			mod(CodeMirror);
+	})(function (CodeMirror) {
+		console.log('ok')
+
+		var isBlock = /^( |\t)$/;
+
+		function textContent(node, out) {
+			console.log(1)
+			if (node.nodeType == 3) return out.push(node.nodeValue);
+			for (var ch = node.firstChild; ch; ch = ch.nextSibling) {
+				textContent(ch, out);
+				if (isBlock.test(node.nodeType)) out.push("\n");
+			}
+		}
+
+		CodeMirror.colorize = function (collection, defaultMode) {
+			console.log(collection)
+			if (!collection) collection = document.body.getElementsByTagName("pre");
+
+			for (var i = 0; i < collection.length; ++i) {
+				var node = collection[i];
+				var mode = node.getAttribute("data-lang") || defaultMode;
+				if (!mode) continue;
+
+				var text = [];
+				textContent(node, text);
+				node.innerHTML = "";
+				CodeMirror.runMode(text.join(""), mode, node);
+
+				node.className += " cm-s-default";
+			}
+		};
+	});
+
+
+</script>
+
+</html>

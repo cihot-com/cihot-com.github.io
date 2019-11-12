@@ -1,0 +1,17 @@
+* {
+	box-sizing: border-box;
+}
+
+#origin, #new {
+	margin-top:1em;
+	height: 20vh;
+	display: grid;
+	grid-template: 1fr / repeat(2, 1fr);
+}
+
+textarea{
+	background: #eee;
+}
+textarea:focus {
+	background: initial;
+}

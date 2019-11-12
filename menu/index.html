@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<style>
+	#nav {
+		background-color: rgb(173, 6, 0);
+		/*菜单的背景色*/
+		width: 500px;
+		height: 30px;
+		margin: 0 auto;
+		/*上下为0，左右自动*/
+	}
+
+	ul {
+		list-style: none;
+	}
+
+	/*不带圆点*/
+	ul li {
+		float: left;
+		padding: 0 10px;
+		border: 1px solid royalblue;
+		text-align: center;
+		line-height: 20px;
+	}
+
+	a {
+		text-decoration: none;
+		/*注解1*/
+		display: block;
+		/*注解2*/
+		padding: 0 10px;
+		width: 50px;
+	}
+
+	a:hover {
+		/*注解3*/
+		background-color: yellowgreen;
+		/*鼠标移到菜单  背景颜色*/
+		color: orangered;
+		/*鼠标移到菜单  字体颜色*/
+	}
+
+	.r {
+		float: none;
+		/*不浮动*/
+		background-color: yellow;
+		/*二级菜单  背景颜色*/
+	}
+
+	.r a:hover {
+		color: deeppink;
+		/*鼠标移到二级菜单  字体颜色*/
+		background-color: palegreen;
+		/*鼠标移到二级菜单  背景颜色*/
+	}
+
+	.r-ul {
+		display: none;
+	}
+
+	ul li:hover .r-ul {
+		/*展开*/
+		display: block;
+	}
+</style>
+
+<body>
+	<div id="nav">
+		<ul>
+			<li>
+				<a href="">b</a>
+				<div class="r-ul r">
+					<a href="">b1</a>
+					<a href="">b1</a>
+				</div>
+			</li>
+			<li>
+				<a href="">b</a>
+				<div class="r-ul r">
+					<a href="">b1</a>
+					<a href="">b1</a>
+				</div>
+			</li>
+		</ul>
+	</div>
+</body>
+
+</html>

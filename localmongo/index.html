@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+	<form id="kv">
+		<label for="key">key</label>
+		<input id="key" placeholder="key" autofocus>
+		<label for="value">value</label>
+		<input id="value" placeholder="json value">
+	</form>
+	<div id="buttons">
+		<input id="getButton" type="button" value="GET">
+		<input id="getsButton" type="button" value="GETS">
+		<input id="setButton" type="button" value="SET">
+	</div>
+	<div id="result"></div>
+</body>
+
+<script>
+	{
+
+		let { log, warn } = console
+		let k = document.getElementById('key')
+		let v = document.getElementById('value')
+		let getButton = document.getElementById('getButton')
+		let setButton = document.getElementById('setButton')
+
+		v.onkeydown = (e) => {
+			if (e.keyCode === 13 && !e.repeat) {
+				setButton.click()
+			}
+		}
+		k.onkeydown = (e) => {
+			if (e.keyCode === 13 && !e.repeat) {
+				getButton.click()
+			}
+		}
+
+		setButton.onclick = (e) => {
+			let o = { type: 'set' }
+			if (k.value) o.key = k.value
+			if (v.value) o.value = v.value
+			sendJSON(o, (v)=>{
+				show(`保存${v?'成功':'失败'}`)
+			})
+		}
+		getButton.onclick = (e) => {
+			if (k.value) sendJSON({ type: 'get', key: k.value }, show)
+		}
+		getsButton.onclick = (e) => {
+			if (k.value) sendJSON({ type:'gets', key: k.value }, show)
+		}
+
+		function sendJSON(o, ack) {
+			let req = new XMLHttpRequest()
+			req.open('POST', '/localmongo')
+			req.onload = (e) => {
+				let r = req.response
+				log(typeof r, r)
+				if(ack instanceof Function) ack.call(req, r)
+			}
+
+			req.setRequestHeader('Content-Type', 'application/json;charset="UTF-8"')// 客户端发送json
+			req.responseType = 'json'// 服务器响应json
+			req.send(JSON.stringify(o))
+		}
+
+		function show(r) {
+			let p = document.getElementById('result')
+			function add(e) {
+				let o = document.createElement('div')
+				o.innerText = JSON.stringify(e)
+				p.insertAdjacentElement('beforeEnd', o)
+			}
+			p.innerHTML = ''
+			if (Array.isArray(r)) {
+				r.forEach(add)
+			}else{
+				add(r)
+			}
+		}
+
+
+		window.onbeforeunload = () => {
+			localStorage.setItem('k', k.value)
+			localStorage.setItem('v', v.value)
+		}
+		window.onload = () => {
+			k.value = localStorage.getItem('k')
+			v.value = localStorage.getItem('v')
+		}
+
+
+	}
+</script>
+
+
+<style>
+	* {
+		box-sizing: border-box;
+	}
+
+	form {
+		display: grid;
+		grid-template: 1fr/ auto 3fr;
+		justify-items: center;
+		grid-gap: 4px;
+		background: #efe;
+		padding: 4px;
+	}
+
+	input {
+		width: 100%;
+		height: 2em;
+	}
+
+	#buttons {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		grid-gap: 4px;
+		background: #eef;
+		padding: 4px;
+	}
+</style>
+
+</html>

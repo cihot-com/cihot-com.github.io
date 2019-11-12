@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<script src="../datatables/randStr.js"></script>
+	<script src="/lib/d3.v5.11.0.js"></script>
+	<script src="/lib/highlight.js"></script>
+	<link rel="stylesheet" href="/lib/highlight.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title></title>
+</head>
+
+<body>
+	<textarea id="ta"></textarea>
+	<p id="p"></p>
+	<pre id="pre"></pre>
+</body>
+
+</html>
+<style>
+	#ta { width: 100%; height: 5em;}
+	.hljs-string {
+		color: green;
+	}
+
+	#pre {
+		counter-reset: no;
+		background: #ffffffee;
+		line-height: 2em
+	}
+
+	.hljs-string::after {
+		content: counter(no);
+		counter-increment: no;
+		background: #0000ff11;
+		color: #000000;
+		border-radius: 100%;
+		padding: 2px;
+		font-size: xx-small;
+		position: absolute;
+		/* left: 22%; */
+		transform: translate(-50%, -50%);
+		box-sizing: content-box;
+		width: 1em;
+		height: 1em;
+		text-align: center;
+		line-height: 1em
+	}
+	.hljs-color {
+		background: red;
+		color: yellow;
+	}
+</style>
+<script>
+	let { log } = console
+
+	d3.select('#ta').on('input', (d, i, a) => {
+		let t = a[i]
+		pre.textContent = t.value
+
+		hljs.highlightBlock(pre)
+	})
+
+	function tm(h) {
+		return {
+			keywords: {
+				word: 'else for while',
+			},
+			contains: [
+				{
+					className: 'string',
+					begin: '\'', end: '\'',
+					contains: [{ begin: '\\\\.' }],
+				},
+				{
+					className: 'color',
+					begin: /\[#?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})\]/i, end: '\\[-\\]',
+				}
+			]
+		}
+	}
+	hljs.registerLanguage('tm', tm)
+
+	log(hljs.listLanguages())
+	log(hljs.getLanguage('tm'))
+
+	for(let i=0; i<100000; i++) {
+		let e = document.body.appendChild(document.createElement('span'));
+		e.textContent = randStr();
+		let s = e.style
+	}
+
+</script>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>type.js</title>
+</head>
+
+<body></body>
+
+<script src="type.js"></script>
+<script>
+	let { log } = console;
+
+	log(type({}));// Object
+	log(type('abc'));// String
+	log(type([1, 2, 3]));// Array
+	log(type(true));// Boolean
+	log(type(Object.create(null)));// Object
+	log(type(function () { }));// Function
+	log(type(new Map()));// Map
+	log(type(new Set()));// Set
+	log(type(Symbol('symbol')));// Symbol
+
+	log(type(null));// null
+	log(type(undefined));// undefined
+	log(type(NaN));// Number
+	log(type(Infinity));// Number
+	log(type(1));// Number
+
+	function A   /*comment*/(a, b, c) {
+		/*comment*/
+	}
+	log(type(new A));// A
+
+
+	function /*comment(){ - function(){
+
+		
+	}  }*/  B  /*comment*/(a, b, c) {
+		/*comment*/
+	}
+	log(type(new B(1, 2, 3)));// B
+
+	// require('buffer') --- nodejs side
+	// log(type(Buffer.alloc(1)));
+
+
+	// log(A.toString())
+	// log(B.toString())
+
+
+	log(type(new String('abc')))
+	log(type(new Number(123)))
+
+
+	// null, undefined, Boolean, Number, String, Object, Array, Function, classNames(Map, Set, ...)
+
+</script>
+
+</html>

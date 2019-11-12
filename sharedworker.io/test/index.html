@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="/lib/jquery.min.js"></script>
+	<script src="/lib/vue.min.js"></script>
+	<title>SharedWorker</title>
+</head>
+<body>
+<div id="swInfo">
+	<h3>id: {{ id }}</h3>
+	<div>
+		<pre v-for="e in log">{{e}}</pre>
+	</div>
+</div>
+</body>
+</html>
+<script src="extend-messageport.js"></script>
+<script src="index.js"></script>

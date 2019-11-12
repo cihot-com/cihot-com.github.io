@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta name="Description" content="test socket.io">
+	<meta name="viewport" content="width=device-width">
+	<script src="/lib/socket.io.js"></script>
+	<script src="/lib/vue.min.js"></script>
+	<script src="/ddb/date_util.js"></script>
+	<script src="/lib/objectid.js"></script>
+	<title>room</title>
+	<style>
+		:root {
+			--font-size: 12pt;
+			--font-family: Arial, Helvetica, sans-serif, NSimSun, Dotum;
+			--dialog-filter: drop-shadow(1px 1px 1px #ccf);
+		}
+		label {
+			display: grid;
+			grid-template-columns: auto 1fr;
+		}
+
+		#userConnectionDialog form {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			align-content: center;
+			justify-content: center;
+		}
+
+		#socketControlPanel input[type=radio] {
+			transition: 500ms;
+		}
+		textarea {
+			display: block;
+			width: 100%;
+			min-height: 5em;
+			resize: vertical;
+		}
+		dialog * {
+			font-size: var(--font-size);
+			font-family: var(--font-family);
+			filter: var(--dialog-filter);
+		}
+	</style>
+</head>
+
+<body>
+	<dialog id="userConnectionDialog">
+		<form method="dialog">
+			<label for="user_connect.username">username</label><input type="username" name="username" required
+				autocomplete>
+			<label>password</label><input type="password" name="password" required autocomplete>
+			<label>serverpath</label>
+			<input name="path" list="pathlist" required>
+			<datalist id="pathlist">
+				<option label="服务器TM" value="/siotm" selected></option>
+				<option label="服务器3000" value="/sio3000"></option>
+				<option label="服务器3001" value="/sio3001"></option>
+			</datalist>
+			<input type="submit" value="submit" name="submit">
+		</form>
+	</dialog>
+
+	<dialog id="socketControlPanel">
+		<form method="dialog">
+			<div>
+				<input type="radio" name="pingpong" value="ping" disabled>ping
+				<input type="radio" name="pingpong" value="pong" disabled>pong
+				<input type="number" name="latency" value="0" disabled>ms
+				<input type="time" name="time" disabled>
+			</div>
+			<div>
+				<input type="button" name="disconnect" value="disconnect">
+			</div>
+			<div>
+				<label>roomname<input type="text" name="roomname"></label>
+				<input type="button" name="join" value="join">
+				<input type="button" name="leave" value="leave">
+			</div>
+			<article>
+				<header>command</header>
+				<section>
+					<textarea name="command"></textarea>
+					<input type="button" name="sendCommand" value="send">
+				</section>
+			</article>
+			<article>
+				<header>message</header>
+				<section>
+					<textarea name="message"></textarea>
+					<input type="button" name="sendMessage" value="send">
+				</section>
+			</article>
+			<article>
+				<header>emit</header>
+				<input type="text" name="emitType">
+				<textarea name="emitData"></textarea>
+				<input type="button" name="sendEmit", value="send">
+			</article>
+		</form>
+	</dialog>
+	<script>
+
+		let { log, warn, error, debug } = console
+
+		// oid
+		let oid = localStorage.getItem('oid') || new ObjectID().str
+
+		let numberRegExp = /-?(\d+|\d+\.\d+|\.\d+)([eE][-+]?\d+)?/
+
+		let path, opt, msg, s, vue;
+		opt = {
+			transports: ['websocket'],
+			path,
+			reconnection: false,
+			autoConnect: false,
+			query: { oid },
+		};
+		s = io(opt);
+		s.on('readySignIn', (o)=>{
+			Object.assign(s, o)
+		})
+		// 自定义事件
+		s.on('join', function (room) {
+			console.log('join', room);
+			vue.messages.unshift([s.id, 'join', room]);
+		});
+		s.on('leave', function (room) {
+			console.log('leave', room);
+			vue.messages.unshift([s.id, 'leave', room]);
+		});
+		s.on('roommessage', (id, ...message) => {
+			console.log(id, ...message);
+			vue.messages.unshift([s.id, 'roommessage', ...message]);
+		});
+		s.on('socketmessage', (id, ...message) => {
+			console.log(id, ...message);
+			vue.messages.unshift([s.id, 'socketmessage', ...message]);
+		});
+		s.on('socketsmessage', (id, ...message) => {
+			console.log(id, ...message);
+			vue.messages.unshift([s.id, 'socketsmessage', ...message]);
+		});
+		
+		// 默认事件
+		s.on('error', (err) => {
+			// 官网说明上没有，但是有这个默认事件。
+			// 服务器调用next(new Error(err))时，客户端会收到消息。
+			log(`%cerror%c${err}`, 'background:red; padding:4px;', '')
+
+			if(s.connected) {
+				userConnectionDialog.close()
+				socketControlPanel.show()
+			}else{
+				socketControlPanel.close()
+				userConnectionDialog.show()
+			}
+		})
+		s.on('message', (...m) => console.log('message', ...m));
+		s.on('connect', (e) => {
+			log('con', e)
+			userConnectionDialog.close()
+			socketControlPanel.show()
+			updateHis()
+		})
+		s.on('disconnect', (reason) => {
+			log('disconnect', reason)
+			socketControlPanel.close()
+			userConnectionDialog.showModal()
+		})
+		s.on('ping', () => {
+			socketControlPanel.form.elements.pingpong.value = 'ping'
+		})
+		s.on('pong', (latency) => {
+			socketControlPanel.form.elements.pingpong.value = 'pong'
+			socketControlPanel.form.elements.latency.value = latency
+			updateHis()
+		})
+		s.on('connect_error', (err) => {
+			log(err)
+			socketControlPanel.close()
+			userConnectionDialog.showModal()
+		})
+		s.on('connect_timeout', (_) => { log(_) })
+		s.on('reconnect', (attempt) => { log(attempt) })
+		s.on('reconnect_attempt', (attempt) => { log(attempt) })
+		s.on('reconnecting', (attempt) => { log(attempt) })
+		s.on('reconnect_error', (err) => { log(err) })
+		s.on('reconnect_failed', (_) => { log(_) })
+		
+		function updateHis(){
+			socketControlPanel.form.elements.time.value = dateUtil.now().format('H:i:s')
+		}
+
+
+
+		let userConnectionDialog = document.querySelector('#userConnectionDialog')
+		userConnectionDialog.form = userConnectionDialog.querySelector('form')
+		userConnectionDialog.elements = userConnectionDialog.form.elements
+		userConnectionDialog.showModal()
+		userConnectionDialog.elements.username.focus()
+		userConnectionDialog.form.onsubmit = function (e) {
+			let { elements: { username, password, path } } = userConnectionDialog.form
+			let { opts } = s.io
+			opts.path = path.value
+			opts.query.username = username.value
+			opts.query.password = password.value
+
+			password.value = ''
+			s.connect()
+		}
+
+		let socketControlPanel = document.querySelector('#socketControlPanel')
+		socketControlPanel.form = socketControlPanel.querySelector('form')
+		socketControlPanel.form.elements.join.onclick = function (e) {
+			let { roomname } = socketControlPanel.form.elements
+			if (s.connected && roomname.value) {
+				s.emit('join', roomname.value)
+			}
+		}
+		socketControlPanel.form.elements.leave.onclick = function (e) {
+			let { roomname } = socketControlPanel.form.elements
+			if (s.connected && roomname.value) {
+				s.emit('leave', roomname.value)
+			}
+		}
+		socketControlPanel.form.elements.disconnect.onclick = function (e) {
+			if (s.connected) {
+				s.disconnect()
+			}
+		}
+		socketControlPanel.form.elements.sendCommand.onclick = function (e) {
+			let code = socketControlPanel.form.elements.command.value.trim()
+			if (s.connected && code) {
+				s.emit('command', code, log)
+			}
+		}
+		socketControlPanel.form.elements.command.onkeydown = function (e) {
+			if(e.keyCode === 13 && e.ctrlKey) {
+				socketControlPanel.form.elements.sendCommand.click()
+			}
+		}
+		socketControlPanel.form.elements.sendMessage.onclick = function (e) {
+			let code = socketControlPanel.form.elements.message.value.trim()
+			if (s.connected && code) {
+				s.send(code, log)
+			}
+		}
+		socketControlPanel.form.elements.message.onkeydown = function (e) {
+			if(e.keyCode === 13 && e.ctrlKey) {
+				socketControlPanel.form.elements.sendMessage.click()
+			}
+		}
+		socketControlPanel.form.elements.sendEmit.onclick = function(e){
+			let emitType = socketControlPanel.form.elements.emitType.value.trim()
+			let emitData = socketControlPanel.form.elements.emitData.value.trim()
+			
+			if(s.connected && emitType && emitData) {
+				emitData = (function(){ return eval(`[${emitData}]`) }).bind({})()
+				s.emit(emitType, ...emitData, log)
+			}
+		}
+		socketControlPanel.form.elements.emitData.onkeydown = function(e){
+			if(e.keyCode === 13 && e.ctrlKey) {
+				socketControlPanel.form.elements.sendEmit.click()
+			}
+		}
+
+
+
+		// vue = new Vue({
+		// 	el: '#app',
+		// 	data: {
+		// 		room: 'deafult',
+		// 		s,
+		// 		count: 0,
+		// 		messages: [],
+		// 		cmd:'',
+		// 	},
+		// 	computed: {
+		// 		connected() {
+		// 			return this.s.connected;
+		// 		}
+		// 	},
+		// 	methods: {
+		// 		toggleConnect() {
+		// 			// 客户端可以随时 open() 或 close()
+		// 			this.connected ? s.close() : s.open();
+		// 		},
+		// 		join() {
+		// 			s.emit('join', this.room);
+		// 		},
+		// 		leave() {
+		// 			s.emit('leave', this.room);
+		// 		},
+		// 		sendMessage() {
+		// 			s.emit('roommessage', this.room, Date.now());
+		// 		},
+		// 		sendSocketMessage() {
+		// 			s.emit('socketmessage', this.room, Date.now());
+		// 		},
+		// 		sendSocketsMessage() {
+		// 			s.emit('socketsmessage', this.room, Date.now());
+		// 		},
+		// 		sendCommand(){
+		// 			if(event.keyCode===13) s.emit('cmd', this.cmd);
+		// 		}
+		// 	}
+		// });
+
+
+		const pathInput = document.querySelector('#userConnectionDialog').form.path
+		top.onload = function(e) {
+			let _pathlist = localStorage.getItem('pathlist')
+			if(_pathlist) pathInput.value = _pathlist
+		}
+		top.onbeforeunload = function (e) {
+			localStorage.setItem('pathlist', pathInput.value)
+		}
+
+
+	</script>
+</body>
+
+</html>

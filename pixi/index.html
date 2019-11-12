@@ -1,23 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+
 <head>
-<script src="/lib/jquery-1.12.0.min.js"></script>
-<script src="/lib/jquery.animate-colors-min.js"></script>
-<script src="/lib/codemirror.js"></script>
-<script src="/lib/javascript.js"></script>
-<script src="/lib/pixi.min.js"></script>
-<script src="/lib/pixi-extra-filters.min.js"></script>
-<!-- <script src="/lib/curve.min.js"></script> -->
-<!-- <script src="/lib/scaleToWindow.min.js"></script>
-<script src="/lib/papaparse.min.js"></script> -->
-<link rel="stylesheet" type="text/css" href="main.css">
-<title>PIXI 4.7.1</title>
+	<meta charset="utf-8">
+	<title>Hello World</title>
 </head>
+
+<script src="/lib/tweenmax.js"></script>
+<!-- <script src="/lib/tweenmax.pixi.js"></script> -->
+<script src="/lib/pixi.js"></script>
+<!-- <script src="/lib/hexi.js"></script> -->
+
 <body>
-<div>
-<label><input id="hasWebGL" type="checkbox" disabled>WebGL</label>
-</div>
-<span class="button0"></span>
+	<div>
+		<ul>
+			<li><a href="http://pixijs.download/release/docs/index.html" target="_blank">api</a></li>
+			<li><a href="https://github.com/Zainking/LearningPixi#installingpixi" target="_blank">wiki</a></li>
+			<li><a href="https://pixijs.download/v5.0.0-rc.3/docs/PIXI.ParticleContainer.html" target="_blank">api-5.0-rc</a></li>
+		</ul>
+	</div>
+	<img id="cat" src="cat.png">
+	<hr>
+	<script type="text/javascript">
+		let { log, warn } = console
+		// PIXI.utils._saidHello = false	
+		PIXI.utils.sayHello = function () { }
+		PIXI.autoDetectRenderer({ backgroundColor: 0xeeeeee })
+
+
+		let app = new PIXI.Application({ width: 400, height: 300 })
+		let stage = app.stage
+
+		document.body.appendChild(app.view)// 插入<canvas>标签
+		// app.renderer.backgroundColor = 0xffffff
+
+
+
+		let t = new PIXI.Text('你好', new PIXI.TextStyle({
+			align: 'center',
+			dropShadow: true,
+			dropShadowColor: "#000000",
+			dropShadowBlur: 4,
+			dropShadowAngle: Math.PI / 6,
+			dropShadowDistance: 6,
+			// stroke: 0xffff00,
+			fill: "#00f",
+			fontFamily: 'Verdata',
+			fontSize: 64,
+		}))
+		t.text = 'asdf'
+		t.tint = ''
+
+		stage.addChild(t)
+
+
+
+	</script>
 </body>
+
 </html>
-<script type="text/javascript" src="main.js"></script>

@@ -1,0 +1,45 @@
+html,body { margin: 0; padding: 0; }
+
+.message {
+    background: #eee;
+    color: #000;
+    border-radius: 3px;
+    font-size: 9pt;
+    margin: 0;
+    padding-top: 3px;
+    display: grid;
+    grid-column-gap: 0;
+    grid-template-columns: auto auto auto;
+    grid-column-start: span 5;
+}
+.message:hover {
+    background-color: beige;
+}
+.message td:nth-child(1) {
+    background-color: #ccc;
+    color: #666;
+}
+.message td:nth-child(2) {
+    background-color: #eee;
+    color: #999;
+}
+.message td:nth-child(3) {
+    grid-column-start: span 3;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+textarea {
+    margin: auto;
+    padding: 0;
+    width: 99%;
+    min-height: 100px;
+    display: block;
+    resize: vertical;
+}
+
+#app {
+    width: 60vw;
+    margin: 0 auto;
+}
+

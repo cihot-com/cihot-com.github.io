@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<script src="/lib/jquery.min.js"></script>
+	<script src="/lib/vue.min.js"></script>
+</head>
+
+<style>
+	.col2 {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.args {
+		grid-column: 1/3;
+	}
+
+	.source,
+	.target,
+	.args {
+		border: 1px solid #eee;
+		width: 100%;
+	}
+
+	* {
+		font-size: 9pt;
+		font-family: gulim, nsimsun;
+	}
+
+	#works target {
+		-webkit-user-modify: read-write-plaintext-only;
+	}
+
+	code {
+		background: #ff7;
+		color: #000;
+		font-weight: bold;
+	}
+
+	code::after {
+		content: attr(argindex);
+		background: #ccf;
+		color: #000;
+		font-weight: bold;
+	}
+
+	.preview { background: #ccc; }
+
+	.clickdelete {
+		border: 1px solid #999;
+		background: #eee;
+	}
+	.original {
+		border: 1px solid #f99;
+		background: #fcc;
+	}
+
+	#works .target, .editable {
+		-webkit-user-modify: read-write-plaintext-only;
+	}
+	#works .id {
+		background: #ccc;
+		border-radius: 1em;
+	}
+	#works .source {
+		background: #eee;
+		text-align: right;
+	}
+	#works .source, #works .target { width: 50%; }
+	.hide { display: none; }
+</style>
+
+<body>
+	<div id="app">
+		<div class="maker col2">
+			<div class="preview hide">{{sourceRegExp ? sourceRegExp.source: ''}}</div>
+			<div class="preview hide">{{targetPattern ? JSON.stringify(targetPattern) : ''}}</div>
+			<textarea class="source" v-model="source"></textarea>
+			<textarea class="target" v-model="target"></textarea>
+			<div class="sourceArgsCtl">
+				<input type="button" value="插入" v-on:click="addSourceArg">
+				<input type="button" value="全部清除" v-on:click="clearSourceArg">
+				<table>
+					<thead>
+						<tr>
+							<th>参数</th>
+							<th>起始</th>
+							<th>结束</th>
+							<th>文本</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="(e,i) in sourceArgs">
+							<td class="index">arg{{i}}</td>
+							<td class="start">{{e.selectionStart}}</td>
+							<td class="end">{{e.selectionEnd}}</td>
+							<td class="text">{{e.selectionText}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="targetArgsCtl">
+				<input type="button" value="插入" v-on:click="addTargetArg">
+				<input type="button" value="全部清除" v-on:click="clearTargetArg">
+				<table>
+					<thead>
+						<tr>
+							<th>参数</th>
+							<th>起始</th>
+							<th>结束</th>
+							<th>文本</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="(e,i) in targetArgs">
+							<td class="index">arg{{i}}</td>
+							<td class="start">{{e.selectionStart}}</td>
+							<td class="end">{{e.selectionEnd}}</td>
+							<td class="text">{{e.selectionText}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<input type="button" value="预翻译" v-on:click="calc">
+		<input type="button" value="提交" v-on:click="submit">
+		
+		<table id="works"></table>
+		
+	</div>
+
+</body>
+
+
+
+<script src="3000.bulk.js"></script>
+
+</html>

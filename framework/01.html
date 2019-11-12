@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#2196f3">
+  <title>01</title>
+  <script src="/ddb/cssd/cssd.js"></script>
+  <script src="/lib/jquery.js"></script>
+</head>
+
+<body>
+
+  <!-- <script type="text/javascript" src="01.js"></script> -->
+
+  <div class="textmodify box"></div>
+
+  <div id="status" class="panel">
+    <div class="col3">
+      <div id="input"></div>
+      <div id="keydown"></div>
+      <div id="keyup"></div>
+    </div>
+  </div>
+
+  <style>
+    :root {
+      --bgcolor: #3399;
+      --tabsize: 2em;
+      --red: #f00;
+    }
+
+    .textmodify {
+      tab-size: var(--tabsize);
+      -webkit-user-modify: read-write-plaintext-only;
+      -moz-user-modify: read-write-plaintext-only;
+      -ms-user-modify: read-write-plaintext-only;
+      user-modify: read-write-plaintext-only;
+      outline: none;
+    }
+
+    .modify {
+      tab-size: var(--tabsize);
+      -webkit-user-modify: read-write;
+      -moz-user-modify: read-write;
+      -ms-user-modify: read-write;
+      user-modify: read-write;
+      outline: none;
+    }
+
+    .box {
+      border: 1px solid var(--bgcolor);
+      min-height: 20px;
+    }
+
+    .modify:focus, .textmodify:focus {
+      outline: none;
+      border-color: #333;
+    }
+    .modify.error, .textmodify.error {
+      box-shadow: 0 3px 1px -1px var(--red);
+    }
+
+    .col3 {
+      display: grid;
+      grid-template-columns: repeat(3,auto);
+      grid-gap: 1px;
+    }
+    .col3 div {
+      border-left: 2px solid #336;
+    }
+
+    .panel {
+      background: #eee;
+      box-shadow: 0 0 0 1px #999;
+    }
+
+    .name { background-color: #3f3; }
+    .value { background-color: #cfc; }
+
+    #status *[id]::before {
+      content: attr(id);
+      display: block;
+      background-color: #333;
+      color: #fff;
+    }
+  </style>
+
+  <script src="01.js"></script>
+
+</body>
+
+</html>

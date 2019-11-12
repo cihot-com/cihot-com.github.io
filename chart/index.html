@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="/lib/chart.min.js"></script>
+	<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script> -->
+	<title>Document</title>
+</head>
+
+<body>
+	<div style="width:400px; height:400px;">
+		<canvas id="myChart" width="300" height="100"></canvas>
+	</div>
+	<script>
+		var canvas = document.getElementById('myChart')
+		let ctx = canvas.getContext("2d")
+		var myChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+				datasets: [{
+					label: 'A',
+					data: [43, 19, 3, 5, 2, 3],
+					backgroundColor: [
+						'rgba(255, 99, 132, 0.2)',
+						'rgba(54, 162, 235, 0.2)',
+						'rgba(255, 206, 86, 0.2)',
+						'rgba(75, 192, 192, 0.2)',
+						'rgba(153, 102, 255, 0.2)',
+						'rgba(255, 159, 64, 0.2)'
+					],
+					borderColor: [
+						'rgba(255, 99, 132, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 206, 86, 1)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(153, 102, 255, 1)',
+						'rgba(255, 159, 64, 1)'
+					],
+					borderWidth: 1
+				},
+				{
+					label: 'B',
+					data: [20, 50, 10, 14, 20],
+					backgroundColor: [
+						'rgba(255,255,0,0.2)',
+						'rgba(255,255,0,0.2)',
+						'rgba(255,255,0,0.2)',
+						'rgba(255,255,0,0.2)',
+						'rgba(255,255,0,0.2)',
+					],
+					borderWidth: 1
+				}
+				]
+			},
+			options: {
+				scales: {
+					xAxes: [{
+						ticks: {
+							beginAtZero: false
+						}
+					}],
+					yAxes: [{
+						ticks: {
+							beginAtZero: false
+						}
+					}]
+				}
+			}
+		});
+
+
+		function A(n) {
+			let _n = n;
+			let _o = Object.create(null)
+
+			return Object.defineProperty(_o, 'n', {
+				get(){ return _n },
+				enumerable: true,
+			})
+		}
+
+		let a = new A(100)
+		console.log(a.n)
+		a.n = 1000// 赋值无效，且无法访问到 _n
+		console.log(a.n)
+
+	</script>
+</body>
+
+</html>

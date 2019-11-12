@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>keyboard</title>
+	<style>
+		* {
+			box-sizing: border-box;
+			font-family: D2Coding, Tahoma, NSimsun;
+		}
+
+		textarea {
+			box-sizing: border-box;
+			width: 50%;
+			height: 10vh;
+			float: left;
+			font-family: D2Coding, Tahoma, NSimsun;
+		}
+	</style>
+	<script src="/lib/jquery.js"></script>
+	<script src="/ddb/kbd.js"></script>
+</head>
+
+<body>
+	<div>
+		<input id="prop" type="text">
+		<input id="content" type="checkbox">
+	</div>
+	<div>
+		<textarea id="source" autofocus></textarea>
+		<textarea id="target"></textarea>
+	</div>
+	<div>
+		<pre>
+			我们通常为了开发某个功能模块，需要先建立一个module.js文件。
+			然后再搭建一个test.html导入这个module.js。
+			此外还需要有个test.js文件，这里只做测试。
+			我们可以一边测试，一边完善module.js的功能。
+			最后module.js将被正式发布，每次发布自动提升版本号。
+		</pre>
+	</div>
+
+	<div id="app2">
+<pre class="origin">这是高亮和加粗。
+换个行再说。</pre>
+<pre class="mirror">这是<u>高亮</u>和<b data="2">加粗</b>。
+换个行<b>再说</b>。</pre>
+<pre class="mirror">这是高<u>亮和加</u>粗。
+换个行再说。</pre>
+	</div>
+	<style>
+		.mirror, .origin {
+			position: absolute;
+			font-size: 1em;
+			line-height: 2em;
+			white-space: pre-line;
+		}
+
+		.origin {
+			z-index: initial;
+			/* -webkit-text-stroke: 1px #fff; */
+		}
+
+		u {
+			text-decoration: none;
+			color:#000;
+			-webkit-text-stroke: 1px #ff05;
+			/* mix-blend-mode: lighten; */
+		}
+
+		b {
+			/* background: #f00; */
+			-webkit-text-stroke: 1px #f005;
+			/* mix-blend-mode: lighten; */
+		}
+
+		b::after {
+			content: attr(data);
+			transform: translate(-100%, -50%);
+			color: #ff0;
+			background: #333;
+			position: absolute;
+			font-size: .8em;
+			line-height: 1em;
+			border-radius: 1em;
+			width: 1em;
+			height: 1em;
+			text-align: center;
+		}
+	</style>
+</body>
+<script src="index.js"></script>
+
+</html>

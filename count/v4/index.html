@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+
+<head>
+	<meta charset="utf-8">
+	<!-- <script src="/lib/pixi.js"></script> -->
+	<script src="/lib/jquery.js"></script>
+	<script src="worker.js"></script>
+	<!-- <script src="v.js"></script> -->
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		#source,
+		#target {
+			box-shadow: 2px 2px 2px #000;
+			float: left;
+		}
+		#source {
+			width: 40%;
+			height: 50vh
+		}
+		th, td {
+			text-align: center;
+			vertical-align: middle;
+		}
+		th {
+			background: #ccf;
+		}
+		td {
+			background: #eef;
+		}
+		button {
+			padding: 1em;
+			background: #ccf;
+			border: none;
+			outline: none;
+			filter: drop-shadow(2px 2px 2px #000);
+		}
+		button:hover {
+			background: #ffc;
+		}
+	</style>
+	<title>Count</title>
+</head>
+
+<body>
+	<div>
+		<textarea id="source" autofocus></textarea>
+		<table id="target">
+			<tbody>
+				<tr>
+					<th>총 글자수</th>
+					<th>행 내 글자수</th>
+					<th title="실은 공백으로 짤려진 갯수입니다.">총 단어수</th>
+					<th>행수</th>
+				</tr>
+				<tr>
+					<td id="totalLength">0</td>
+					<td id="innerLength">0</td>
+					<td id="wordsLength">0</td>
+					<td id="rowsLength">0</td>
+				</tr>
+			</tbody>
+			<tbody>
+				<tr>
+					<th>숫자(글자수)</th>
+					<th>ABC(글자수)</th>
+					<th>한국어(글자수)</th>
+					<th>汉字(글자수)</th>
+					<th>にほんご(글자수)</th>
+				</tr>
+				<tr>
+					<td id="n">0</td>
+					<td id="en">0</td>
+					<td id="kr">0</td>
+					<td id="cn">0</td>
+					<td id="jp">0</td>
+				</tr>
+			</tbody>
+			<tbody>
+				<tr>
+					<th>숫자(단어수)</th>
+					<th>ABC(단어수)</th>
+					<th>한국어(단어수)</th>
+				</tr>
+				<tr>
+					<td id="nw">0</td>
+					<td id="enw">0</td>
+					<td id="krw">0</td>
+				</tr>
+			</tbody>
+			<tbody>
+				<tr>
+					<td colspan="5">
+						<button id="clear">Clear</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+
+
+
+</html>
+<script src="index.js"></script>

@@ -1,0 +1,21 @@
+#test-login {
+	display: inline-grid;
+}
+#test-login input {
+	min-width: 40em;
+	text-align: center;
+}
+.yes {
+	background: #cfc;
+}
+.bad {
+	background: #fcc;
+}
+.no {
+	box-shadow: red;
+	background: #f99;
+}
+.disable * {
+	user-select: none!important;
+	opacity: 0.8!important;
+}

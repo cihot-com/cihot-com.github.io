@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="Description" content="test socket.io">
+	<meta name="viewport" content="width=device-width">
+
+	<!-- <script src="/ddb/cssd/cssd.js"></script> -->
+	<script src="console.js"></script>
+	<script src="/ddb/wopen.js"></script>
+
+	<script src="/lib/jquery.min.js"></script>
+	<script src="/lib/socket.io.js"></script>
+	<script src="/lib/localforage.min.js"></script>
+	<script src="/lib/diff_match_patch.js"></script>
+	<script src="/lib/similar_text.js"></script>
+	<script src="/lib/tweenmax.js"></script>
+	<script src="/lib/objectid.js"></script>
+	<script src="/lib/sha3.min.js"></script>
+	<script src="/lib/hotkey/hotkey.js"></script>
+	<script src="/autosave.js"></script>
+
+	<link rel="stylesheet" href="index.css">
+	<title>room</title>
+</head>
+
+<body>
+	<form id="loginForm">
+		<input type="text" id="username" name="username" autocomplete="off">
+		<input type="password" id="password" name="password">
+		<input type="button" id="login" name="login" value="login">
+		<input type="checkbox" id="save" value="保存用户">
+	</form>
+
+	<form id="commandForm">
+		<textarea name="command" id="command" maxlength="1000" autofocus></textarea>
+		<code name="result" id="result"></code>
+		<input type="button" id="run" value="执行">
+	</form>
+
+	<div class="box">
+		<div></div>
+		<div></div>
+		<div><span>1</span></div>
+		<div></div>
+		<div></div>
+	</div>
+	<style>
+	.box div {
+		background: #f00;
+		width: 100px;
+		height: 100px;
+		margin: 1px;
+	}
+	.box div:has(>span) {
+		background: #0f0!important;
+	}
+	</style>
+</body>
+
+<script src="./socket.js"></script>
+<script src="./login.js"></script>
+<script src="./command.js"></script>
+<script src="./db.js"></script>
+
+
+<script type="module" src="main.js"></script>
+
+</html>

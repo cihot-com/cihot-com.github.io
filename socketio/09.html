@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="Description" content="test socket.io">
+	<meta name="viewport" content="width=device-width">
+	<script src="/lib/socket.io.js"></script>
+	<title>room</title>
+	<link href="09.css" rel="stylesheet">
+</head>
+
+<body>
+	<div id="connection">
+		<form>
+			<label for="url">URL:</label>
+			<input id="url" type="text" v-model="url">
+			<button @click="connect">connect</button>
+		</form>
+	</div>
+	<div id="sockets"></div>
+	<script type="module" src="./09.js"></script>
+</body>
+
+</html>

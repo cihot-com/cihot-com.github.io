@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Table-Big</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			border: none;
+			outline: none;
+			font-family: monospace;
+			/* font-size: 14pt; */
+			border-spacing: 0;
+			border-collapse: separate;
+		}
+
+		*:lang(zh-CN) {
+			font-family: monospace, "Microsoft Yahei";
+		}
+
+		tbody {
+			border-left: 1px solid #999;
+		}
+
+		tbody .target {
+			-webkit-user-modify: read-write-plaintext-only;
+		}
+
+		.edit {
+			-webkit-user-modify: read-write-plaintext-only;
+		}
+
+		.lock {
+			-webkit-user-modify: read-only;
+		}
+
+		td {
+			/* border: 0.1px solid #ccc; */
+			box-sizing: border-box;
+			width: 32em;
+			padding: 0.5em 0;
+		}
+	</style>
+	<script src="./TBL2.js"></script>
+</head>
+
+<body>
+
+</body>
+
+<script>
+	var { log } = console;
+
+	let box = document.createElement('div')
+	document.body.appendChild(box);
+	box.style.height = '50vh';
+
+	let tbl = document.createElement('table')
+	tbl.id = 'table'
+	box.appendChild(tbl)
+
+
+	async function testTime(label, fn, repeat = 1) {
+		if (!label) label = '[testTime]' + Math.random().toString(36).slice(2)
+		console.time(label)
+		for (let i = 0; i < repeat; i++) {
+			await fn();
+		}
+		console.timeEnd(label)
+	}
+
+	function testButton(label, fn, repeat = 1) {
+		let btn = document.body.insertAdjacentElement('afterbegin', document.createElement('button'))
+		btn.onmousedown = async function () {
+			console.time(label)
+			if (!label) label = '[test]' + Math.random().toString(36).slice(2)
+			for (let i = 0; i < repeat; i++) {
+				await fn();
+			}
+			console.timeEnd(label)
+		};
+		btn.textContent = label;
+	}
+
+
+	// Datas
+	let data = Array.from(new Array(100), (e, i) => {
+		let start = '가'.charCodeAt(0);
+		let end = '힣'.charCodeAt(0);
+		let randstr = function (n = 1) {
+			let str = ''
+			while (n-- > 0) {
+				str += String.fromCharCode(start + Math.ceil(Math.random() * (end - start)));
+			}
+			return str;
+		}
+
+		return { id: i + 1, index: i, source: randstr(8), target: randstr(8) }
+	})
+	console.log('data ok')
+   
+
+	// Draw datas
+
+
+	let t = new TBL(table);
+	t.thead
+	t.tbody
+	t.tfoot
+	t.caption
+	
+
+	t.data(data);
+
+
+	addEventListener('mousewheel', (e)=>{
+		if(e.deltaY>0) {
+			t.rowDown()
+		}else{
+			t.rowUp()
+		}
+		// console.log('wheel')
+	}, {passive:false});
+
+
+	log(t.tbody)
+	log(t.thead)
+	log(t.tfoot)
+	t.tfoot;
+	let o = {a:1}
+
+	/* 
+	tbody:
+		tr: td td td
+		tr: td td td
+		tr: td td td
+		tr: td td td
+
+	*/
+
+
+</script>
+
+</html>

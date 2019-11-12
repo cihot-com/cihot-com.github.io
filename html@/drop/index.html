@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="drop.js"></script>
+	<link type="text/css" rel="stylesheet" href="index.css">
+</head>
+
+<body>
+	<div class="drop">
+		<span>drop</span>
+	</div>
+	<div class="result"></div>
+</body>
+
+<script>
+	let { log, debug } = console
+
+	DDBDrop.on(document.querySelector('.drop'), (e) => {
+		log(e)
+
+		let result = document.querySelector('.result')
+
+		if (e instanceof File) {
+			addMessage(`${e.name} (${e.size})`)
+		} else {
+			addMessage(`${e.text} (${e.html})`)
+		}
+
+		// methods
+		function addMessage(text) {
+			let e = document.createElement('div')
+			result.appendChild(e)
+			e.innerText = text
+			e.classList.add('message')
+		}
+	})
+
+
+</script>
+
+</html>

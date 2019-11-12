@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>regexp chars</title>
+	<style>
+		.active {
+			background: #0f0a;
+		}
+
+		.charlist {
+			margin: 0 auto;
+			display: grid;
+			grid-template-columns: 6em 6em 6em 6em 6em 6em 6em 6em 6em 6em;
+		}
+
+		.grid {
+			background: #eee;
+		}
+
+		.hidden {
+			display: none;
+		}
+
+		.code {
+			background: #999;
+			color: #fff;
+			font-size: .5em;
+			border-radius: 3px;
+			font-family: fantasy;
+			padding: 3px;
+		}
+
+		.char {
+			font-family: Verdana, Geneva, Tahoma, sans-serif;
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+	<div>
+		<input id="regexpsource">
+	</div>
+	<div class="charlist">
+	</div>
+	<script>
+		function createGrid(code) {
+			let p = document.createElement('div')
+			p.setAttribute('id', 'code' + code)
+			p.classList.add('grid')
+			p.classList.add('hidden')
+			let c
+			c = document.createElement('span')
+			c.classList.add('code')
+			c.setAttribute('title', '#' + code.toString(16))
+			p.appendChild(c)
+			c.textContent = code
+			c = document.createElement('span')
+			c.classList.add('char')
+			p.appendChild(c)
+			c.textContent = String.fromCharCode(code)
+			return p
+		}
+
+		function getGrid(code) {
+			let p = document.querySelector('#code' + code)
+			return {
+				get active() {
+					return p.classList.contains('active')
+				},
+				set active(v) {
+					if (v) {
+						p.classList.add('active')
+						p.classList.remove('hidden')
+					} else {
+						p.classList.remove('active')
+						p.classList.add('hidden')
+					}
+				}
+			}
+		}
+
+		let chars = []
+
+		for (let i = 0, len = 65535; i < len; i++) {
+			chars.push(String.fromCharCode(i))
+			let p = createGrid(i)
+			document.querySelector('.charlist').appendChild(p)
+		}
+
+		let regexpSource = document.querySelector('#regexpsource')
+		regexpSource.addEventListener('change', function (e) {
+			let v = this.value
+			if (v) {
+				let regexp = new RegExp(this.value)
+				chars.forEach((char, i) => {
+					let b = regexp.test(char)
+					let p = getGrid(i)
+					p.active = b
+				})
+				console.log(regexp)
+			}
+		})
+
+	</script>
+</body>
+
+</html>

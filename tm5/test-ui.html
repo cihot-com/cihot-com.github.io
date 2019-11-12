@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style id="style"></style>
+</head>
+<body>
+	<section data-x=0 data-y=1 data-w="1" data-h="1">Section</section>
+	<section data-x=0 data-y=1 data-w="1" data-h="1">Section</section>
+	<section data-x=0 data-y=1 data-w="1" data-h="1">Section</section>
+	<section data-x=0 data-y=1 data-w="1" data-h="1">Section</section>
+	<section data-x=0 data-y=1 data-w="1" data-h="1">Section</section>
+</body>
+
+<script>
+let gridW = 10
+let gridH = 20
+let style = document.querySelector('#style')
+if(!style) {
+	style = document.body.appendChild('style')
+	style.setAttribute('id', 'style')
+}
+style.textContent = `body {
+	display: grid;
+	grid-template-columns: repeat(${gridW}, 1fr);
+	grid-template-rows: repeat(${gridH}, 1fr);
+}
+
+section {
+	border: 2px solid #333;
+	margin: 4px;
+}
+`
+let sections = document.querySelectorAll('selection')
+
+
+
+/* 
+
+grid-column-start属性：左边框所在的垂直网格线
+grid-column-end属性：右边框所在的垂直网格线
+grid-row-start属性：上边框所在的水平网格线
+grid-row-end属性：下边框所在的水平网格线
+*/
+
+</script>
+
+</html>

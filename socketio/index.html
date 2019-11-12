@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<script src="/ddb/cssd.js"></script>
+	<title>Socket.IO</title>
+</head>
+
+<body>
+	<div id="app">
+		<iframe src="nav.html" name="nav"></iframe>
+		<iframe src="01.html" name="main"></iframe>
+	</div>
+</body>
+<style>
+	#app {
+		display: grid;
+		grid-template-columns: 100px 1fr;
+		grid-gap: 0;
+	}
+	
+	iframe {
+		border: none;
+		outline: none;
+		width: 100%;
+		height: 100vh;
+	}
+
+	* {
+		padding: 0;
+		margin: 0;
+	}
+</style>
+
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<script src="/ddb/cssd/cssd.js"></script>
+	<script src="/lib/jquery.js"></script>
+	<script src="src/minified/TweenMax.min.js"></script>
+	<!-- <script src="src/minified/jquery.gsap.min.js"></script>
+	<script src="src/minified/utils/Draggable.min.js"></script>
+	<script src="src/minified/plugins/ScrollToPlugin.min.js"></script>
+	<script src="src/minified/plugins/PixiPlugin.min.js"></script>
+	<script src="src/minified/plugins/ModifiersPlugin.min.js"></script>
+	<script src="src/minified/plugins/ColorPropsPlugin.min.js"></script>
+	<script src="src/minified/plugins/CSSRulePlugin.min.js"></script>
+	<script src="src/minified/plugins/EaselPlugin.min.js"></script>
+	<script src="src/minified/plugins/TextPlugin.min.js"></script> -->
+</head>
+
+<body>
+
+	<div>
+		<ul>
+			<li><a href="https://greensock.com/docs/TweenMax/" target="_blank">api(en)</a></li>
+			<li><a href="https://www.tweenmax.com.cn/api/tweenmax/" target="_blank">api(cn)</a></li>
+		</ul>
+	</div>
+
+	<div class="box">
+		<div id="item1" class="item"><var></var><b></b></div>
+		<div id="item2" class="item"><var></var></div>
+		<div id="item3" class="item"><var></var></div>
+		<div id="item4" class="item"><var></var></div>
+	</div>
+
+	<form name="status">
+		<input name="totalTime" readonly>
+		<input name="totalDuration" readonly>
+		<input name="progress" readonly>
+	</form>
+
+	<div id="rects">
+		<p>
+			<span style="border: 1px solid red">1</span>
+			<span style="border: 1px solid green">2</span>
+			<span style="border: 1px solid blue">3</span>
+		</p>
+	</div>
+
+
+	<style>
+		.box {
+			counter-reset: no;
+		}
+
+		.item {
+			margin: 2px;
+			width: 50px;
+			height: 50px;
+			background: #eee;
+			border: 2px solid #666;
+			border-radius: 6px;
+
+			display: grid;
+			justify-items: center;
+			align-items: center;
+		}
+
+		.item var::after {
+			counter-increment: no;
+			content: counter(no);
+			word-wrap: unset;
+		}
+
+		.item b::after {
+			content: 'B';
+		}
+
+		.item {
+			padding: 2px;
+		}
+	</style>
+
+	<script>
+		let { log } = console
+
+		let T = TweenMax
+		let TL = TimelineMax
+
+
+
+		// let g1 = TweenMax.to(item1, 1, { css: { x: '+=100' } })
+		// let g2 = TweenMax.to(item2, 1, { css: { x: '+=150' } })
+		// let g3 = TweenMax.to(item3, 1, { css: { x: '+=200' } })
+
+		// tl.add('label', 1)
+		// tl.remove('label')
+		// tl.add([g1,g2,g3], 0, 'sequence')
+
+
+		// tl.addPause(1.5, function(){
+		// 	log('暂停了')
+		// 	setTimeout(() => {
+		// 		tl.resume()
+		// 		tl.set(item4, {backgroundColor:'red'}, tl.time())
+		// 	}, 1000);
+		// })
+
+		let o = new TimelineMax()
+
+		o.to(item1, 1, { css: { x: '+=50' } })
+		o.to(item2, 1, { css: { x: '+=100', onComplete(){log('2 complete')} } })
+		// o.add(function(){log('point')},2)
+		o.add('point')
+		o.to(item3, 1, { css: { x: '+=150' } })
+		o.to(item4, 1, { css: { backgroundColor: 'red' } }, 'point')
+
+		// o.tweenTo('point')
+		// o.pause()
+		// o.currentLabel('point')
+
+		o.add(function(){
+			log('fn')
+		},.5)
+
+		
+
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+GR	保卫者
+BL	潜伏者
+SP	灵魂武者
+전차	战车
+헬기	直升机
+보병	步兵
+JON	曼陀罗
+SWAT	斯沃特
+Fox Howl	灵狐者
+Commando	雷豹
+JNS	兰
+MOS	刀锋
+DX	复仇女神
+OMOH	奥摩
+ixions	毒蝎
+Hidden Dragon	潜龙队
+Arch-Rival	铁骑
+The Fates	审判者
+Switcher	零
+Eva	伊娃
+Lea	丽雅
+John	约翰
+Ethan	伊森
+Nikita	尼基塔
+Natasha	娜塔莎
+Peter	彼得
+Gilroy	罗伊
+Yáo lín	姚淋
+Hēi huā	黑花
+Accel	阿塞尔
+Chase	蔡斯
+Bianca	比安卡
+Moriah	莫里亚
+Igor	伊戈尔
+Alexei	阿列克
+Patrick Lapith	帕特里克
+Max	马克斯
+Yìng Yuè	映月
+Xuè Qiāng	血炮
+Jean	吉恩
+Olga	奥嘉
+Catrin	卡特琳
+Lacey	莱西
+Clora	卡罗尔
+Bella	贝拉
+Scarlett	斯卡莉特
+Emily	叶米利
+	
+에바	伊娃
+레아	丽雅
+존	约翰
+이단	伊森
+니키타	尼基塔
+나타샤	娜塔莎
+피터	彼得
+길로이	罗伊
+야오린	姚淋
+헤이화	黑花
+악셀	阿塞尔
+체이스	蔡斯
+비앙카	比安卡
+모리아	莫里亚
+이고르	伊戈尔
+알렉세이	阿列克
+패트릭 라피스	帕特里克
+맥스	马克斯
+잉유에	映月
+슈에창	血炮
+진	吉恩
+올가	奥嘉
+카트린	卡特琳
+레이시	莱西
+클로라	卡罗尔
+벨라	贝拉
+스칼렛	斯卡莉特
+에밀리	叶米利

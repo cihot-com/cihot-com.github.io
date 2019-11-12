@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>本地运行</title>
+</head>
+
+<body>
+	<script>
+		let { log, warn, error } = console
+
+		onmessage = function ({ data }) {
+			log('来自papago的信息', data)
+		}
+
+
+		let papago = open('https://papago.naver.com', 'papago')
+		setTimeout(() => {
+			papago.postMessage({ type: 'exec', script: 'send(document.title)' }, '*')
+		}, 1000)
+		
+		
+	</script>
+	<script src="test.js"></script>
+	<script src="test2.js"></script>
+</body>
+
+</html>

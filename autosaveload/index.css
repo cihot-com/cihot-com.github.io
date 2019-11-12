@@ -1,0 +1,26 @@
+body, form, div, span, code, pre, th, td, li {
+    font-family: D2Coding, NSimSun;
+    font-size: 12pt;
+}
+
+input {
+    display: block;
+}
+
+input::before {
+    content: attr(name);
+}
+
+#settings {
+    width: 18px;
+    height: 18px;
+}
+
+#settings::backdrop {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background: rgba(0, 0, 0);
+}

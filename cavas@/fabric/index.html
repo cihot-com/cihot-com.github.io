@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="fabric.js"></script>
+	<title></title>
+  <style type="text/css">
+    #c {border:1px solid #000;}
+  </style>
+</head>
+<body>
+	<canvas id="c" width="800" height="600"></canvas>
+
+</body>
+</html>
+<script>
+
+var canvas = this.__canvas = new fabric.Canvas('c');
+    canvas.forEachObject(function(obj, i) {
+      console.log(obj);
+    });
+
+var text=new fabric.Text('TEXT');
+canvas.add(text);
+</script>

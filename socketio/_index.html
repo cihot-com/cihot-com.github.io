@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="Description" content="test socket.io">
+	<meta name="viewport" content="width=device-width">
+	<script src="/ddb/console.js"></script>
+	<script src="/lib/ddb.js"></script>
+	<script src="/lib/socket.io.js"></script>
+	<script src="uid.js"></script>
+	<script src="messages.js"></script>
+	<script src="/lib/objectid.js"></script>
+	<title>room</title>
+	<style>
+		body {
+			margin: 0;
+			font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+		}
+		label input[type=text] {
+			color:#333;
+		}
+		#s_cmd {
+			margin: 0 auto;
+			width: 98vw;
+			min-height: 100px;
+			max-height: 20vh;
+		}
+		#sockets {
+			display: grid;
+			grid-template-columns: 1fr;
+		}
+		p{
+			background: #ccc;
+			color: #333;
+			white-space: pre-wrap;
+			word-break: break-all;
+			display: inline-block;
+			padding: 0 1em;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="connection">
+		<label>nsp:<input type="text" v-model="nsp"></label>
+		<label>path:<input type="text" v-model="path"></label>
+		<button @click="connect">connect</button>
+	</div>
+	<div id="sockets"></div>
+	<script>
+		let sockets = [];
+		let s;// last socket
+		let options = {
+			reconnection: false,
+			transports: ['websocket'],
+			forceNew: false,
+			timeout: 5000,
+			rememberUpgrade: true,
+			query: { token: '' },
+		};
+
+		function tpl(url = 'index', opt) {
+			return new Promise(function (resolve, reject) {
+				// format url
+				if (!/^tpl\//.test(url)) url = `tpl/${url}`
+				if (!/\.html$/.test(url)) url = `${url}.html`
+				// generate uid
+				let id = uid()
+				// format opt
+				opt = Object.assign({ el: `#${id}` }, opt)
+				let l = new XMLHttpRequest()
+				l.open('GET', url)
+				// l.responseType = 'text'
+				l.onload = function (e) {
+					// console.log(l.readyState, l.DONE, l.status)// 4 4 200
+					if (l.readyState === l.DONE && l.status === 200) {
+						// console.warn(l.responseURL)
+						// console.warn(l.response)
+						let div = document.createElement('div')
+						document.body.appendChild(div)
+						div.setAttribute('id', id)
+						div.innerHTML = l.response
+						return resolve(new Vue(opt))
+					}
+				}
+				l.onerror = l.onabort = function (err) { reject(err) }
+				l.send()
+			})
+		}
+
+		let vue = new Vue({
+			el: '#connection',
+			data: {
+				nsp: '/',
+				path: '/socket.io',
+			},
+			methods: {
+				connect() {
+					function onconnect() {
+						s.removeAllListeners('connect')
+						let div = document.createElement('div');
+						div.innerHTML = `<label>type:<input v-model="type" type="text"></label><br><label>data:<textarea cols="80" rows="10" v-model="data" type="text" @keydown="emit"></textarea></label><br><button @click="emit">emit</button><strong>{{id}}</strong><p>{{msg}}</p>`;
+						document.querySelector('#sockets').appendChild(div)
+						v = new Vue({
+							el: div,
+							data: {
+								type: '',
+								data: '',
+								msg: '',
+							},
+							computed: {
+								id() {
+									return s.id;
+								}
+							},
+							methods: {
+								emit(e) {
+									let data = this.data.trim()
+									if (data && (e.type === 'keydown' && (e.keyCode === 13 && e.ctrlKey) || e.type === 'click')) {
+										s.emit(this.type, data);
+
+									}
+								}
+							}
+						});
+						// v.type = ['cmd', 'broadcast'][Math.floor(2 * Math.random())];// 类型中随机选择1个
+						v.type = 'cmd'
+					}
+					let v;
+					s = io(`${this.nsp}`, Object.assign(options, { path: `${this.path || '/socket.io'}` }));
+					s.on('connect', onconnect);
+					s.on('disconnect', function () {
+						console.log(this.id + '@disconnect');
+						setTimeout(() => {
+							let div = v.$el;
+							div.style.background = '#fcc';
+							div.remove();
+						}, 2000);
+					});
+					s.on('message', function (m) {
+						console.log(this.id + '@message', m);
+						v.msg = m;
+					});
+					s.on('error', function (e) {
+						console.error('断开连接',e);
+					});
+					s.on('tm_user_regist', function (b, res) {
+						console.warn('tm_user_regist', b, res)
+					})
+					s.on('alert', function (...a) {
+						console.warn('alert', ...a)
+					})
+					s.on('tm_user_login', (info) => {
+						Object.assign(s, info)
+					})
+					s.on('tm_user_info', (info) => {
+
+					})
+					s.on('tm_user_online_score', (score) => {
+						s.onlineScore = score
+						console.warn('在线积分', score)
+					})
+					sockets.push(s);
+
+					// extends
+					s.login = function (email, password) {
+						s.emit('tm_user_login', email, password)
+					}
+					s.regist = function (email) {
+						s.emit('tm_user_regist', email)
+					}
+					s.save = function () {
+						s.emit('tm_user_save')
+					}
+					s.authenticate = function (email, password, authenticationCode) {
+						s.emit('tm_user_authenticate', email, password, authenticationCode)
+					}
+					s.info = function (o) {
+						s.emit('tm_user_info', o)
+					}
+					return s
+				}
+			}
+		});
+
+
+
+		s = vue.connect()
+		s.login('ddb1494@gmail.com', 'pass')
+
+	</script>
+
+	<!-- <textarea id="s_cmd"></textarea> -->
+	<noscript>Your browser does not support JavaScript!</noscript>
+	<script>'use strict';
+		let path, opt, msg;
+		opt = {
+			forceNew: true,
+			transports: ['websocket'],
+			path,
+			reconnection: false,
+			autoConnect: true,
+			// 没有下述参数
+			// query: { pass:'*PASS', }
+		};
+
+
+
+
+		// query 用?key=value&key=value发送
+		() => {
+			let s;
+			s = io('/?auth=ddb#hash', opt);
+			// s.open()      s.connect()
+			// s.close()     s.disconnect()
+			// 已触发下列事件
+			s.on('connect', function () { console.warn(`${s.id}@connect`, this.id) });
+			s.on('disconnect', (...e) => console.warn(e));// "transport close" 或 "io server disconnect"
+			s.on('message', (...m) => console.log(`${s.id}@message`, ...m));
+			s.on('error', (...e) => console.warn(e));
+			s.on('ping', () => console.log(`${s.id}@ping`));
+			s.on('pong', () => console.log(`${s.id}@pong`, Date.now() - s.now, s.now = Date.now()));
+			// 未触发下列事件
+			// s.on('open',(...e)=>console.warn(e));
+			// s.on('connection',(...e)=>console.warn(e));
+			// s.on('close',(...e)=>console.warn(e));
+			// s.on('disconnection',(...e)=>console.warn(e));
+		}
+
+
+		// 自称黑名单，断开连接。
+		() => {
+			let s;
+			s2 = io('/?deny=1', opt);
+			s2.on('connect', function () {
+				console.warn(`${s.id}@connect`);
+			});
+			s2.on('disconnect', function (signal) {
+				console.warn(`${this.id || 'deny'}@disconnect`, signal);
+			});
+			s2.on('error', function (...e) {
+				console.log(`${this.id}@error`, ...e);
+			});
+			s2.on('message', function (...m) {
+				console.log(`${this.id}@message`, ...m);
+			});
+		}
+
+
+		// 向服务器发送一条消息，返回验证相同消息，客户端断开连接
+		() => {
+			let s;
+			s = io('/?auth=admin', opt);
+			s.msg = 'messageTest';
+			s.on('message', function (m) {
+				if (this.msg === m && this.connected) {
+					console.log('测试消息成功', this.id, this.disconnect().connected ? '依然连接' : '已断开');
+				} else {
+					console.error('测试消失不一致');
+				}
+			});
+			s.on('connect', function () {
+				console.warn('s@connect', this.id);
+				this.send(this.msg);
+			});
+		}
+
+		// // 对s进行私聊
+		// s4 = io('/?auth=s4', opt);
+		// s4.on('connect', function(){
+		// 	this.emit('tomessage', s.id, 'ToMessage');
+		// });
+
+
+
+		// 用户验证
+		// 进入房间
+		// 房间聊天
+		// 退出房间
+		// 私聊
+		// 广播
+		// 上线
+		// 下线
+		// 频道人数，房间人数，好友人数
+
+
+		// opt.path         路径
+
+		// 命名空间(namespace)
+		// 客户端
+		// io(namespace, option)
+		// io('https://test.cihot.com:443/namespace?token=ooo', opt)     全写
+		// io('/nsp?token=ooo', opt)                                     可以省略协议域名端口
+
+		// 服务端
+		// io().of('/namespace').on('connect',socket=>{});
+
+
+		// 
+		// ()=>
+		!function () {
+			let ta, timeout, href, delaySave;
+			ta = document.querySelector('#s_cmd');
+			href = location.href;
+			delaySave = (text) => {
+				clearTimeout(timeout);
+				setTimeout(() => {
+					localStorage.setItem(href, text);
+					console.log('delaySave', href, text);
+				}, 5000);
+			};
+			ta.onkeydown = function (e) {
+				if (e.keyCode === 13 && e.ctrlKey && ta.value.trim().length) {
+					e.preventDefault();
+					s.emit('cmd', ta.value);
+				}
+			};
+			ta.value = localStorage.getItem(href);
+		}
+
+
+		// 退出前保存
+		// ()=>
+		{
+			window.addEventListener('beforeunload', function (e) {
+				localStorage.setItem('beforeunload', new Date().toLocaleString(), function () {
+					console.log(1)
+				})
+				// e.returnValue = '停止信息';
+			});
+			// 读取上一次关闭时间
+			console.log(localStorage.getItem('beforeunload'));
+		}
+
+
+		// 用于同时对好几个对象进行相同的读写操作   link(a,b,c).name
+		function link(...objects) {
+			objects = objects.filter(e => {
+				let type = typeof e;
+				return (type === 'object' && e) || type === 'function';
+			});
+			return new Proxy(Object.create(null), {
+				get(o, k, p) {
+					let result = objects.map(e => Reflect.get(e, k));
+					result._proxy = p;
+					result._objects = objects;
+					return result;
+				},
+				set(o, k, v, p) {
+					objects.forEach(e => Reflect.set(e, k, v));
+				}
+			});
+		}
+	</script>
+
+
+	<style>
+		.online {background: #ff0;}
+	</style>
+	<div id="app-login">
+		<input v-model="email" type="email" @blur="hasUserByEmail"><br>
+		<input v-model="password" type="password"><br>
+		<div v-if="isNeedVerity">
+			<input v-model="verificationCode" type="number"><br>
+			<input @click="verify" type="button" value="verify"><br>
+		</div>
+		<input @click="login" type="button" value="login"><br>
+		<span :class="{online: status==='online'}">{{status}}</span>
+	</div>
+	<script>
+		{
+			let data = {
+				email: 'ddb1494a@gmail.com',
+				password: '123456',
+				verificationCode: null,
+				status: 'offline',
+				isNeedVerity: false,
+				online: false,
+			}
+			let methods = {
+				login() {
+					let { email, password } = data
+					s.emit('userLogin', { email, password })
+				},
+				hasUserByEmail() {
+					let { email } = data
+					s.emit('hasUserByEmail', email)
+				},
+				verify() {
+					s.emit('userVerify', data.verificationCode)
+				},
+				method() {
+					console.log('method')
+				}
+			}
+			new Vue({
+				el: '#app-login',
+				data,
+				methods,
+			})
+			s.on('userlogin_nouser', function () {
+				console.log('userlogin_nouser')
+				data.status = 'nouser'
+				data.isNeedVerity = true
+			})
+			s.on('UserNeedVerify', function () {
+				data.status = 'need verify'
+				data.isNeedVerity = true
+			})
+			s.on('user', function (e) {
+				let k = e.error || e.message
+				if (k) {
+					let v = messages[k]
+					console.warn(v)
+
+					if (k === 'mailSent') {
+						data.isNeedVerity = true
+					}
+				}
+			})
+
+			
+		}
+
+	</script>
+
+	<script src="s-quest.js"></script>
+
+	<div id="test-login">
+		<input name="email" type="text" autofocus>
+		<input name="password" type="password">
+		<input name="verification-code" type="number" hidden>
+		<input name="login-button" type="button" value="login">
+		<input name="result" readonly>
+	</div>
+	<script src="test-login.js"></script>
+	<link href="test-login.css" rel="stylesheet">
+</body>
+
+</html>

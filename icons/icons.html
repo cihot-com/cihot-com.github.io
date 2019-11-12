@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" type="text/css" href="index.css">
+	<script src="/lib/jquery.js"></script>
+	<script src="icons.js"></script>
+</head>
+
+<body>
+	<div id="iconsbase64images"></div>
+
+	<form name="filter">
+		<label>blur:<input type="number"><input type=""</label>
+	</form>
+</body>
+
+<script>
+	for (let name in icons) {
+		$('<img>').attr({ src: icons[name], title: name }).appendTo('#iconsbase64images')
+	}
+
+	$('img').eq(0).css({ filter: `contrast(2)` })// 对比度 0~2
+	$('img').eq(1).css({ filter: `drop-shadow(6px 6px 1px #f00)` })// 阴影
+	$('img').eq(2).css({ filter: `blur(1px)` })// 模糊
+	$('img').eq(3).css({ filter: 'brightness(0)' })//亮度0~2，可以为200%
+	$('img').eq(4).css({ filter: 'contrast(200%)' })// 对比度
+	$('img').eq(5).css({ filter: 'grayscale(0)' })// 灰度 0~1, 0~100%
+	$('img').eq(7).css({ filter: 'hue-rotate(90deg)' })// 色圈 0~360deg, 0~1turn, 0~3.142rad
+	$('img').eq(8).css({ filter: 'invert(50%)' })// 颜色反转 0~1。注：.5会没有颜色。
+	$('img').eq(9).css({ filter: 'opacity(25%)' })
+	$('img').eq(10).css({ filter: 'saturate(30%)' })// 饱和度 0~4，0将变为灰度
+	$('img').eq(11).css({ filter: 'sepia(1)' })// 转变为棕褐色
+	$('img').eq(12).css({ filter: 'contrast(2) brightness(0) drop-shadow(6px 6px 3px #00f) hue-rotate(90deg)', transform:'scale(2)' })
+</script>
+
+</html>

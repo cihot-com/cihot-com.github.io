@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="/lib/hotkey/hotkey.js" defer></script>
+</head>
+
+<body>
+</body>
+
+<style>
+	div {
+		width: 100%;
+		height: 100px;
+		overflow: hidden;
+		border: 0.1px dashed #363;
+		counter-increment: none;
+	}
+
+	table {
+		width: 100%;
+		background: #fff1;
+		border-collapse: collapse;
+		font-family: monospace;
+		caption-side: bottom;
+		/* table-layout: fixed; */
+	}
+
+	.hide {
+		display: none;
+	}
+
+	.no {
+		overflow: hidden;
+		font-size: 6pt;
+		white-space: nowrap;
+		word-break: normal;
+		text-align: center;
+		width: 5em;
+		font-weight: bold;
+	}
+
+	.stat {
+		font-size: 6pt;
+	}
+
+	.stat * {
+		margin: 0;
+		padding: 0;
+	}
+
+	.textKey {
+		width: 10em;
+		height: 1em;
+		overflow: hidden;
+		display: block;
+		margin: 0;
+		padding: 0;
+	}
+
+	.source,
+	.target {
+		width: 24em;
+		white-space: pre-line;
+		word-wrap: break-word;
+		word-break: break-all;
+		font-family: monospace;
+		line-height: 1.5em;
+	}
+
+
+	tbody .target {
+		-webkit-user-modify: read-write-plaintext-only
+	}
+
+	tbody {
+		border-left: 3px solid #ccc;
+		border-right: 3px solid #ccc;
+	}
+
+	.target:focus::after {
+		content: attr(class);
+		background: #00f;
+		color: #fff;
+		position: absolute;
+		transform: translate(0, -100%)
+	}
+
+	tr:has(td:focus) {
+		filter: drop-shadow(2px 4px 6px black);
+	}
+	tr:has(td:focus) td {
+		background-color: #fff;
+	}
+</style>
+
+
+<script>
+	// 创建第一个表格
+	let tbl = document.createElement('table');
+	
+	// 由于权限过大，导致忽略css样式设置。所以不建议。建议用css进行。
+	// tbl.frame = 'void';// ['void', 'above', 'below', 'hsides', 'lhs', 'rhs', 'vsides', 'box', 'border']['7'];
+	// tbl.rules = ['none', 'rows', 'cols', 'groups', 'all'][4];
+
+
+	// tbl.style.border = '2px solid #000';
+	// tbl.style.backgroundColor = '#fff';
+	tbl.setAttribute('id', 'tbl');
+	document.body.appendChild(tbl);
+
+	let th = tbl.createTHead();
+	th.setAttribute('id', 'th');
+	let tr = th.insertRow();
+	(['no', 'source', 'target', 'stat']).forEach((text) => {
+		let td = tr.insertCell()
+		td.classList.add(text)
+		td.textContent = text
+	});
+
+	let tb = tbl.createTBody();
+	let caption = tbl.appendChild(document.createElement('caption'))
+	caption.textContent = 'Caption -----------------------'
+
+	let tf = tbl.createTFoot()
+	{
+		let tr = tf.insertRow();
+		(['no', 'source', 'target', 'stat']).forEach((text) => {
+			let td = tr.insertCell()
+			td.textContent = text
+		});
+	}
+
+
+
+	tb.setAttribute('id', 'tb');
+	for (let i = 0; i < 10; i++) {
+		let tr = tb.insertRow();
+		let td, text;
+
+		td = tr.insertCell();
+		td.classList.add('no')
+		td.textContent = i + 1;
+
+		td = tr.insertCell();
+		td.classList.add('source')
+		td.textContent = Math.random().toString(36).slice(2);
+
+		td = tr.insertCell();
+		td.classList.add('target')
+		td.textContent = Math.random().toString(36).slice(2);
+		td.tabIndex = 1
+
+		td = tr.insertCell();
+		td.classList.add('stat')
+		td.innerHTML = '<button>⭐</button>';
+	}
+
+</script>
+
+<script>
+// 控制第一个表格
+tbl.addEventListener('mousewheel', function (e) {
+	e.preventDefault()
+	log(e.target)
+
+}, { passive:false, capture:true })
+
+
+
+</script>
+
+<script>
+	const { log } = console
+
+	let div = document.createElement('div')
+	div.id = 'div'
+	document.body.appendChild(div)
+
+	let table = document.createElement('table')
+	table.id = 'table'
+	div.appendChild(table)
+
+	class DataTable {
+		constructor(table) {
+			if (!(table instanceof HTMLTableElement)) throw new TypeError(table);
+			Object.defineProperty(this, '_table', { value: table, writable: true });
+		}
+
+		data(value) {
+			if (Array.isArray(value)) {
+				Object.defineProperty(this, '_data', { value, writable: true })
+				return this;
+			} else {
+				return this._data;
+			}
+		}
+
+		head(...names) {
+			let tHead = this._table.tHead || this._table.createTHead();
+			let rows = tHead.rows
+			let rowsLength = rows.length
+			let namesLength = names.length
+			let len = Math.max(rowsLength, namesLength)
+			for (let i = 0, len = names.length; i < len; i++) {
+
+			}
+		}
+		static rows(thead, datas, eachFn) {
+			let datasLength = datas.length;
+			if (datasLength === 0) return this;
+			let rows = thead.rows
+			let rowsLength = rows.length
+
+
+
+		}
+
+		static rows(tbody, datas, eachFn) {
+			if (!Array.isArray(datas)) return;
+			let datasLength = datas.length
+			if (datasLength === 0) {
+				tbody.remove()
+				return;
+			}
+			let rows = tbody.rows;
+			let rowsLength = rows.length;
+			if (rowsLength === datasLength) {
+				let i = 0, tr;
+				for (; i < datasLength; i++) {
+					tr = rows.item(i)
+					DataTable.cells(tr, datas[i], eachFn)
+				}
+			} else if (rowsLength < datasLength) {
+				let i = 0, tr;
+				for (; i < rowsLength; i++) {
+					tr = rows.item(i)
+					DataTable.cells(tr, datas[i], eachFn)
+				}
+				for (; i < datasLength; i++) {
+					tr = tbody.insertRow()
+					DataTable.cells(tr, datas[i], eachFn)
+				}
+			} else if (rowsLength > datasLength) {
+				let i = 0, tr;
+				for (; i < datasLength; i++) {
+					tr = rows.item(i)
+					DataTable.cells(tr, datas[i], eachFn)
+				}
+				let index = i
+				for (; i < rowsLength; i++) {
+					tr = rows.item(index)
+					tr.remove()
+				}
+			}
+		}
+
+		static tbody(table, index = 0) {
+			if (!(table instanceof HTMLTableElement)) throw new TypeError(table);
+			let tbody;
+			if (typeof index === 'number') {
+				let tbodys = table.tBodies;
+				tbody = tbodys.item(index);
+				if (!tbody) {
+					let i = tbodys.length;
+					while (i++ <= index) {
+						tbody = table.createTBody();
+					}
+				}
+			} else {
+				tbody = table.tBodies.namedItem(index);
+				if (!tbody) {
+					tbody = table.createTBody();
+					tbody.setAttribute('name', index);
+				}
+			}
+			return tbody;
+		}
+
+		static cells(tr, datas, eachFn) {
+			let datasLength = datas.length;
+			if (datasLength === 0) return this;
+
+			let cells = tr.cells;
+			let cellsLength = cells.length;
+
+			let isFn = typeof eachFn === 'function'
+			if (datasLength === cellsLength) {
+				if (isFn) {
+					for (let i = 0; i < cellsLength; i++) {
+						let data = datas[i]
+						let cell = cells.item(i)
+						if (eachFn(cell, data)) break;
+					}
+				} else {
+					for (let i = 0; i < cellsLength; i++) {
+						let data = datas[i]
+						let th = cells.item(i)
+						th.textContent = data
+					}
+				}
+			} else if (datasLength > cellsLength) {
+				if (isFn) {
+					for (let i = 0; i < datasLength; i++) {
+						let cell = cells.item(i) || tr.insertCell()
+						let data = datas[i]
+						if (eachFn(cell, data)) break;
+					}
+				} else {
+					for (let i = 0; i < datasLength; i++) {
+						let cell = cells.item(i) || tr.insertCell()
+						let data = datas[i]
+						cell.textContent = data
+					}
+				}
+			} else if (datasLength < cellsLength) {
+				let i = 0;
+				if (isFn) {
+					for (; i < datasLength; i++) {
+						let data = datas[i]
+						let cell = cells.item(i)
+						if (eachFn(cell, data)) break;
+					}
+					let index = i
+					for (; i < cellsLen; i++) {
+						let cell = cells.item(index)
+						cell.remove()
+					}
+				} else {
+					for (; i < datasLength; i++) {
+						let data = datas[i]
+						let cell = cells.item(i)
+						cell.textContent = data
+					}
+					let index = i
+					for (; i < cellsLen; i++) {
+						let cell = cells.item(index)
+						cell.remove()
+					}
+				}
+			}
+		}
+	}
+
+
+	let dt = new DataTable(table)
+	// datas = [
+	// 	{ a: 1 },
+	// 	{ a: 2 },
+	// 	{ a: 3 },
+	// 	{ a: 4 },
+	// ]
+
+	// dt.head('a')
+	// DataTable.cells(table.tHead.insertRow(), datas, function (td, data) {
+	// 	td.textContent = data.a
+	// })
+
+	// DataTable.rows(DataTable.tbody(table), [datas1], function (td, data) { td.textContent = data.a })
+	// DataTable.rows(DataTable.tbody(table), [datas1, datas2, datas1, datas2, datas1, datas2, datas1, datas2, datas1, datas2], function (td, data) { td.textContent = data.a })
+	// DataTable.rows(DataTable.tbody(table), [datas1, datas1], function (td, data) { td.textContent = data.a })
+
+	let tbody = DataTable.tbody(table)
+	tbody.setAttribute('id', 'tbody')
+	tbody.setAttribute('name', 'tbody')
+
+	let datasN = Array.from(new Array(10), (e, i) => { return [{ text: i }, { text: Math.random().toString(36).slice(2) }] })
+	DataTable.rows(tbody, datasN, function (td, data) { td.textContent = data.text })
+
+
+	div.addEventListener('mousewheel', function (e) {
+
+		// parent box sice
+		{
+			let {target,path}=e;
+			let {nodeType, nodeName} = target;
+			if(nodeType===document.ELEMENT_NODE && nodeName[0]==='T') {
+				let parent, height;
+				for(let i=0,len=path.length; i<len; i++) {
+					if(path[i].nodeName==='TABLE') {
+						if(path[i + i].nodeName !== 'BODY') {
+							parent = path[i+1];
+						}
+						break;
+					}
+				}
+				if(parent) {
+					height = parent.getBoundingClientRect().height
+				}
+				log(height)
+			}
+		}
+
+
+		// let sign = Math.sign(e.deltaY)
+		let trs = tbody.querySelectorAll('tr');
+		let trsLength = trs.length;
+
+		if (e.deltaY > 0) {
+			let index, trRecord;
+			index = trsLength - 1
+			// 从下往上查找
+			let isBoundary=false;
+			while (index > -1) {
+				let tr = trs.item(index)
+				if (tr.hidden) {
+					continue;
+				}
+				if (!tr.classList.contains('hide')) {
+					index++;
+					while (tr = trs.item(index)) {
+						log('++', index)
+						if (tr.hidden) continue;
+						if (tr.classList.contains('hide')) {
+							tr.classList.remove('hide')
+							break;
+						}
+					}
+					// if(trRecord) trRecord.style.display = ''
+					break;
+				} else {
+					trRecord = tr
+				}
+				log('--', index)
+				index--;
+			}
+
+			index = 0
+			while (index < trsLength) {
+				let tr = trs.item(index)
+				if (tr.hidden) continue;
+				if (!tr.classList.contains('hide')) {
+					tr.classList.add('hide')
+					break;
+				}
+				index++;
+			}
+		} else {
+			let index, trRecord;
+			// 正序查询
+			index = 0
+			while (index < trsLength) {
+				let tr = trs.item(index)
+				if (tr.hidden) continue;
+				if (!tr.classList.contains('hide')) {
+					index--;
+					while (tr = trs.item(index)) {
+						if (tr.hidden) continue;
+						if (tr.classList.contains('hide')) {
+							tr.classList.remove('hide')
+							break;
+						}
+					}
+					break;
+				} else {
+					trRecord = tr
+				}
+				index++;
+			}
+
+			index = trsLength - 1
+			while (index > -1) {
+				let tr = trs.item(index)
+				if (tr.hidden) continue;
+				if (!tr.classList.contains('hide')) {
+					tr.classList.add('hide')
+					break;
+				}
+				index--;
+			}
+		}
+
+	}, {passive:false, capture:true})
+
+	// Array.prototype.forEach.call(table.tBodies, function (tbody) {
+	// 	tbody.onclick = tbody.onmousewheel = function (e) {
+	// 		log(e.type, e.currentTarget)
+	// 	}
+	// })
+
+	// tbody.addEventListener('DOMSubtreeModified', (e)=>{ log(e) })
+
+
+	function hide() {
+		let trs = tbody.querySelectorAll('tr');
+
+		let parentElement = tbody;
+		let height = tbody.offsetHeight;
+		while (parentElement = parentElement.parentElement) {
+			if (parentElement.offsetHeight > height) break;
+			if (parentElement.offsetHeight < height) {
+				height = parentElement.offsetHeight
+			}
+		}
+
+		let index = Array.prototype.findIndex.call(trs, (tr) => !tr.hidden);
+		let tr, rect;
+		while (tr = trs.item(index)) {
+			if (tr.hidden) continue;
+			if (tr.classList.contains('hide')) {
+				tr.classList.remove('hide')
+			}
+			rect = tr.getBoundingClientRect();
+			if (rect.y > height) {
+				tr.classList.add('hide')
+			}
+			index++
+		}
+	}
+
+	// hide()
+
+	function down(tbody, start) {
+		let index, trRecord;
+		// 倒数查找
+		index = trsLength - 1
+		while (index > -1) {
+			let tr = trs.item(index)
+			if (tr.hidden) continue;
+			if (!tr.classList.contains('hide')) {
+				index++;
+				while (tr = trs.item(index)) {
+					log('++', index)
+					if (tr.hidden) continue;
+					if (tr.classList.contains('hide')) {
+						tr.classList.remove('hide')
+						break;
+					}
+				}
+				// if(trRecord) trRecord.style.display = ''
+				break;
+			} else {
+				trRecord = tr
+			}
+			log('--', index)
+			index--;
+		}
+
+		index = 0
+		while (index < trsLength) {
+			let tr = trs.item(index)
+			if (tr.hidden) continue;
+			if (!tr.classList.contains('hide')) {
+				tr.classList.add('hide')
+				break;
+			}
+			index++;
+		}
+	}
+	function up(index) {
+
+	}
+
+
+	
+
+
+// window.addEventListener('keydown', function(e){
+// 	log(hotkey(e.target), e instanceof KeyboardEvent)
+// }, {once: true, passive:false, capture:true})
+
+
+
+
+
+</script>
+
+<pre>
+数据
+渲染
+
+数据多于渲染，增加渲染
+数据少于渲染，删除多余渲染。
+数据等于渲染，渲染。
+</pre>
+
+</html>

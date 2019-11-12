@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>view table</title>
+	<script src="/lib/d3.v5.11.0.min.js"></script>
+	<script src="./randStr.js"></script>
+	<script src="./View.js"></script>
+	<link rel="stylesheet" type="text/css" href="./table.css">
+</head>
+
+<body>
+</body>
+<script>
+	let data = [];
+
+	for (let i = 0; i < 396; i++) {
+		data.push({ source: randStr(), target: randStr(), i });
+	}
+
+	// console.log(data);
+
+	let v = new View()
+	v.headers({name:'#', className:''}, {name:'原文',className:'source'}, {name:'译文',className:'target'});
+	v.datas(data, 'i', 'source', 'target');
+	v.split(30, true)
+	v.page(0)
+	v.drawHeaders()
+	v.observe((o, n) => console.log(JSON.stringify(o), JSON.stringify(n)));
+
+	document.body.appendChild(v.table);
+
+
+	// 共同编辑一个数组
+</script>
+
+</html>

@@ -1,0 +1,14 @@
+* {
+	box-sizing: border-box;
+}
+
+#app {
+	border: 1px solid #ccc;
+}
+
+var[name] {
+	background: #eee;
+	display: block;
+	margin-bottom: 2px;
+	font-style: normal;
+}

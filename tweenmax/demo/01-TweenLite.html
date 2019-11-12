@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>TweenMax demon</title>
+	<script src="minified/TweenLite.min.js"></script>
+	<!--www.tweenmax.com.cn演示实例-->
+
+	<!-- Demo styles -->
+	<style>
+		body {
+			background-color: #fff;
+			font-family: sans-serif;
+			color: #1d1d1d;
+			margin: 0;
+			font-size: 16px;
+		}
+
+		p {
+			margin: 10px;
+		}
+
+		#scoreDisplay {
+			font-size: 40px;
+			text-align: center;
+			margin-top: 70px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<p>使0和100之间产生动画</p>
+	<div id="demo">
+		<div id="scoreDisplay"></div>
+	</div>
+
+	<script>
+
+		let { log } = console
+
+		let data = { score: 0 }
+		let target = { score: 100, onUpdate: showScore }
+
+
+		//创建一个tween在20秒内改变score的属性值从0到100.
+		let tween = TweenLite.to(data, 1, target)
+
+		let time = Date.now()
+
+		//在tween update时通过这个function输出.
+		function showScore() {
+			// log(this.vars === target)
+			let scoreDisplay = document.getElementById("scoreDisplay");
+			scoreDisplay.innerHTML = data.score.toFixed() + ':' + (Date.now() - time) + 'ms';
+		}
+	</script>
+</body>
+
+</html>

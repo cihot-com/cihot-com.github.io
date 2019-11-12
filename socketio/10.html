@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="Description" content="test socket.io">
+	<meta name="viewport" content="width=device-width">
+	<script src="/ddb/cssd/cssd.js"></script>
+	<script src="/lib/socket.io.js"></script>
+	<title>room</title>
+	<style>
+		.gamedexlogo {
+			width: 100px;
+		}
+	</style>
+</head>
+
+<body>
+	<img src="http://gamedex.co.kr/wp-content/uploads/2018/06/logo.png" class="gamedexlogo">
+	<var><label for="path">path</label><input id="path" value="/tq" autocomplete="off"></var>
+	<input type="button" value="content" id="connect">
+	<input type="button" value="discontent" id="disconnect">
+
+
+	<div class="cc">
+		<form>
+			<div id="username">
+				<label>username</label>
+				<input type="text" name="username" placeholder="username" autocomplete="off">
+			</div>
+			<div id="password">
+				<label>password</label>
+				<input type="password" name="password" placeholder="password" autocomplete="off">
+			</div>
+			<div id="login">
+				<input type="button" name="login" value="login">
+			</div>
+			<div id="reset-password">
+				<input type="button" name="reset-password" value="reset password">
+			</div>
+			<div id="vcode" class="hide">
+				<label>verification code</label>
+				<input type="number" name="vcode" placeholder="vcode" min="100000" max="999999" autocomplete="off">
+			</div>
+			<div id="verify">
+				<input type="button" name="verify" value="verify">
+			</div>
+		</form>
+	</div>
+
+	<style>
+		.cc, .cc * {
+			text-align: center;
+			vertical-align: middle;
+		}
+		.input[type="number"] {
+			ime-mode: disabled;
+			appearance: none;
+		}
+	</style>
+
+	<script>
+	
+	</script>
+</body>
+
+<script src="ui.js"></script>
+<script src="10.js"></script>
+
+</html>

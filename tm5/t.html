@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<script src="/lib/d3.v5.11.0.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>t</title>
+</head>
+
+<body>
+	<table>
+		<thead id="thead"></thead>
+	</table>
+</body>
+
+</html>
+<script>
+	let { log } = console
+	/*
+	需求
+	有一堆数据，已超过1000个标签的渲染。
+	指定一个表格。
+	设定标题。
+	设置数据查看器。
+	设置行数。
+	
+	*/
+	let datas = [
+		{ name: 'jinxidong', age: 2019 - 1983, desc: 'ddb' },
+		{ name: 'dongxue', age: 2019 - 1995, desc: 'ddm' },
+		{ name: 'jinxiaoqing', age: 2019 - 2014, desc: 'dd' },
+	]
+
+
+	class TB {
+		constructor(table) {
+			if (table instanceof HTMLElement && table.nodeName === 'TABLE') {
+				this.table = table
+			} else {
+				this.table = document.body.appendChild(document.createElement('table'))
+			}
+		}
+		tHead() {
+			return this.table.tHead || this.table.appendChild(document.createElement('thead'))
+		}
+		tBody(tBodyIndex = 0) {
+			let { tBodies } = this.table
+			let { length } = tBodies
+			let tBody = length === 0 ? this.table.appendChild(document.createElement('tbody')) : this.table.tBodies.item(tBodyIndex)
+			return tBody
+		}
+		head(names, effect = 0) {
+			let tHead = this.tHead()
+			let tHeadTr = tHead.querySelector('tr') || tHead.appendChild(document.createElement('tr'))
+			TB.tr(tHeadTr, names, effect, 'th')
+			return this;
+		}
+
+		body(datas, effect = 0, index = 0) {
+			let tBody = this.table.tBodies.item(index) || this.table.appendChild(document.createElement('tbody'))
+			let tBodyTrs = tBody.querySelectorAll('tr')
+			let tBodyTrsLength = tBodyTrs.length
+			let datasLength = datas.length
+			let retDatas = []
+			if (datasLength === 0) return retDatas;
+			if (tBodyTrsLength === datasLength) {
+				for (let i = 0; i < tBodyTrsLength; i++) {
+					let tr = tBodyTrs.item(i)
+					let v = TB.tr(tr, datas[i], effect, 'td')
+					retDatas[i] = v
+				}
+			} else if (tBodyTrsLength < datasLength) {
+				if (effect === 1 || effect === true) {
+					for (let i = 0; i < datasLength; i++) {
+						let tr = tBodyTrs.item(i) || tBody.appendChild(document.createElement('tr'))
+						let v = TB.tr(tr, datas[i], effect, 'td')
+						retDatas[i] = v
+					}
+				} else {
+					for (let i = 0; i < tBodyTrsLength; i++) {
+						let tr = tBodyTrs.item(i)
+						let v = TB.tr(tr, datas[i], effect, 'td')
+						retDatas[i] = v
+					}
+				}
+			} else if (datasLength < tBodyTrsLength) {
+				if (effect === -1 || effect === false) {
+					for (let i = 0; i < tBodyTrsLength; i++) {
+						let tr = tBodyTrs.item(i)
+						if (i < datasLength) {
+							let v = TB.tr(tr, datas[i], effect, 'td')
+							retDatas[i] = v
+						} else {
+							tr.remove()
+						}
+					}
+				} else {
+					for (let i = 0; i < datasLength; i++) {
+						let tr = tBodyTrs.item(i)
+						let v = TB.tr(tr, datas[i], effect, 'td')
+						retDatas[i] = v
+					}
+				}
+			}
+			return retDatas;
+		}
+
+		static tr(tr, datas, effect = 0, tagName = 'td') {
+			let elements = tr.querySelectorAll(tagName)
+			let elementsLength = elements.length
+			let datasLength = datas.length
+			let retDatas = []
+
+			if (datasLength === 0) return retDatas;
+			if (elementsLength === datasLength) {
+				elements.forEach((element, i) => {
+					let v = datas[i]
+					if (element.textContent !== v) element.textContent = v
+					retDatas[i] = v
+				})
+			} else if (elementsLength < datasLength) {
+				if (effect === 1 || effect === true) {
+					for (let i = 0; i < datasLength; i++) {
+						let element = elements.item(i) || tr.appendChild(document.createElement(tagName))
+						let v = datas[i]
+						if (element.textContent !== v) element.textContent = v
+						retDatas[i] = v
+					}
+				} else {
+					for (let i = 0; i < elementsLength; i++) {
+						let element = elements.item(i)
+						let v = datas[i]
+						if (element.textContent !== v) element.textContent = v
+						retDatas[i] = v
+					}
+				}
+			} else if (datasLength < elementsLength) {
+				if (effect === -1 || effect === false) {
+					for (let i = 0; i < elementsLength; i++) {
+						let element = elements.item(i)
+						if (i < datasLength) {
+							let v = datas[i]
+							if (element.textContent !== v) element.textContent = v
+							retDatas[i] = v
+						} else {
+							element.remove()
+						}
+					}
+				} else {
+					for (let i = 0; i < datasLength; i++) {
+						let element = elements.item(i)
+						let v = datas[i]
+						if (element.textContent !== v) element.textContent = v
+						retDatas[i] = v
+					}
+				}
+			}
+			return retDatas;
+		}
+
+		static cols(area, numCols = 0, tagName = 'td') {
+			let trs = area.querySelectorAll('tr')
+			trs.forEach((tr) => {
+				let tags = tr.querySelectorAll(tagName)
+				let tagsLength = tags.length
+				if (tagsLength < numCols) {
+					while (tagsLength++ < numCols) {
+						tr.appendChild(document.createElement(tagName))
+					}
+				} else if (numCols < tagsLength) {
+					while (tagsLength-- > numCols) {
+						tags.item(tagsLength).remove()
+					}
+				}
+			})
+			return area
+		}
+
+		static settr(tr, datas, tagName='td') {
+			let elements = tr.querySelectorAll(tagName)
+			let elementsLength = elements.length
+			let datasLength = datas.length
+
+			if (datasLength === 0) return ;
+			if (elementsLength === datasLength) {
+				for(let i=0; i<datasLength; i++){
+					let element = elements.item(i)
+					let v = datas[i]
+					if (element.textContent !== v) element.textContent = v
+				}
+			} else if (elementsLength < datasLength) {
+				for (let i = 0; i < datasLength; i++) {
+					let element = elements.item(i) || tr.appendChild(document.createElement(tagName))
+					let v = datas[i]
+					if (element.textContent !== v) element.textContent = v
+				}
+			} else if (datasLength < elementsLength) {
+				for (let i = 0; i < elementsLength; i++) {
+					let element = elements.item(i)
+					if (i < datasLength) {
+						let v = datas[i]
+						if (element.textContent !== v) element.textContent = v
+					} else {
+						element.remove()
+					}
+				}
+			}
+		}
+	}
+
+	let x = new TB()
+	x.head(['姓名', '年龄'],1)
+	x.body([
+		['jin', 1983],
+		['jin2', 1984],
+		['jin3', 1985],
+	], 1)
+
+	TB.tr(x.table.querySelector('tbody tr:nth-child(1)'), [1,2,3])
+
+
+
+	function time(fn, name='test') {
+		console.time(name)
+		fn()
+		console.timeEnd(name)
+
+	}
+
+</script>

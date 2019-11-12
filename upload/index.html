@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="/lib/jquery.js"></script>
+	<script src="/lib/md5.min.js"></script>
+	<script src="/lib/filehex.js"></script>
+	<title>Upload</title>
+
+</head>
+
+<body>
+
+	<div>
+		<h4>Settings</h4>
+		<div class="fr-2">
+			<label>url</label>
+			<input type="text" id="url" value="/upload">
+		</div>
+	</div>
+
+	<div>
+		<h4>Multi File</h4>
+		<input id="files" name="files[]" type="file" multiple>
+		<input type="button" value="uploads" onclick="uploads()">
+	</div>
+
+	<div>
+		<h4>Single File</h4>
+		<input id="file" name="file[]" type="file">
+		<input type="button" value="upload" onclick="upload()">
+	</div>
+
+	<div>
+		<h4>Text</h4>
+		<input id="text" name="text" type="text">
+		<select id="type">
+			<option value="post">post</option>
+			<option value="get">get</option>
+		</select>
+		<input type="button" value="send" onclick="send()">
+	</div>
+
+
+</body>
+
+<script>
+
+	let { log, warn } = console
+
+	function upload() {
+		let url = '/uploadfile'
+		let type = 'post'
+		let file = $('#file').prop('files').item(0)
+		if(!file) return warn('没有选择文件');
+		filehex(file, md5, (md5, file) => {
+			$.ajax({
+				url:'/hasupload',
+				type: 'post',
+				data: { md5 },
+			}).done((r) => {
+				if (r) {
+					warn('文件已存在于服务器中')
+				} else {
+					let fd = new FormData()
+					fd.append('file', file)
+					let q = new XMLHttpRequest()
+					q.open(type, url)
+					q.contentType = 'multipart/form-data'
+					q.onload = (e) => {
+						let { type, response } = e
+						if (response) log(type, typeof response.data, response.data)
+					}
+					q.send(fd)
+				}
+			})
+		})
+	}
+	function uploads() {
+		let url = $('#url').val()
+		let text = $('#text').val()
+		let type = $('#type').val()
+		let files = Array.from($('#files').prop('files'))
+		files.forEach((file) => {
+			filehex(file, md5, (md5, file) => {
+				file.md5 = md5
+				$.ajax({
+					url: '/hasupload',
+					type: 'post',
+					data: { md5 },
+				}).done((r) => {
+					if (r) {
+						warn('文件已存在于服务器中')
+					} else {
+
+						let fd = new FormData()
+						Array.from(files).forEach((file) => {
+							fd.append('file', file)
+						})
+						let q = new XMLHttpRequest()
+						q.open('post', '/upload')
+						q.contentType = 'multipart/form-data'
+						// q.onreadystatechange = (e)=>{
+						// 	if(e.readyState ===4 && e.status===200) log(e.type, e)
+						// }
+						q.onload = (e) => {
+							let { type, response } = e
+							if (response) log(type, typeof response.data, response.data)
+						}
+						q.send(fd)
+
+						// $.ajax({
+						// 	url: '/uploads',
+						// 	type: 'post',
+						// 	contentType: 'multipart/form-data',
+						// 	data: fd,
+						// }).done((res) => {
+						// 	warn(typeof res, res)
+						// })
+						log(q)
+					}
+				})
+			})
+		})
+	}
+	function send() {
+		let url = $('#url').val()
+		let text = $('#text').val()
+		let type = $('#type').val()
+		$.ajax({
+			type,
+			url,
+			data: { text },
+		}).done((data) => {
+			log(typeof data, data)
+		})
+
+	}
+
+
+</script>
+
+<style>
+	body {
+		box-sizing: border-box;
+		display: grid;
+		grid-template: 3fr/1fr;
+	}
+
+	body div {
+		border: 1px solid #eee;
+	}
+
+	.fr-2 {
+		display: grid;
+		grid-template: 1fr / 1fr 1fr;
+	}
+</style>
+
+</html>

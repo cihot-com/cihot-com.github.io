@@ -1,0 +1,28 @@
+*{
+	box-sizing: border-box;
+}
+#minimap {
+	background: #eee;
+	width: 1000px;
+	line-height: 0%;
+}
+.rect8 {
+	width: 8px;
+	height: 8px;
+	border: 1px solid #eee;
+	border-radius: 2px;
+	margin: 1px; 
+	padding: 0;
+	user-select: none;
+	cursor: pointer;
+	display: inline-block;
+	background-color: #ff0;
+	/* box-shadow: 1px 1px 1px #ccc; */
+}
+#minimap .rect8:nth-child(5n+1) {
+	border-color: #ccc;
+}
+
+.rect8:first-child, .rect8:last-child {
+	border-color: #999;
+}

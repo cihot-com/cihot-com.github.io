@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Color</title>
+</head>
+
+<body>
+
+	문자:<input type="color" id="color">배경:<input type="color" id="background">
+	<div id="box">테스트 문자</div>
+	<script>
+		let { log } = console
+		let color = document.getElementById('color')
+		let background = document.getElementById('background')
+		let box = document.getElementById('box')
+
+		background.onchange = (e) => {
+			let v = e.target.value
+			box.style.background = v
+		}
+		color.onchange = (e) => {
+			let v = e.target.value
+			box.style.color = v
+		}
+
+	</script>
+	<style>
+		#box {
+			width: 100px;
+			height: 100px;
+			border: 1px solid #000;
+		}
+	</style>
+</body>
+
+</html>

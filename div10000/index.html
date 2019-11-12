@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+	<nav>
+		<input type="button" value="init" onclick="oninit()">
+		<input type="button" value="sort" onclick="onsort()">
+		<input type="button" value="rand" onclick="onrand()">
+		<input type="button" value="hide" onclick="onhide()">
+		<input type="button" value="show" onclick="onshow()">
+		<input type="button" value="init2" onclick="oninit2()">
+		<input type="button" value="sort2" onclick="onsort2()">
+		<input type="button" value="rand2" onclick="onrand2()">
+		<input type="button" value="hide2" onclick="onhide2()">
+		<input type="button" value="show2" onclick="onshow2()">
+
+	</nav>
+	<section id="contents">
+
+	</section>
+
+	<section id="duplicate">
+		<pre id="d1">nihao wohao dajiahao.</pre>
+		<pre id="d2">nihao wohao dajiahao.</pre>
+		<pre id="d3">nihao wohao dajiahao.</pre>
+		<pre id="d4">nihao wohao <b>dajiahao</b>.</pre>
+	</section>
+</body>
+
+<style>
+	#duplicate pre {
+		position: absolute;
+		left: 0;
+		background: #fffe;
+		-webkit-user-modify: read-write-plaintext-only;
+	}
+
+
+	*::selection {
+		background: #000;
+		color: #fff;
+		/* filter: invert(); */
+	}
+
+	body {
+		position: absolute;
+	}
+
+	nav {
+		position: fixed;
+		background: #fffe;
+		height: 2em;
+	}
+
+	section {
+		padding: 1em;
+		position: relative;
+		top: 2em;
+		border: 2px solid #000;
+		width: max-content;
+	}
+
+	.editor {
+		-webkit-user-modify: read-write-plaintext-only;
+		-moz-user-modify: read-write-plaintext-only;
+		-ms-user-modify: read-write-plaintext-only;
+		user-modify: read-write-plaintext-only;
+
+		white-space: pre-line;
+	}
+
+	div {
+		border: 1px solid #eee;
+		border-bottom-width: 200%;
+		margin: 1px;
+	}
+
+	div:focus {
+		background: #ff03;
+	}
+
+	input[type="text"] {
+		width: 100%;
+	}
+
+	html,
+	body {
+		user-select: none;
+	}
+
+	.editor:focus pre {
+		display: block;
+	}
+	pre {
+		display: none;
+	}
+
+.target{
+	margin-top:200px;
+}
+	.red {
+		background: #fcc;
+		border-top-width: .5em;
+		border-top-color: #fff;
+		border-top-style: dotted;
+		transform: translate(0, 1em);
+	}
+</style>
+
+
+<script>
+	let { log, time, timeEnd } = console
+	let contents = document.getElementById('contents')
+	let divs = []
+	let max = 10
+	let tagName = 'div'
+	let tagType = 'text'
+	let valueName = 'innerText'
+
+	// tagName = 'input'
+	// valueName = 'value'
+	oninit()
+
+	function oninit() {
+		time('init')
+		contents.innerHTML = ''
+		let temp = document.createDocumentFragment()
+		for (let i = 0; i < max; i++) {
+			let e = document.createElement(tagName)
+			if (!Reflect.has(e, 'value') && !Reflect.has(e, 'checked')) {
+				e.type = tagType
+				e.classList.add('editor')
+			}
+			e[valueName] = `${i} - ${Math.random()}`
+			temp.appendChild(e)
+			divs.push(e)
+
+			let tip = document.createElement('pre')
+			let s = tip.style
+			s.position = 'absolute'
+			s.transform = 'translate(100%,-100%)'
+			s.width = '100%'
+			tip.textContent = 'tip' + i
+			e.appendChild(tip)
+		}
+		contents.appendChild(temp)
+		timeEnd('init')
+	}
+
+	function oninit2() {
+		time('init2')
+		contents.innerHTML = ''
+		for (let i = 0; i < max; i++) {
+			let e = document.createElement(tagName)
+			if (!Reflect.has(e, 'value') && !Reflect.has(e, 'checked')) {
+				e.type = tagType
+				e.classList.add('editor')
+			}
+			e[valueName] = `${i} - ${Math.random()}`
+			contents.appendChild(e)
+			divs.push(e)
+		}
+		timeEnd('init2')
+	}
+
+	function onsort() {
+		time('sort')
+		contents.innerHTML = ''
+
+		time('sort_algorism')
+		divs.sort((a, b) => {
+			return a[valueName] > b[valueName] ? -1 : (a[valueName] < b[valueName] ? 1 : 0)
+		})
+		timeEnd('sort_algorism')
+
+		let temp = document.createDocumentFragment()
+		divs.forEach(e => temp.appendChild(e))
+
+		contents.appendChild(temp)
+		timeEnd('sort')
+	}
+
+	function onsort2() {
+		time('sort2')
+		time('sort_algorism')
+		divs.sort((a, b) => {
+			return a[valueName] > b[valueName] ? -1 : (a[valueName] < b[valueName] ? 1 : 0)
+		})
+		timeEnd('sort_algorism')
+		divs.forEach(e => contents.insertAdjacentElement('afterbegin', e))
+		timeEnd('sort2')
+	}
+
+
+
+	// 组件：有文本，有状态，有高亮. 
+	class Target {
+		constructor() {
+			// 创建HTML元素
+			let element = document.createElement('p')
+			element.className = 'target'
+			this.element = element
+
+			// 创建影子
+			let shadow = document.createElement('pre')
+			shadow.className = 'shadow'
+			element.appendChild(shadow)
+			this.shadow = shadow
+
+			// 创建本体
+			let content = document.createElement('pre')
+			content.className = 'content'
+			element.appendChild(content)
+			this.content = content
+
+			this.rules = [
+				{ rule: / /g, className: 'red' }
+			]
+		}
+
+		text(...args) {
+			let len = args.length
+			if (len === 0) {
+				return this.content.textContent
+			} else if (len >= 1) {
+				this.content.textContent = args.join('\\n')
+				this.drawShadow()
+			}
+			return this
+		}
+
+		drawShadow() {
+			let text = this.content.textContent
+			let { rules, shadow } = this
+			shadow.innerHTML = ''
+			if (Array.isArray(rules)) {
+				rules.forEach((e) => {
+					let { rule, className } = e
+					let element = document.createElement('pre')
+					element.innerHTML = text.replace(rule, `<var class="${className}">$&</var>`)
+					shadow.appendChild(element)
+				})
+			}
+		}
+	}
+
+
+	let target = new Target()
+	document.body.appendChild(target.element)
+	target.text('a b c')
+
+	// function chainReplace(text, ...list) {
+	// 	log(text, list)
+	// }
+
+	// chainReplace('ni ni  a ', ['', '<NI>'])
+
+</script>
+
+
+</html>

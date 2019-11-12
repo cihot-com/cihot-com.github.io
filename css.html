@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>css</title>
+	<style>* { font-size: 9pt; font-family: Consolas, monospace; }</style>
+</head>
+
+<body>
+	<section>
+		<style>
+			#app1 a { display: block; }
+			#app1 a#link:link { background: #ccf; }
+			#app1 a#visited:visited { background: #eee; color: #ccc; }
+			#app1 a#hover:hover { background: #ff0; }
+			#app1 a#active:active { background: #00f; color: #fff; }
+		</style>
+		<div id="app1">
+			<p>a标签的各个状态(link, visited, hover, active)</p>
+			<a id="link" href="#link">连接：link</a>
+			<a id="visited" href="#visited" id="visited">已查看：visited</a>
+			<a id="active" href="#active">点击时：active</a>
+			<a id="hover" href="#hover">鼠标过来：hover</a>
+		</div>
+		<script>document.querySelector('#visited').click()</script>
+	</section>
+
+	<section>
+		<style>
+			#app2 label :not(input:checked)  { background:#ff0; }
+		</style>
+		<div id="app2">
+			<form>
+				<label>radio<input name="radio" type="radio"></label>
+				<label>checkbox<input name="checkbox" type="checkbox" value="checkbox" checked></label>
+				<label>select:<select name="select">
+					<option label="option1" value="o1"></option>
+					<option label="option2" value="o2"></option>
+				</select></label>
+			</form>
+		</div>
+		<script>
+			let app2 = document.querySelector('#app2')
+		</script>
+	</section>
+</body>
+
+</html>

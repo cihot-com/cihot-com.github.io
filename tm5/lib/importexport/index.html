@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>localworker</title>
+</head>
+
+<body>
+	<script type="text/javascript">
+		var a = 'js-a-1000';
+		let b = 'js-b-2000';
+	</script>
+	<script type="text/javascript">
+		console.log('[javascript] a:', a)
+		console.log('[javascript] b:', b)
+	</script>
+
+	<script type="module">
+		let a = 'module-a-3000';
+		let b = 'module-b-4000';
+	</script>
+	<script type="module">
+		console.log('[module] a:', a)
+		console.log('[module] b:', b)
+	</script>
+
+	<script>
+		// import s2 from './s2.js'// 默认为text/javascript，所以模块化写法会报错。
+		console.log(a)
+	</script>
+
+	<script type="text/javascript">
+		console.log('[javascript] a:', a)
+		console.log('[javascript] b:', b)
+	</script>
+
+	<script type="text/javascript">
+		import('./s2.js').then((e) => {
+			for (let k in e) {
+				let v = e[k]
+				console.log(k, v)
+			}
+		})
+	</script>
+
+
+	<script type="module">
+		// import s2 from './s2.js'
+		// console.log('module load s2', s2)
+	</script>
+
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>localworker</title>
+</head>
+
+<body>
+	<script src="codecache.js"></script>
+	<script>
+		const
+			OK = '⭕️',
+			NG = '❌';
+
+		let { log, group, groupEnd, table } = console
+		let cc;// CodeCache instance
+
+		!function(){
+			cc = new CodeCache()
+			
+			// 添加脚本。+为实际添加，0则不添加，-则删除脚本
+			log(cc.add(`console.log(1);`))// +
+			log(cc.add(`console.log(2);`))// +
+			log(cc.add(`console.log(1);`))// 0
+			log(cc.add(`console.log(1);`))// 0
+			log(cc.add(`console.log(3);`))// +
+			log(cc.add(`console.log(4);`))// +
+			log(cc.add(`console.log(5);`))// +
+			
+
+			// 从cc._data中删除代码缓存
+			log(cc.remove(`console.log(3);`).map(e=>e.code))// -
+			log(cc.remove(`console.log(1);`).map(e=>e.code))// -
+			log(cc.remove(`console.log(5);`).map(e=>e.code))// -
+
+
+			log(cc.run(`console.log(1);`))
+			log(cc.run(`console.log(2);`))
+			log(cc.run(`console.log(2);`))
+			log(cc.run(`console.log(2);`))
+			log(cc.run(`console.log(4);`))
+			
+			
+			log(cc.worker(`console.log('worker', name);`, 'testWorker1'))
+
+			// log(cc._datas)
+			log(cc.codes)
+
+			log(cc.get('console.log(1)'))
+			log(cc.get('console.log(1);'))
+
+			log('remove', cc.remove('console.log(1);'))
+		}()
+
+		!function(){
+			let a = [1,2,3,4,5]
+
+			a.forEach((e,i)=>{
+				if(i>2) return 	'123';
+				console.warn('---------',e)
+			})
+
+		}()
+
+
+	</script>
+</body>
+
+</html>

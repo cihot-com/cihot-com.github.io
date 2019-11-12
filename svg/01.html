@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>svg</title>
+</head>
+
+<body>
+	<svg width="100vw" height="100vh" style="position: fixed;left:0;top:0;z-index:-1;"></svg>
+	<table>
+		<tbody></tbody>
+	</table>
+</body>
+
+<style>
+svg {
+	user-select: none;
+}
+</style>
+<script>
+	const { log } = console
+	let svg = document.querySelector('svg')
+
+	let g = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+	g.setAttribute('x',0)
+	g.setAttribute('y',0)
+	svg.appendChild(g)
+
+	for (let i = 0; i < 200; i++) {
+		let text = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+		text.textContent = i
+		text.setAttribute('font-family', 'Tahoma')
+		text.setAttribute('font-size', 20)
+		text.setAttribute('x', 0)
+		text.setAttribute('y', i * (text.getBoundingClientRect().height || 20))
+		g.appendChild(text)
+	}
+
+	svg.addEventListener('mousedown', function (e) {
+		// log(this === svg)
+		let text = e.target
+		if(text.tagName==='text') {
+			let v = text.textContent
+			v = parseInt(text.textContent)
+			log(v)
+			text.textContent = v + 1000000
+			// text.textContent = this.textContent + 1
+		}
+
+	})
+
+	svg.addEventListener('wheel', function (e) {
+		let { deltaX: dx, deltaY: dy } = e
+
+		g.querySelectorAll('text').forEach((text)=>{
+			text.setAttribute('x', parseInt(text.getAttribute('x')) + (dx===0?0:dx>0?20:-20))
+			text.setAttribute('y', parseInt(text.getAttribute('y')) + (dy===0?0:dy>0?20:-20))
+		})
+	})
+
+
+	function ce(tagName) {
+
+	}
+
+</script>
+
+</html>

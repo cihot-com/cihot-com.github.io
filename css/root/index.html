@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>:root</title>
+</head>
+
+<body>
+	<style>
+		:root {
+			--color: green;
+		}
+	</style>
+	<button onclick="changeColor()">red</button>
+	<button onclick="changeColor()">blue</button>
+	<p>你好，<span style="color:var(--color)">尊敬</span>的用户！</p>
+</body>
+<script>
+	function changeColor(){
+		let color = event.target.textContent
+		document.documentElement.style.setProperty('--color', color)
+	}
+</script>
+
+</html>

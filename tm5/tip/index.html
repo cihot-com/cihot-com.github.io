@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Document</title>
+<script src="tip.js"></script>
+</head>
+
+<body>
+<style>
+	.box {
+		width:150px;
+		height:150px;
+	}
+	.box::before {
+		content:attr(data-i);
+		background-color:#0003;
+	}
+</style>
+<div data-i="div0" class="box" style="position:fixed; left:100px; top:100px; border:2px solid #000;"></div>
+<div data-i="div1" class="box" style="position:fixed; left:120px; top:300px; border:2px solid #f00; overflow:hidden;">
+	<div data-i="div2" class="box" style="position:absolute; left:130px; top:100px; border:2px solid #00f;"></div>
+	<div data-i="div3" class="box" style="position:absolute; left:430px; top:80px; border:2px solid #0ff;"></div>
+</div>
+<pre style="position:absolute; top:500px;">代码：
+tip = new Tip(target,[element])     target是弹出提示的目标
+tip.target                          可以访问到上面提供的参数
+tip.element                         提示窗本体
+tip.width(value)                    设置提示穿的宽度
+tip.height(value)                   设置提示穿的高度
+tip.text(value)                     提示窗内容，实现textContent
+tip.html(value)                     设置提示窗内容，实现innerHTML
+tip.pos(targetPos, elementPos)      将一个div视为9个顶点的四方块，pos就是这9个点
+tip.update()                        根据上一次pos(m,n)再次定位
+tip.translate(x,y)                  使用style.transform中的translate(x,y)进行相对位移
+tip.rotate(deg,origin)              使用style.transform中的rotate(角度,x,y,z)进行旋转，使用style.transformOrigin进行圆点设置
+tip.tipStyle                        参考静态Tip.style
+tip.tipBox                          参考静态Tip.box
+
+静态：
+Tip.style                 使用统一的style标签进行管理
+Tip.box                   所有的tip标签将在这里统一保管
+
+页面测试：
+在开发者工具控制台的Console中，输入以下代码。
+tip0.pos(3,3)
+tip=new Tip(div0)
+tip.html('&lt;h3&gt;你好&lt;/h3&gt;&lt;p&gt;祝你身体健康！&lt;/p&gt;').pos(1,7)
+</pre>
+
+</body>
+<script>
+
+
+let tips = {}
+
+
+document.querySelectorAll('div').forEach((div, i)=>{
+	div.id = `div${i}`;
+
+	
+	let tip = this[`tip${i}`] = new Tip(div)
+	tip.text(`Tip[${i}]`).show()
+	
+	let ms = 0, step = 30;
+	for(let a=1;a<=9;a++) {
+		for(let b=1;b<=9;b++){
+			setTimeout(function () {
+				tip.pos(a, b);
+				tip.text(`tip${i}\n  pos(${a},${b})  `)
+			}, ms);
+			ms += step;
+		}
+	}
+})
+
+tip3.rotate(45,0,0);
+
+
+// let tip = new Tip(document.body)
+// tip.text(`
+
+// tip = new Tip(target)
+
+// tip.target
+// tip.element
+
+// tip.text(...)
+
+// tip.pos(targetPos, elementPos)
+
+// pos:This is a rectangle.
+// 1 2 3
+// 4 5 6
+// 7 8 9
+// `)
+// tip.pos(3,3)
+
+</script>
+
+</html>

@@ -1,0 +1,82 @@
+*{
+	box-sizing: border-box;
+	font-family: 'Microsft Yahei', Meiryo UI, Malgun Cothic;
+	font-size: 9pt;
+	outline-width: 0.1px!important;
+}
+
+table {
+	width: 90vw;
+	border-collapse: collapse;
+	border: 0.1px solid #ccc;
+}
+tbody td.target {
+	user-modify: read-write-plaintext-only;
+	-webkit-user-modify: read-write-plaintext-only;
+	-moz-user-modify: read-write-plaintext-only;
+}
+td, th {
+	border: 0.1px solid #ccc;
+	font-family: monospace, "Microsoft Yahei", "Meiryo UI";
+	font-size: 12pt;
+	line-height: 1.2em;
+	white-space: nowrap;
+	word-wrap: unset;
+	word-break: normal;
+	text-align: left;
+	vertical-align: middle;
+	text-align: center;
+}
+tr:focus:has(td) {
+	outline: none;
+	border-bottom: 0.1px solid #000;
+	background-color: crimson;
+}
+
+.i,.index {
+	font-size: 7pt;
+	font-family: monospace;
+	width: 32px;
+	overflow: hidden;
+	text-align: center;
+	vertical-align: middle;
+	white-space: nowrap;
+	word-wrap: none;
+	word-break: normal;
+}
+
+
+/**
+              换行符   空格和制表符   文字转行
+normal        合并     合并           转行
+nowrap        合并     合并           不转行
+pre           保留     保留           不转行
+pre-wrap      保留     保留           转行
+pre-line      保留     合并           转行
+break-spaces  保留     保留           转行
+*/
+.source, .target {
+	width: 50%;
+	white-space: break-spaces;
+	word-wrap: break-word;
+	word-break: break-all;
+	text-align: left;
+}
+
+.pageButton {
+	background: #ddd;
+	margin: 0;
+	padding: 0 4px;
+	font-size: 6pt;
+	cursor: crosshair;
+	user-select: none;
+}
+.pageButton:first-child {
+	border-radius: 1em 0 0 1em;
+}
+.pageButton:last-child {
+	border-radius: 0 1em 1em 0;
+}
+.pageButton:hover {
+	filter: contrast(180%) drop-shadow(0 0 2px #000);
+}

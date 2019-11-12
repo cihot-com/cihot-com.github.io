@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>HTML5</title>
+</head>
+
+<body>
+	<textarea id="textarea"></textarea>
+
+	<div id="divEditor"></div>
+
+	<style>
+		html, body {
+			box-sizing: border-box;
+		}
+		#divEditor, textarea {
+			border: 1px solid #eee;
+			width: 100%;
+			min-height: 100px;
+			-webkit-user-modify: read-write-plaintext-only;
+		}
+	</style>
+	<script src="index.js"></script>
+</body>
+</html>

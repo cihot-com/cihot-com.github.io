@@ -1,0 +1,65 @@
+* {
+	--errorBgColor: #300;
+	--errorColor: #c36;
+	--doneBgColor: #030;
+	--doneColor: #3c6;
+	--font-size: 12pt;
+	--color: #fff;
+	--bgColor: #000a; }
+body, textarea, input,button, select, div, pre, span, var * {
+	background: var(--bgColor);
+	color: var(--color);
+	font-size: var(--font-size); }
+h1 {
+	font-size: 18pt; }
+h5 {
+	filter: drop-shadow(2px 4px 6px #fff);
+}
+#app div{
+	background: var(--bgColor);
+	color: var(--color);
+	width:100%;}
+#app textarea {
+	border: none;
+	outline: none;
+	width: calc(100% - 1em);
+	/* height:100%; */
+	min-height: 5em;
+	resize: none;
+	margin: 1px;
+	}
+#app pre {
+	max-width: 10%;
+	padding: 1em;
+	border-radius: 1em;
+	border: 1px solid #000;
+	float: left;
+	overflow-y: auto;
+	white-space: pre-line;
+	word-break: break-all;
+	word-spacing: normal;
+	}
+#app pre::before {
+	padding: 0 1em;
+	margin: 0;
+	content: attr(title);
+	/* background: #000; */
+	color: #fff;
+	display: flex;
+	filter: drop-shadow(1px 2px 4px #ccc);
+}
+.col2 {
+	display: grid;
+	grid-template-columns: 1fr 1fr; }
+ins {
+	text-decoration-line: unset!important;
+	background: var(--doneBgColor)!important;
+	color: var(--doneColor)!important; }
+del {
+	text-decoration-line: unset!important;
+	background: var(--errorBgColor)!important;
+	color: var(--errorColor)!important;}
+.preview {
+	display: flex;
+	flex-wrap: wrap;
+	}

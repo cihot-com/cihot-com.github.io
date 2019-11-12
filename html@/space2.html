@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>space</title>
+	<script src="/lib/vue.min.js"></script>
+	<style>
+		.tar,
+		textarea {
+			font-family: Verdana, Georgia, Consolas, Tahoma, "Microsoft Yahei";
+			font-size: 12pt;
+			width: 100%;
+			height: 400px;
+			position: fixed;
+			left: 0;
+			top: 4em;
+			border: none;
+			outline: none;
+			background: #0000;
+			margin: 0;
+			padding: 0;
+			white-space: pre;/* ta会自动换行，但div不会，所以需要pre*/
+			text-overflow: clip;
+			overflow: hidden;/*怕编辑时错过什么内容*/
+
+		}
+
+		.tar {
+			color: #0000;
+			background: #0000;
+		}
+		.sp:before {
+			background: #eee;
+			content: '·';
+			position: absolute;
+			color: #999;
+		}
+
+		.LF {
+			background: #eee;
+		}
+
+		.LF:before {
+			content: '↵';
+			position: absolute;
+			color: #999;
+		}
+
+		.az {
+			background-color: rgb(255, 158, 158);
+		}
+
+		.number {
+			background-color: rgb(147, 147, 255);
+		}
+
+		label input {
+			border: none;
+		}
+
+		.colortag {
+			background-color: rgb(127, 0, 127);
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<div>
+			<pre class="tar" v-html="preValue"></pre>
+			<textarea v-model="value" autofocus></textarea>
+		</div>
+	</div>
+
+	<script>
+		let { log } = console
+		let v = new Vue({
+			el: '#app',
+			data: {
+				value: 'abc abc aaa[ffffff]colortag[-]',
+			},
+			computed: {
+				preValue: function () {
+					let space = this.space;
+					return this.value.replace(/ |<|\n|\[([0-9A-F]{6}|[0-9A-F]{8}|\-)\]|[a-z]|\d/gi, function (e, i, a, f) {
+						if (e === ' ') {
+							return `<span class="sp"> </span>`;
+						} else if (e === '<') {
+							return '&lt;'
+						} else if (e === '\n') {
+							return `<span class="LF">\n</span>`;
+						} else if (/^\[([0-9A-F]{6}|[0-9A-F]{8}|\-)\]$/gi.test(e)) {
+							// log(e)
+							// return `<span class="colortag">${e}</span>`;
+							return e
+						} else if (/^\d$/.test(e)) {
+							return `<span class="number">${e}</span>`;
+						} else if (/^[A-Z]$/gi.test(e)) {
+							return `<span class="az">${e}</span>`;
+						}
+					});
+				}
+			}
+		});
+
+
+		// 关于空格太多，需要跟着滚动
+		{
+
+			let tar = document.querySelector('.tar')
+			let ta = document.querySelector('textarea')
+			ta.addEventListener('scroll', () => {
+				let x = ta.scrollLeft, y = ta.scrollTop
+				tar.scrollTo(x, y)
+				log(x, y)
+			})
+		}
+
+
+// v.$watch('value', (n,o)=>{
+// 	// console.log(n,o);
+// 	// v.preValue=rp(n)	// '\u2027',
+// 	document.querySelector('#tar pre').innerHTML=(rp(n))
+// });
+	</script>
+</body>
+
+</html>

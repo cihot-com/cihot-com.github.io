@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>本地运行</title>
+</head>
+
+<body>
+	<script>
+		let { log, warn, error } = console
+
+		let opt = Object.entries({
+			left:0,
+			top:0,
+			width:400,
+			height:700,
+			screenX: 0,
+			screenY: 0,
+			centerscreen: 'yes',
+			menubar:'yes',
+			toolbar:'yes',
+			// location: 'yes',
+			// personalbar: 'no',
+			// status: 'yes',
+			// dependent: 'no',
+			// dialog:'yes',
+			minimizable:'yes',
+			// fullscreen:'yes',
+			// resizable:'no',
+			// scrollbars:'no',
+			// titlebar:'no',
+			chrome:'yes',
+		}).map(e=>`${e[0]}=${JSON.stringify(e[1])}`).join(',')
+		log(opt)
+
+		let papago = open('https://papago.naver.com', 'papago', opt)
+		// let papago = open('https://papago.naver.com')
+		
+		// 注意！不是侦听papago！
+		window.onmessage = function ({ data }) {
+			log('来自papago的信息', data)
+		}
+
+		setTimeout(() => {
+			log('试图运行脚本')
+			papago.postMessage({ type: 'exec', script: 'console.log("插件运行正常");send(document.title);' }, '*')
+		}, 2000)
+
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+</head>
+
+<body>
+	<script src="functionanalyze.js"></script>
+	<script>
+		let { log, group, groupEnd, table } = console
+
+		let test = function (f, desc='') {
+			let d = new FunctionAnalyze(f);
+			let label = f.toString() + desc;
+			group(label)
+			let o = d.analyze()
+			o.origin = f.toString()
+			// log((o.isArrow ? '⭕️' : '❌') + '箭头函数')
+			log(o.str)
+			log(eval('(' + o.str + ')') instanceof Function ? '⭕️' : '❌')
+			groupEnd(label)
+		}
+
+
+		/* 基本函数测试 */
+		!function () {
+			test(a => a, '箭头函数')
+			test(a => { }, '箭头函数')
+			test((a, b) => a, '箭头函数')
+			test((a, b) => (a, b), '箭头函数')
+			test(() => { }, "箭头函数（带花括号）")
+			test(() => '', "箭头函数（不带花括号）")
+			test(function () { }, "函数（匿名）")
+			test(function f() { }, "函数")
+			test(function f(a, b) { a }, "函数")
+			
+		}
+
+		/* 属性函数测试 */
+		!function () {
+			test(({ f: a => a }).f, '属性箭头函数')
+			test(({ f: a => { } }).f, '属性箭头函数')
+			test(({ f: (a, b) => a }).f, '属性箭头函数')
+			test(({ f: (a, b) => (a, b) }).f, '属性箭头函数')
+			test(({ f: () => { } }).f, "属性箭头函数（带花括号）")
+			test(({ f: () => '' }).f, "属性箭头函数（不带花括号）")
+			test(({ f: function () { } }).f, "属性函数（匿名）")
+			test(({ f: function f() { } }).f, "属性函数")
+			test(({ f: function f(a, b) { a } }).f, "属性函数")
+		}
+
+		/* 带注释的基本函数测试 */
+		!function () {
+			test(/*cm*/a/*cm*/ =>/*cm*/ a/*cm*/, '箭头函数')
+			test(/*cm*/a/*cm*/ =>/*cm*/ {/*cm*/ }/*cm*/, '箭头函数')
+			test(/*cm*/(/*cm*/a/*cm*/,/*cm*/ b/*cm*/)/*cm*/ =>/*cm*/ a/*cm*/, '箭头函数')
+			test(/*cm*/(/*cm*/a/*cm*/,/*cm*/ b/*cm*/)/*cm*/ =>/*cm*/(/*cm*/a/*cm*/, b), '箭头函数')
+			test(/*cm*/(/*cm*/)/*cm*/ =>/*cm*/ {/*cm*/ }/*cm*/, "箭头函数（带花括号）")
+			test(/*cm*/(/*cm*/)/*cm*/ =>/*cm*/ ''/*cm*/, "箭头函数（不带花括号）")
+			test(/*cm*/function /*cm*/(/*cm*/)/*cm*/ {/*cm*/ }, "函数（匿名）")
+			test(/*cm*/function /*cm*/f(/*cm*/)/*cm*/ {/*cm*/ }, "函数")
+			test(/*cm*/function /*cm*/f(/*cm*/a, b/*cm*/)/*cm*/ {/*cm*/ a }, "函数")
+		}
+
+		/* 带注释和内部函数的基本函数测试 */
+		!function () {
+			test(/*cm*/a/*cm*/ =>/*cm*/(a) => a/*cm*/, '箭头函数')
+			test(/*cm*/a/*cm*/ =>/*cm*/ {/*cm*/(a) => a }/*cm*/, '箭头函数')
+			test(/*cm*/(/*cm*/a/*cm*/,/*cm*/ b/*cm*/)/*cm*/ =>/*cm*/(a) => a/*cm*/, '箭头函数')
+			test(/*cm*/(/*cm*/a/*cm*/,/*cm*/ b/*cm*/)/*cm*/ =>/*cm*/(/*cm*/a/*cm*/, (a) => a), '箭头函数')
+			test(/*cm*/(/*cm*/)/*cm*/ =>/*cm*/ {/*cm*/(a) => a }/*cm*/, "箭头函数（带花括号）")
+			test(/*cm*/(/*cm*/)/*cm*/ =>/*cm*/(a) => a /*cm*/, "箭头函数（不带花括号）")
+			test(/*cm*/function /*cm*/(/*cm*/)/*cm*/ { (a) => a/*cm*/ }, "函数（匿名）")
+			test(/*cm*/function /*cm*/f(/*cm*/)/*cm*/ { (a) => a/*cm*/ }, "函数")
+			test(/*cm*/function /*cm*/f(/*cm*/a, b/*cm*/)/*cm*/ { let f = (a) => a/*cm*/ }, "函数")
+		}
+		// E0:06:E6:69:18:63
+
+		!function (){
+			let f = ({
+				ready (a) {
+					this.isFire = false
+					let f = () => {
+					// function f(){
+						if (this.isFire) {
+							send('⭕️', 'Fire!!!!')
+							clearInterval(i)
+						}
+					};
+					let i = setInterval(f, 0)
+				}
+			}).ready;
+			test(f);
+		}
+
+		!function (){
+			// test((...a) => send('**hack', ...a))
+			test((...a) => { send('-w-', ...a) })
+		}()
+
+
+
+		// test({ f() {} }.f, "属性函数")
+		// test({ f: function () { } }.f, "属性函数（匿名）")
+		// test({f: (s) => {}}.f, "属性箭头函数")
+
+
+
+		// test({ f: () => "对象的属性箭头函数（不带花括号）" }.f)
+
+		// test(false, '非函数')
+
+		// test(function (a/*nihao*/, b/*aflasdfjkl*/) { console.log(a, b); '/*带参数备注的函数*/' })
+
+
+		// // 内含箭头函数
+		// test(() => { let f = (a) => log(a) }, "箭头函数（带花括号）")
+		// test(() => '', "箭头函数（不带花括号）")
+
+		// test(function (/*comment()*/) { let f = (a) => log(a); "函数（匿名）" })
+		// test(function f(/*comment()*/) { let f = (a) => log(a); "函数" })
+
+		// test({ f() { let f = (a) => log(a); "对象的属性函数" } }.f)
+		// test({ f: function () { let f = (a) => log(a); "对象的属性函数（匿名）" } }.f)
+
+		// test({ f: (s/*comment()*/) => { let f = (a) => log(a); "对象的属性箭头函数（带花括号）" } }.f)
+		// test({ f: () => "对象的属性箭头函数（不带花括号）" }.f)
+
+		// test(function (a/*comment()*/, b/*comment()*/) { let f = (a) => log(a); console.log(a, b); '/*带参数备注的函数*/' })
+
+		// test(arg => "参数不被括号包起来的函数");
+		// test(arg => { "参数不被括号包起来的函数" });
+
+
+
+		// test(arg => { "参数不被括号包起来的函数" });
+
+				// comment 3 patern
+				// function /*comment*/ (){}
+				// function ( /*comment*/ ){}
+				// function (){ /*comment*/ }
+
+
+	</script>
+</body>
+
+</html>

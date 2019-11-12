@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>svg</title>
+</head>
+
+<body>
+	<svg width="100vw" height="100vh" style="position: fixed;left:0;top:0;z-index:-1;">
+		<rect x="50vw" y="200" width="500" height="500" fill="#f00"></rect>
+		<text id="text" x="50vw" y="300">
+			<tspan>nihaosdf asjfajsfj als lj.</tspan>
+			<tspan>NIHAOSDF ASJFAJSFJ ALS LJ.</tspan>
+			<tspan id="numbers">1234567890</tspan>
+		</text>
+	</svg>
+
+	<script>
+		const { log } = console
+		let text = document.querySelector('#text')
+		let numbers = document.querySelector('#numbers')
+
+		let dx = new Array(10).fill(0)
+
+		const FPS = 3
+		const FPSSeconds = 1000 / FPS
+		// setInterval(()=>{
+
+		// 	dx = dx.map((e)=>Math.ceil(Math.random()*10))
+		// 	// log(dx)
+		// 	numbers.setAttribute('dx', dx.join())
+
+		// }, FPSSeconds)
+
+		setInterval(() => { text.setAttribute('rotate', Math.random() * 90); log(1) }, FPSSeconds)
+
+	</script>
+</body>
+
+</html>

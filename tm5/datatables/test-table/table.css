@@ -1,0 +1,75 @@
+* {
+	box-sizing: border-box;
+	outline-width: 1px!important;
+}
+
+table {
+	width: 100%;
+	box-sizing: border-box;
+	border-collapse: collapse;
+}
+
+td,
+th {
+	box-sizing: border-box;
+	outline-width: 1px!important;
+	border: 1px solid #0003;
+	border-radius: 4px;
+	white-space: nowrap;
+	word-wrap: unset;
+	word-break: unset;
+	text-align: left;
+	vertical-align: middle;
+	font-family: "Microsoft Yahei", "Meiryo UI";
+}
+
+td[data-name="no"] {
+	white-space: nowrap;
+	word-break: normal;
+	text-align: center
+}
+
+td[data-name="textKey"] {
+	width: 10em;
+	height: 1em;
+	overflow: hidden;
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+
+td[data-name="source"],
+td[data-name="target"] {
+	width: 50%;
+	white-space: pre-line;
+	word-wrap: break-word;
+	word-break: break-all;
+}
+
+td[data-name="target"] {
+	-webkit-user-modify: read-write-plaintext-only
+}
+
+td[data-name="target"]:focus::after {
+	content: attr(data-a);
+	background: #00f;
+	color: #fff;
+	position: absolute;
+	transform: translate(0, -100%)
+}
+
+.scrollbox {
+	width: 300px;
+	height: 300px;
+	overflow: auto;
+}
+
+tbody {
+	background-image: linear-gradient(
+		to bottom,
+		white calc( attr(data-start) )+'%',
+		red 0%,
+		red calc( attr(data-end)  ) + '%',
+		white 0%);
+	transform: translateX( calc( 400px * attr(data-start) ) );
+}

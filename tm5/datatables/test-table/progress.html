@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+	<style>
+	pre {
+		user-select: unset;
+	}
+
+	#p, #p2 {
+		height: 20px;
+		width: 100px;
+		transition: 1s;
+	}
+	#p2 {
+		transform: rotate(90deg) translate(50%,50%);
+		transform-origin: left top;
+	}
+	</style>
+<progress id="p"></progress>
+<progress id="p2"></progress>
+<pre>
+progress tag
+value
+max
+position
+</pre>
+<pre id="event"></pre>
+<pre id="rect"></pre>
+	<script>
+		let logEvent = document.querySelector('#event');
+		let logRect = document.querySelector('#rect');
+
+		let p = document.querySelector('#p');
+		p.draggable = false;
+
+		p.addEventListener('mousedown', (e) => {
+			let o = p.getBoundingClientRect();
+			p.max = o.width;
+			p.value = e.offsetX;
+
+			p.addEventListener('mouseout', function () {
+				p.removeEventListener('mousemove', onMove);
+			}, { once: true });
+			document.documentElement.addEventListener('mouseup', function () {
+				p.removeEventListener('mousemove', onMove);
+			}, { once: true });
+
+			function onMove(e) {
+				p.value = e.offsetX;
+			}
+			p.addEventListener('mousemove', onMove);
+			console.log('add');
+		}, { passive: false });
+
+
+		function print(obj) {
+			return Object.entries(obj).map(e => `${e[0]}=${e[1]}`).join('\n');
+		}
+
+		let p2 = document.querySelector('#p2');
+		p2.addEventListener('mousedown', (e) => {
+			let o = p2.getBoundingClientRect();
+
+			p2.max = o.height;
+			p2.value = e.offsetX;
+			console.log(e)
+
+			p2.addEventListener('mouseout', function () {
+				p2.removeEventListener('mousemove', onMove);
+			}, { once: true });
+			document.documentElement.addEventListener('mouseup', function () {
+				p2.removeEventListener('mousemove', onMove);
+			}, { once: true });
+
+			function onMove(e) {
+				p2.value = e.offsetX;
+			}
+			p2.addEventListener('mousemove', onMove);
+			console.log('add');
+		}, { passive: false });
+	</script>
+</body>
+
+</html>

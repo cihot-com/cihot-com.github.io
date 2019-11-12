@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="/lib/jquery.js"></script>
+	<script src="/ddb/h.js"></script>
+	<script src="/ddb/drop.js"></script>
+</head>
+<style>
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+		tab-size: 2em;
+	}
+</style>
+
+<body>
+
+</body>
+
+<script>
+	let { log } = console
+
+
+	window.AudioContext = window.AudioContext || window.webkitAudioContext
+
+	var context = new AudioContext();
+
+	function onSuccess(stream) {
+		var audioInput = context.createMediaStreamSource(stream);
+		audioInput.connect(context.destination);
+	}
+
+	navigator.getUserMedia({ audio: true }, onSuccess);
+	navigator.getUserMedia(
+		// { video: true, audio: true },
+		{ audio: true },
+		function onSuccess(mediaStream) {
+			log(mediaStream.id)
+			mediaStream.onactive = (...a) => {
+				log('onactive', ...a)
+			}
+			mediaStream.onaddtrack = (...a) => {
+				log('onaddtrack', ...a)
+			}
+			mediaStream.onremovetrack = (...a) => {
+				log('onremovetrack', ...a)
+			}
+			log(mediaStream.getTracks())
+		},
+		function onError(...a) { console.log('error', ...a) })
+
+</script>
+
+</html>

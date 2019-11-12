@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>localworker</title>
+</head>
+
+<body>
+	<script src="codecache.js"></script>
+	<script src="functionanalyze.js"></script>
+	<script src="localworker.js"></script>
+	<script>
+		const
+			OK = '⭕️',
+			NG = '❌';
+
+		let { log, warn, info, debug, error, group, groupEnd, table } = console
+
+		!function () {
+			// 在 worker 中可以调用 data:Object, handleMap:Map, send(), emit(), log() 等预设对象。
+			let workerHandles = {
+				message: (...a) => {
+					log('-w',...a)
+					send(...a)
+				},
+				ready(a) {
+					this.isFire = false
+					let f = () => {
+						if (this.isFire) {
+							send('⭕️', 'Fire!!!!')
+							clearInterval(i)
+						}
+					};
+					let i = setInterval(f, 0)
+					log('等待就绪，请随时emit("fire")……');
+				},
+				fire() {
+					// 先用ready()后，再等待发射。
+					this.isFire = true
+				},
+				stat() {
+					log(data, this.handleMap)
+				}
+			}
+
+
+			window.lw = new LocalWorker(workerHandles)
+			lw.mainHand('message', function (...a) {
+				log('main.onmessage', ...a);
+			});
+
+			lw.emit('a', 'a message')
+			lw.emit('stat')
+
+			let w = lw.worker
+/* 			lw.close()
+			lw.connect()
+			*/
+			// lw.connect()
+			lw.autoReconnect = true
+			// lw.close()
+			lw.send(1)
+		}()
+
+
+		// 热切换handleMap
+		!function () {
+			window.lw = new LocalWorker('log(...data)', 'lw');
+			lw.send('你好','hello');// 触发worker端的change事件
+		}
+
+
+
+		!function () {
+			window.lw = new LocalWorker('log(data)','lw')
+			
+			// lw.handleMap.set('message', (...data)=>log('-main-', ...data))
+			lw.mainHand('message', (...data) => log('-main-', ...data))
+				
+			// 修改 worker 端的 message 事件回调函数
+			lw.workerHand('message', (...a) => send('*worker*', ...a))
+			lw.send(3,9,'你好');// 向worker端发送message事件
+		}
+
+
+	</script>
+</body>
+
+</html>

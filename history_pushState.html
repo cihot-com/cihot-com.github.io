@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>history.pushState()</title>
+</head>
+
+<body>
+	<form id="form1" method="dialog">
+		<label>Username:<input name="username" type="text"></label>
+		<label>Password:<input name="password" type="password"></label>
+		<input type="submit" value="Submit">
+	</form>
+	<hr>
+	<!-- <form id="form2" method="dialog">
+		<label>un:<input name="saveun" type="text"></label>
+		<label>pw:<input name="savepw" type="password"></label>
+		<button>Update</button>
+	</form> -->
+	<style>
+		label {
+			user-select: none;
+		}
+	</style>
+</body>
+<script>
+	// const {log,deubg} = console
+	// // history.pushState({ username: 'ddb', password: '123' })
+
+	// let form2 = document.querySelector('#form2')
+	// let button = form2.querySelector('button')
+	// button.addEventListener('click',function(e){
+	// 	let saveunValue = form2.querySelector('[name="saveun"]').value
+	// 	let savepwValue = form2.querySelector('[name="savepw"]').value
+	// 	log(saveunValue, savepwValue)
+	// 	history.pushState({ username: saveunValue, password: savepwValue }, '','?act=1')
+	// })
+
+	// window.addEventListener('popstate',function(e){
+	// 	log(e)
+	// })
+
+	form1.onsubmit=function(){
+		this.style.display = 'none'
+	}
+</script>
+
+</html>
