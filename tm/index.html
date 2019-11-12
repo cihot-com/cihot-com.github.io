@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="/lib/ao/replace.js"></script>
+<script src="index.js"></script>
+<title>CNTW</title>
+</head>
+<body>
+
+<style>
+* {margin: 0}
+#app {
+	height:99vh;
+	display:grid;
+	grid-template:repeat(1,auto 1fr) / 1fr 1fr;
+	grid-gap: 3px;
+	padding: 3px;
+}
+#cn,#tw {
+	box-shadow: 1px 1px 3px #ccc;
+	text-shadow: 1px 1px 1px #eee;
+	background: #fff;
+	color: #000;
+	border-radius: 6px;
+	font-size: 9pt;
+	font-family: verdana,NSimSun,Gulim,MSGhotic;
+	resize: none;
+}
+h3:nth-child(1) {
+	border-top-left-radius: 6px;
+}
+h3:nth-child(2) {
+	border-top-right-radius: 6px;
+}
+h3 {
+	text-align: center;
+	background: #336;
+	color: #fff;
+	box-shadow: 1px 1px 3px #ccc;
+}
+</style>
+<div id="app">
+	<h3>CN 简体中文</h3>
+	<h3>TW 繁體中文</h3>
+	<textarea id="cn"></textarea>
+	<textarea id="tw"></textarea>
+</div>
+<script>
+let cn=document.getElementById('cn');
+let tw=document.getElementById('tw');
+cn.addEventListener('input',e=>{
+	tw.value=toTW(cn.value);
+});
+tw.addEventListener('input',e=>{
+	cn.value=toCN(tw.value);
+});
+
+cn.autofocus=true;
+</script>
+</body>
+</html>

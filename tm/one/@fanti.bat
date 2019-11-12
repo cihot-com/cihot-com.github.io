@@ -1,0 +1,2 @@
+node "@fanti.js"
+pause
