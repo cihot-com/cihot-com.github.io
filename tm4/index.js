@@ -47,32 +47,32 @@ if (!oid) {
 	oid = new ObjectID().str
 	localStorage.setItem('oid', oid)
 }
-let s = window.socket = io(':3000', { reconnection: true, reconnectionDelay: 30000, reconnectionDelayMax: 60000, transports: ['websocket'], query: { oid } })
-s.on('message', function (...msgs) {
-	log(...msgs)
-})
-s.on('connnect', () => {
-	console.log('[sock]', s.id)
-})
-s.on('oids', function (ids) {
-	oids = ids
-	let unique = Object.keys(ids).length
-	let count = Object.values(ids).reduce((r, e) => r + e, 0)
+// let s = window.socket = io(':3000', { reconnection: true, reconnectionDelay: 30000, reconnectionDelayMax: 60000, transports: ['websocket'], query: { oid } })
+// s.on('message', function (...msgs) {
+// 	log(...msgs)
+// })
+// s.on('connnect', () => {
+// 	console.log('[sock]', s.id)
+// })
+// s.on('oids', function (ids) {
+// 	oids = ids
+// 	let unique = Object.keys(ids).length
+// 	let count = Object.values(ids).reduce((r, e) => r + e, 0)
 
-	let tar = document.querySelector('#clientsCount')
-	if (tar) {
-		let members = Object.keys(oids).join()
-		tar.textContent = `${unique}/${count}(${members})`
-	}
-})
-s.on('cmd', function (cmd, ack) {
-	try {
-		let rs = eval(cmd)
-		ack(true, rs)
-	} catch (err) {
-		ack(false, err.message)
-	}
-})
+// 	let tar = document.querySelector('#clientsCount')
+// 	if (tar) {
+// 		let members = Object.keys(oids).join()
+// 		tar.textContent = `${unique}/${count}(${members})`
+// 	}
+// })
+// s.on('cmd', function (cmd, ack) {
+// 	try {
+// 		let rs = eval(cmd)
+// 		ack(true, rs)
+// 	} catch (err) {
+// 		ack(false, err.message)
+// 	}
+// })
 
 
 // 【纯文字全部替换】
