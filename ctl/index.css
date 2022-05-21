@@ -1,0 +1,100 @@
+:root {
+	--gray-back: rgb(31,32,36);
+	--gray-back2: rgb(41,42,45);
+	--gray-front3: rgb(58,58,58);
+	--gray-front2: rgb(145,145,145);
+	--gray-front: rgb(213,213,213);
+	--purple-front2: rgb(149, 79, 156);
+	--purple-front: rgb(142, 119, 235);
+	--green-back: rgb(27, 95, 58);
+	--green-back2: rgb(33, 163, 102);
+	--green-back3: rgb(54, 196, 130);
+	--green-front: rgb(161, 247, 181);
+	--yellow-bask: rgb(51, 43, 0);
+	--yellow-back2: rgb(102, 85, 0);
+	--yellow-back3: rgb(244, 189, 0);
+	--yellow-front2: rgb(242, 139, 84);
+	--yellow-front: rgb(210, 192, 87);
+	--red-back: rgb(41, 0, 0);
+	--red-back2: rgb(92, 0, 0);
+	--ref-back3: rgb(235, 57, 65);
+	--red-front: rgb(247, 123, 123);
+	--blue-back: rgb(41, 50, 61);
+	--blue-back2: rgb(65, 115, 180);
+	--blue-back3: rgb(14, 99, 156);
+	--blue-front: rgb(54, 124, 241);
+}
+
+* {
+	background: var(--gray-back);
+	color: var(--gray-front);
+}
+input,textarea,button,select {
+	background-color: var(--gray-back2);
+	font-size: 12pt;
+	font-family: Consolas;
+}
+html, body {
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+
+#app {
+	display: grid;
+	grid-template-areas:
+		"top top"
+		"left right";
+	grid-template-rows: 3em 1fr;
+	grid-template-columns: 1fr 1fr;
+	width: 100vw;
+	height: 100vh;
+	box-sizing: border-box;
+	position: relative;
+}
+
+#top {
+	grid-area: top;
+	border: 1px solid gray;
+	font-family: consolas;
+	font-size: 10.5pt;
+	font-weight: bold;
+	align-content: center;
+	text-align: center;
+	vertical-align: middle;
+	display: grid;
+}
+#left {
+	grid-area: left;
+	border: 0.5px solid gray;
+}
+#right {
+	grid-area: right;
+	border: 0.5px solid gray;
+	display: flex;
+	flex-direction: column;
+	overflow: overlay;
+}
+
+form * {
+	margin-bottom: 3px;
+	padding: 3px;
+}
+
+textarea[name="script"] {
+	width: calc(100% - 1em);
+	height: 30em;
+}
+textarea[name="ack"] {
+	width: calc(100% - 1em);
+	height: 6em;
+}
+.error {
+	background-color: var(--red-back);
+	color: var(--red-front);
+}
+.success {
+	
+	background-color: var(--green-back2);
+	color: var(--green-front);
+}
