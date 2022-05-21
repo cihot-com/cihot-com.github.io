@@ -1,0 +1,66 @@
+#keyboard, #mouse {
+	user-select: none;
+	font-size: 9pt;
+	line-height: 2em;
+}
+var {
+	border-radius: 1em;
+	background-color: #333;
+	color: #fff;
+	padding: 2px 8px;
+	font-style: normal;
+	font-weight: 900;
+	font-family: monospace;
+}
+#inputs {
+	position: fixed;
+	bottom: 0;
+	background-color: #0003;
+	padding: 0 20px;
+	left: 0;
+	right: 0;
+}
+#links a {
+	display: block;
+	background-color: #eee;
+	color: #333;
+	padding: 1em;
+	text-decoration: none;
+	margin-bottom: 1px;
+}
+#links a:nth-child(2n) {
+	border-left: 4px solid crimson;
+}
+#links a:nth-child(2n+1) {
+	border-left: 4px solid yellow;
+}
+
+.domain-info {
+	border-collapse: collapse;
+	border: 2px solid #333;
+	user-select: none;
+	pointer-events: none;
+}
+.domain-info .domain-info td {
+	border: 1px solid #666;
+	padding: 4px;
+}
+.domain-info thead td {
+	background-color: #eee;
+}
+
+article {
+	border-width: 1px;
+	border-style: solid;
+	background-color: lightblue;
+	margin: 1em 0;
+}
+textarea {
+	margin:0;
+	padding:0;
+	outline: none;
+	border: none;
+	box-shadow: 0 0 0 0.5px;
+	width: 100%;
+	min-height: 10em;
+}

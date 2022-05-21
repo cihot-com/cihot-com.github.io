@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+  <!--<link rel="icon" href="/favicon.png">-->
+  <!--<link rel="icon" type="image/png" href="ci_u.png" sizes="any">-->
+  <!--<link rel="icon" href="/ci_u.svg">-->
+  <link rel="icon" href="/favicon.ico">
+
+	<link rel="stylesheet" href="/index.css">
+	<link rel="manifest" href="/manifest.json">
+	<!--<script src="//unpkg.com/vue@2"></script>-->
+	<script src="/lib/vue.js"></script>
+	<!--<script src="//unpkg.com/vue@3"></script>-->
+	<!-- swpage, body, module, indexDefer -->
+	
+	<!--<script src="./indexDefer.js" defer></script>-->
+	<!--<script>console.log('<script> head');</script>-->
+	<script type="module" src="/swpage.js"></script>
+  <script src="https://unpkg.com/rxjs@^7/dist/bundles/rxjs.umd.min.js"></script>
+  <script src="/test-rxjs.js"></script>
+	<!--<script src="/lib/test.js"></script>-->
+	<title>home - CIHot.com</title>
+</head>
+
+<body>
+	<h2>
+    <img src="/ci_u.svg" style="height:1rem;color:crimson;">
+    CIHot
+  </h2>
+	
+	<div id="links">
+		<a v-for="link in links" v-text="link.text" v-bind:href="link.href"></a>
+	</div>
+
+	<div id="inputs">
+		<div id="keyboard">
+			hotkey:<var id="hotkey"></var>
+			keyCode:<var id="keyCode"></var>
+			key:<var id="key"></var>
+			code:<var id="code"></var>
+			repeat:<var id="repeat"></var>
+		</div>
+		<div id="mouse">
+			which:<var id="which"></var>
+			x:<var id="x"></var>
+			y:<var id="y"></var>
+			layerX:<var id="layerX"></var>
+			layerY:<var id="layerY"></var>
+		</div>
+	</div>
+
+	<script type="module" src="./index.js" onload="this.remove()"></script>
+</body>
+</html>
