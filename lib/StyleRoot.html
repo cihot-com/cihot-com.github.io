@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>:root</title>
+	<style> :root { --color: green; } </style>
+	<style> :root { --bg: red; --color: blue; } </style>
+	<script src="StyleRoot.js"></script>
+</head>
+
+<body>
+
+	<button onclick="changeColor()">red</button>
+	<button onclick="changeColor()">blue</button>
+
+	<h3><span style="color:var(--color)">StyleRoot</span>类</h3>
+<pre>
+<b>赋值</b>
+StyleRoot.set('--color', 'yellow')          设置:root选择器下的--color为yellow
+StyleRoot.setValue('color','yellow')        同上
+StyleRoot.set('--color', '#ccc', 'span')    设置span选择器下的--color为#ccc
+StyleRoot.style(element,'--color','#090')
+
+
+<b>取值</b>
+StyleRoot.get('--color')             获取:root选择器下的--color
+StyleRoot.get('--color', 'span')     获取span选择器下的--color
+StyleRoot.get('--null', 'span')      获取span选择器下的--null，没有该值时返回null
+
+
+<a href="StyleRoot.js" target="_blank">StyleRoot.js</a>
+</pre>
+</body>
+<script>
+	var { log } = console;
+
+	function changeColor() {
+		let color = event.target.textContent
+		StyleRoot.set('--color', color);
+	}
+
+	StyleRoot.set('--color', '#999')
+	// StyleRoot.set('--color', '#ccc', 'span')
+	log(StyleRoot.get('--color'));// #999
+	log(StyleRoot.get('--color', 'span'));// null
+	log(StyleRoot.get('--null'));// null
+	log(StyleRoot.get('--null', 'span'));// null
+</script>
+
+</html>

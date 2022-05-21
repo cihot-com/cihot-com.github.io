@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="stringifyfunction2.js"></script>
+	<script src="localeworker.js"></script>
+</head>
+
+<body>
+	<script>
+		var { log } = console;
+		let s = new LocaleWorker('test', {
+			message(...args) {
+				console.log(arguments)
+			},
+			error() {
+				console.log(arguments)
+			},
+			massageerror: () => {
+				console.log(arguments)
+			}
+		}, {
+			message() {
+				send()
+				console.log(arguments)
+			},
+			close() {
+				console.log(arguments)
+			},
+			error() {
+				console.log(arguments)
+			}
+		});
+
+		s.send(1, 2, 3, 4)
+		log(s)
+		// s.worker
+		// s.url
+		// s.close()
+
+		// LocaleWorker.cache.workers
+		// LocaleWorker.cache.urls
+	</script>
+</body>
+
+</html>
