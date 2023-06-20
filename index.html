@@ -1,59 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="naver-site-verification" content="b3bc3a4cfb0f37bf9adccbbff8e7058fd01e8154" />
-	
-  <!--<link rel="icon" href="/favicon.png">-->
-  <!--<link rel="icon" type="image/png" href="ci_u.png" sizes="any">-->
-  <!--<link rel="icon" href="/ci_u.svg">-->
-  <link rel="icon" href="/favicon.ico">
-
-	<link rel="stylesheet" href="/index.css">
-	<link rel="manifest" href="/manifest.json">
-	<!--<script src="//unpkg.com/vue@2"></script>-->
-	<script src="/lib/vue.js"></script>
-	<!--<script src="//unpkg.com/vue@3"></script>-->
-	<!-- swpage, body, module, indexDefer -->
-	
-	<!--<script src="./indexDefer.js" defer></script>-->
-	<!--<script>console.log('<script> head');</script>-->
-	<script type="module" src="/swpage.js"></script>
-  <script src="https://unpkg.com/rxjs@^7/dist/bundles/rxjs.umd.min.js"></script>
-  <script src="/test-rxjs.js"></script>
-	<!--<script src="/lib/test.js"></script>-->
-	<title>home - CIHot.com</title>
-</head>
-
-<body>
-	<h2>
-    <img src="/ci_u.svg" style="height:1rem;color:crimson;">
-    CIHot
-  </h2>
-	
-	<div id="links">
-		<a v-for="link in links" v-text="link.text" v-bind:href="link.href"></a>
-	</div>
-
-	<div id="inputs">
-		<div id="keyboard">
-			hotkey:<var id="hotkey"></var>
-			keyCode:<var id="keyCode"></var>
-			key:<var id="key"></var>
-			code:<var id="code"></var>
-			repeat:<var id="repeat"></var>
-		</div>
-		<div id="mouse">
-			which:<var id="which"></var>
-			x:<var id="x"></var>
-			y:<var id="y"></var>
-			layerX:<var id="layerX"></var>
-			layerY:<var id="layerY"></var>
-		</div>
-	</div>
-
-	<script type="module" src="./index.js" onload="this.remove()"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="view-transition" content="same-origin" />
+    <style>
+      @keyframes fade-in {
+        to {
+          opacity: 0;
+          transform: translateX(-30px);
+        }
+      }
+      ::view-transition-old(root) {
+        animation: 0.5s fade-in linear;
+      }
+    </style>
+    <link rel="icon" type="image/svg+xml" href="/assets/img/favicon-17e50649.svg" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+      }
+    </style>
+    <!-- <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=2, user-scalable=1, viewport-fit=cover"
+    /> -->
+    <!-- <meta name="viewport" content="width=1024, initial-scale=1" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>react</title>
+    <style>
+      :root {
+        --white: #fff;
+        --blcak: #000;
+      }
+      @media (prefers-color-scheme: light) {
+        html,
+        body {
+          color: var(--blcak);
+          background-color: var(--white);
+        }
+      }
+      @media (prefers-color-scheme: dark) {
+        html,
+        body {
+          color: var(--white);
+          background-color: var(--blcak);
+        }
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/js/index-d2e29b82.js"></script>
+    <link rel="stylesheet" href="/assets/css/index-61376822.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    
+  </body>
 </html>
