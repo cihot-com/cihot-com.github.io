@@ -7,5 +7,10 @@
   <body></body>
 </html>
 <script>
-  location.replace('/');
+  fetch('/')
+    .then((res) => res.text())
+    .then((x) => {
+      x = x.replace(/[\s\S]*?<html[\s\S]+?>/, '').replace(/\s*?<\/html>\s*/, '');
+      document.documentElement.innerHTML = x;
+    });
 </script>
