@@ -1,0 +1,1 @@
+import{r as e,b as r}from"./index-fd32b983.js";import{R as t}from"./ex.styled-5b8bbcdd.js";import{h as s,i as n,p as o}from"./index-7074372a.js";function i(){!function(){!s.current&&n();const[r]=e.useState(o.current)}();return r(t,{children:"ExUseReduceMotion"})}export{i as default};
