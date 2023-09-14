@@ -1,0 +1,1 @@
+const e="undefined"!=typeof document,n={current:null},t={current:!1};function r(){if(t.current=!0,e)if(window.matchMedia){const e=window.matchMedia("(prefers-reduced-motion)"),t=()=>n.current=e.matches;e.addListener(t),t()}else n.current=!1}export{e as a,t as h,r as i,n as p};

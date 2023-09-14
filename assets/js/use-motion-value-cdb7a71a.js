@@ -1,0 +1,1 @@
+import{b as t}from"./index-8f1f19a3.js";import{u as s,g as o}from"./SVGVisualElement-210c37ed.js";import{M as e}from"./motion-abf7f7de.js";function n(n){const i=s((()=>o(n))),{isStatic:a}=t.useContext(e);if(a){const[,s]=t.useState(n);t.useEffect((()=>i.on("change",s)),[])}return i}export{n as u};
