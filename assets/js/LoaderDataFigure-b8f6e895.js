@@ -1,0 +1,1 @@
+import{z as r,j as i}from"./index-890d70c3.js";function n(){const n=r();return i.jsxs("figure",{children:[i.jsx("figcaption",{children:i.jsx("h2",{children:"LoaderData"})}),i.jsx("pre",{children:JSON.stringify(n,null,4)})]})}export{n as default};

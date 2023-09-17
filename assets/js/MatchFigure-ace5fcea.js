@@ -1,0 +1,1 @@
+import{x as s,y as i,j as n}from"./index-890d70c3.js";function r(){const r=s("/route/:a/*");i();return n.jsxs("figure",{children:[n.jsx("figcaption",{children:n.jsx("h2",{children:"Match"})}),n.jsx("pre",{children:JSON.stringify(Object.assign({},r),null,4)})]})}export{r as default};

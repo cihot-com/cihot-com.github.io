@@ -1,0 +1,1 @@
+import{n as s,j as e,O as n}from"./index-890d70c3.js";import{N as o}from"./Navbar-aa9b7599.js";const r=s.div``,t=["useAnimate","useInView","useReducedMotion","useDragControls"];function a(){return e.jsxs(r,{children:[e.jsx(o,{list:t}),e.jsx(n,{})]})}export{a as default};

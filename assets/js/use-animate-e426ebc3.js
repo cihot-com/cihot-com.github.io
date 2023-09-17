@@ -1,0 +1,1 @@
+import{u as t}from"./SVGVisualElement-77214677.js";import{u as n}from"./use-unmount-effect-807b54ef.js";import{c as o}from"./animate-af04a6e3.js";function s(){const s=t((()=>({current:null,animations:[]}))),a=t((()=>o(s)));return n((()=>{s.animations.forEach((t=>t.stop()))})),[s,a]}export{s as u};

@@ -1,0 +1,1 @@
+import{q as e,t,b as a,j as n}from"./index-890d70c3.js";function s(){const{id:s}=e(),{parentValue:i,setParentValue:r}=t(),l=a.useCallback((()=>r(Math.random().toString(36).slice(2))),[r]);return n.jsxs("figure",{children:[n.jsx("figcaption",{children:n.jsxs("h2",{children:["Outlet :id (",s,")"]})}),n.jsxs("button",{onClick:l,children:["parentValue: ",i]})]})}export{s as default};
