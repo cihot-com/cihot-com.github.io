@@ -2,24 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>404</title>
+    <meta http-equiv="refresh" content="0; url=/"></meta>
+    <script>
+      sessionStorage.setItem('404.html', location.href.replace(`${location.protocol}//${location.host}`,''));
+    </script>
   </head>
-  <body></body>
 </html>
-<script>
-  fetch('/')
-    .then((res) => res.text())
-    .then((x) => {
-      x = x.replace(/[\s\S]*?<html[\s\S]+?>/, '').replace(/\s*?<\/html>\s*/, '');
-      document.documentElement.innerHTML = x;
-      document.querySelectorAll('script').forEach((e) => {
-        let el = document.createElement(e.localName);
-        ['src', 'type', 'crossorigin'].forEach((attr) => {
-          if (e.hasAttribute(attr)) {
-            el.setAttribute(attr, e.getAttribute(attr));
-          }
-        });
-        document.documentElement.appendChild(el);
-      });
-    });
-</script>
