@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"
+    />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="msapplication-config" content="/src/img/icons/browserconfig.xml" />
+    <link rel="manifest" href="/manifest.json" />
+    <!-- 
+      <script type="module" src="/try-service-worker.js"></script>
+     -->
+
+    <!-- styles -->
+    <style>
+      body {
+        margin: 0px !important;
+        padding: 0;
+      }
+
+      [data-prefers-color='light'] {
+        color-scheme: light;
+      }
+
+      [data-prefers-color='dark'] {
+        color-scheme: dark;
+      }
+
+      .pwa-install-panel {
+        display: flex;
+        justify-content: center;
+        background-color: #000;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+      }
+    </style>
+    <style>
+      /* chart */
+      :root {
+        --background-color-light: #fff;
+        --text-color-light: #000;
+        --background-color-dark: #000;
+        --text-color-dark: #fff;
+      }
+
+      [data-prefers-color='light'] {
+        background-color: var(--background-color-light);
+        color: var(--text-color-light);
+      }
+
+      [data-prefers-color='dark'] {
+        background-color: var(--background-color-dark);
+        color: var(--text-color-dark);
+      }
+    </style>
+    <!--  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Noto+Sans+Mono:wght@100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
+    <title>voc</title>
+    <script type="module" crossorigin src="/app.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-_J4xUC1x.css">
+  </head>
+
+  <body>
+    <div class="pwa-install-panel">
+      <button id="install-button" style="display: none">Install App</button>
+    </div>
+    <main id="root"></main>
+  </body>
+</html>
