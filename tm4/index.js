@@ -163,32 +163,34 @@ setTimeout(function () {
   //})
 
   //let dict = new Map()
-  document.querySelector('#GOOGLE-KR-ZH-CN').addEventListener('click', function () {
-    document.querySelectorAll('#works tr').forEach((tr) => {
-      if (/hide/.test(tr.className)) return;
-      let targetElement = tr.querySelector('.target');
-      if (/done/i.test(targetElement.className)) return;
-      let sourceElement = tr.querySelector('.source');
-      let sourceText = sourceElement.textContent.trim();
-      if (sourceText.length === 0) return;
-      //let targetText = dict.get(sourceText)
-      if (targetText) {
-        targetElement.textContent = targetText;
-        return;
-      }
-      s.emit(
-        'translate-google',
-        sourceText,
-        document.querySelector('#netTarget').value,
-        function (data) {
-          if (data) {
-            targetElement.textContent = data;
-            //dict.set(sourceText, data)
-          }
-        },
-      );
+  document
+    .querySelector('#GOOGLE-KR-ZH-CN')
+    .addEventListener('click', function () {
+      document.querySelectorAll('#works tr').forEach((tr) => {
+        if (/hide/.test(tr.className)) return;
+        let targetElement = tr.querySelector('.target');
+        if (/done/i.test(targetElement.className)) return;
+        let sourceElement = tr.querySelector('.source');
+        let sourceText = sourceElement.textContent.trim();
+        if (sourceText.length === 0) return;
+        //let targetText = dict.get(sourceText)
+        if (targetText) {
+          targetElement.textContent = targetText;
+          return;
+        }
+        s.emit(
+          'translate-google',
+          sourceText,
+          document.querySelector('#netTarget').value,
+          function (data) {
+            if (data) {
+              targetElement.textContent = data;
+              //dict.set(sourceText, data)
+            }
+          },
+        );
+      });
     });
-  });
 
   //T：翻译事件
   s.on('T', function (socketId, sourceText, targetText) {
@@ -320,7 +322,15 @@ document
             //	'target:', e.target)
 
             let tr = document.createElement('tr');
-            let vs = [1 + i, e.source, e.target, e.project, date, e.gmail, e.mid];
+            let vs = [
+              1 + i,
+              e.source,
+              e.target,
+              e.project,
+              date,
+              e.gmail,
+              e.mid,
+            ];
             vs.forEach((v) => {
               let td;
               td = document.createElement('td');
@@ -371,7 +381,9 @@ function saveDatas() {
   let useNet = document.querySelector('#useNet').checked;
   let useNet2 = document.querySelector('#useNet2').checked;
   let useDictTip = document.querySelector('#useDictTip').checked;
-  let useAutoReplaceTarget = document.querySelector('#useAutoReplaceTarget').checked;
+  let useAutoReplaceTarget = document.querySelector(
+    '#useAutoReplaceTarget',
+  ).checked;
   let similarPercent = normalizeNumber(
     document.querySelector('#similarPercent').value,
   );
@@ -1093,7 +1105,11 @@ addEventListener('message',(e)=>{
         if (!/\.txt$/.test(filename)) {
           // 是否扩展名为.txt
           pushlog(
-            '식별할 수 없는 파일유형입니다.' + file.name + '(' + file.size + ')',
+            '식별할 수 없는 파일유형입니다.' +
+              file.name +
+              '(' +
+              file.size +
+              ')',
           ); // 不支持非.txt文件
           continue;
         }
@@ -1125,7 +1141,7 @@ addEventListener('message',(e)=>{
 
     $('#dictPaste').on('paste', dictPasteHandle);
 
-    $('#worksFontSize').on('keydown change input', changeWorksFontSize);
+    // $('#worksFontSize').on('keydown change input', changeWorksFontSize);
 
     // 查找内容
     let prevFocusTarget;
@@ -1291,7 +1307,9 @@ addEventListener('message',(e)=>{
           sessionStorage.getItem('sl'),
           sessionStorage.getItem('tl'),
           (d) => {
-            let targetElement = document.querySelector('.currentEditRow .target');
+            let targetElement = document.querySelector(
+              '.currentEditRow .target',
+            );
 
             let el = document.querySelector('#translate');
             if (!el) {
@@ -1339,16 +1357,20 @@ addEventListener('message',(e)=>{
     });
 
     // 창희님 제안으로(메모큐처럼 기록 번역문을 두번 클릭 시, 편집위치로 추가하기)
-    $(document).on('dblclick', '#statusDict .target, #tips .target', function (e) {
-      e.preventDefault();
-      if (SM.lastTargetRange) {
-        let b = document.querySelector('#useDictTip').checked;
-        if (b) document.querySelector('#useDictTip').checked = false;
-        SM.range = SM.lastTargetRange;
-        SM.insert($(e.target).text());
-        if (b) document.querySelector('#useDictTip').checked = true;
-      }
-    });
+    $(document).on(
+      'dblclick',
+      '#statusDict .target, #tips .target',
+      function (e) {
+        e.preventDefault();
+        if (SM.lastTargetRange) {
+          let b = document.querySelector('#useDictTip').checked;
+          if (b) document.querySelector('#useDictTip').checked = false;
+          SM.range = SM.lastTargetRange;
+          SM.insert($(e.target).text());
+          if (b) document.querySelector('#useDictTip').checked = true;
+        }
+      },
+    );
 
     $(document).on('blur', '#works .target', (e) => {
       SM.lastTargetRange = SM.range;
@@ -1403,7 +1425,9 @@ addEventListener('message',(e)=>{
               });
           }
         } else {
-          match100($('#works tr:has(.selected)').add('#works tr.currentEditRow'));
+          match100(
+            $('#works tr:has(.selected)').add('#works tr.currentEditRow'),
+          );
         }
         return;
       } else if (e.keyCode === 113) {
@@ -1744,7 +1768,9 @@ addEventListener('message',(e)=>{
             } else if (e.altKey) {
               // Alt+F8       非完成语句全部分割
               $('#works .target')
-                .not('.done,.doneAuto,.doneAutoSpace,.doneAutoNumber,.doneSmart')
+                .not(
+                  '.done,.doneAuto,.doneAutoSpace,.doneAutoNumber,.doneSmart',
+                )
                 .each((i, e) => {
                   splitLong(e);
                 });
@@ -2054,7 +2080,9 @@ addEventListener('message',(e)=>{
           .find('td.target')
           .not('.splitTarget');
         if (e.ctrlKey) {
-          current = current.not('.done,.doneAuto,.doneAutoSpace,.doneAutoNumber'); // 略过各种完成状态
+          current = current.not(
+            '.done,.doneAuto,.doneAutoSpace,.doneAutoNumber',
+          ); // 略过各种完成状态
         }
         current.eq(0).focus();
 
@@ -2128,14 +2156,17 @@ addEventListener('message',(e)=>{
     function getDictFilename() {
       let filename = 'dict_' + formatName(location.search.slice(1));
       filename +=
-        '_' + ftime().replace(/\//g, '').replace(/:/g, '').replace(/ |\./g, '_');
+        '_' +
+        ftime().replace(/\//g, '').replace(/:/g, '').replace(/ |\./g, '_');
       return filename;
     }
 
     // 提交所有翻译内容
     $('#mergeDict').on('click', function (e) {
       if (
-        confirm('[Warning] Are you sure you want to overwrite your work with dict?')
+        confirm(
+          '[Warning] Are you sure you want to overwrite your work with dict?',
+        )
       ) {
         $('#works tr').each((i, e) => {
           let source = $(e).find('.source').text().trim();
@@ -2628,8 +2659,12 @@ addEventListener('message',(e)=>{
             return;
           }
           $qa.text('').addClass('failure');
-          sa.forEach((e) => $('<span class="qa-s"></span>').text(e).appendTo($qa));
-          ta.forEach((e) => $('<span class="qa-t"></span>').text(e).appendTo($qa));
+          sa.forEach((e) =>
+            $('<span class="qa-s"></span>').text(e).appendTo($qa),
+          );
+          ta.forEach((e) =>
+            $('<span class="qa-t"></span>').text(e).appendTo($qa),
+          );
         }
       });
     });
@@ -2652,8 +2687,12 @@ addEventListener('message',(e)=>{
           $tr.addClass('hide');
         } else {
           $qa.text('').addClass('failure');
-          sa.forEach((e) => $('<span class="qa-s"></span>').text(e).appendTo($qa));
-          ta.forEach((e) => $('<span class="qa-t"></span>').text(e).appendTo($qa));
+          sa.forEach((e) =>
+            $('<span class="qa-s"></span>').text(e).appendTo($qa),
+          );
+          ta.forEach((e) =>
+            $('<span class="qa-t"></span>').text(e).appendTo($qa),
+          );
         }
       });
     });
@@ -2679,10 +2718,14 @@ addEventListener('message',(e)=>{
         let tLave = Array.from(ta);
 
         ta.forEach((e) => {
-          sLave.some((item, i, a) => (item === e ? (a.splice(i, 1), true) : false));
+          sLave.some((item, i, a) =>
+            item === e ? (a.splice(i, 1), true) : false,
+          );
         });
         sa.forEach((e) => {
-          tLave.some((item, i, a) => (item === e ? (a.splice(i, 1), true) : false));
+          tLave.some((item, i, a) =>
+            item === e ? (a.splice(i, 1), true) : false,
+          );
         });
 
         sa = sLave;
@@ -2714,8 +2757,12 @@ addEventListener('message',(e)=>{
           $qa.text('OK').addClass('success');
         } else {
           $qa.text('').addClass('failure');
-          sa.forEach((e) => $('<span class="qa-s"></span>').text(e).appendTo($qa));
-          ta.forEach((e) => $('<span class="qa-t"></span>').text(e).appendTo($qa));
+          sa.forEach((e) =>
+            $('<span class="qa-s"></span>').text(e).appendTo($qa),
+          );
+          ta.forEach((e) =>
+            $('<span class="qa-t"></span>').text(e).appendTo($qa),
+          );
         }
       });
       toggleQARow();
@@ -3003,7 +3050,9 @@ addEventListener('message',(e)=>{
               works.appendChild(fragment);
               setTimeout(() => {
                 // 不知为何，这里需要延迟才能正常对焦。
-                let target = works.querySelector('#works .currentEditRow .target');
+                let target = works.querySelector(
+                  '#works .currentEditRow .target',
+                );
                 if (target) {
                   target.scrollIntoView({ block: 'center' });
                   target.focus();
@@ -3017,7 +3066,8 @@ addEventListener('message',(e)=>{
             }
             //
             {
-              if (netTarget) document.querySelector('#netTarget').value = netTarget;
+              if (netTarget)
+                document.querySelector('#netTarget').value = netTarget;
               if (typeof useNet === 'boolean')
                 document.querySelector('#useNet').checked = useNet;
               if (typeof useNet2 === 'boolean')
@@ -3028,10 +3078,12 @@ addEventListener('message',(e)=>{
                 document.querySelector('#useAutoReplaceTarget').checked =
                   useAutoReplaceTarget;
               if (typeof similarPercentAutoReplaceTarget === 'number')
-                document.querySelector('#similarPercentAutoReplaceTarget').value =
-                  similarPercentAutoReplaceTarget;
+                document.querySelector(
+                  '#similarPercentAutoReplaceTarget',
+                ).value = similarPercentAutoReplaceTarget;
               if (typeof similarPercent === 'number')
-                document.querySelector('#similarPercent').value = similarPercent;
+                document.querySelector('#similarPercent').value =
+                  similarPercent;
             }
           }
         });
@@ -3222,7 +3274,12 @@ addEventListener('message',(e)=>{
           if (e.ctrlKey) {
             // show diff  -- dmp
             if (t.length) {
-              let t1 = $(tipName).find('tr').eq(key).find('.source').text().trim();
+              let t1 = $(tipName)
+                .find('tr')
+                .eq(key)
+                .find('.source')
+                .text()
+                .trim();
               let t2 = $(e.target).parent().find('.source').text().trim();
               let dmp = new diff_match_patch();
               let diff = dmp.diff_main(t1, t2);
@@ -3967,7 +4024,8 @@ function kkv(k, kv) {
 function mergeSplits() {
   let t, p, name;
   let splits = document.querySelectorAll('#works tbody.split');
-  if (splits.length === 0) return console.warn('[오류] 합병할 내용이 없습니다.');
+  if (splits.length === 0)
+    return console.warn('[오류] 합병할 내용이 없습니다.');
 
   splits.forEach((tbody) => {
     let originalname = tbody.getAttribute('originalname');
@@ -4018,7 +4076,13 @@ function splitLongSource(str) {
     /。|；|：|！/,
     undefined,
     ({ s, beforeStr, afterStr, matchedAllStr, matchedIndex }) => {
-      console.log('----', { s, beforeStr, afterStr, matchedAllStr, matchedIndex });
+      console.log('----', {
+        s,
+        beforeStr,
+        afterStr,
+        matchedAllStr,
+        matchedIndex,
+      });
       s.push(beforeStr + matchedAllStr);
     },
   );
@@ -4042,7 +4106,8 @@ function splitLong(tar) {
     tar.attr({ originalname });
 
     let worksTable =
-      document.querySelector('#works>table') || document.querySelector('#works');
+      document.querySelector('#works>table') ||
+      document.querySelector('#works');
     let tbody, first, tr, no, s, t, n;
     tbody = document.createElement('tbody');
     tbody.classList.add('split');
@@ -4192,8 +4257,16 @@ function showTip(opt) {
     function onkeydown(e) {
       //console.log(e.type)
       if (
-        (e.keyCode === 27 && !e.ctrlKey && !e.shiftKey && !e.altKey && !e.metaKey) ||
-        (e.keyCode === 13 && !e.ctrlKey && !e.shiftKey && !e.altKey && !e.metaKey) ||
+        (e.keyCode === 27 &&
+          !e.ctrlKey &&
+          !e.shiftKey &&
+          !e.altKey &&
+          !e.metaKey) ||
+        (e.keyCode === 13 &&
+          !e.ctrlKey &&
+          !e.shiftKey &&
+          !e.altKey &&
+          !e.metaKey) ||
         e.keyCode === 9
       ) {
         $(document).off('keydown', '#works .target', onkeydown);
@@ -4497,13 +4570,16 @@ function match100(range) {
                   try {
                     return (e = new RegExp(e, 'g'));
                   } catch (t) {
-                    console.warn('Invalid argument - new RegExp(' + e + ',"g")');
+                    console.warn(
+                      'Invalid argument - new RegExp(' + e + ',"g")',
+                    );
                   }
                 return (
                   (e = e.split('\\')),
                   (e =
                     '(?:)' ===
-                    (e = new RegExp(e.map(Search._getRegExp).join('\\\\'), t)).source
+                    (e = new RegExp(e.map(Search._getRegExp).join('\\\\'), t))
+                      .source
                       ? Search.VIRTUAL_REGEXP
                       : e)
                 );
@@ -4568,7 +4644,8 @@ function match100(range) {
               g.ao = {};
             }
             var r = (g.ao.similar = function similar(t, s, u) {
-              if (null === t || null === s || void 0 === t || void 0 === s) return 0;
+              if (null === t || null === s || void 0 === t || void 0 === s)
+                return 0;
               var n,
                 o,
                 e,
@@ -4582,7 +4659,9 @@ function match100(range) {
                 for (o = 0; o < h; o++) {
                   for (
                     e = 0;
-                    n + e < c && o + e < h && t.charAt(n + e) === s.charAt(o + e);
+                    n + e < c &&
+                    o + e < h &&
+                    t.charAt(n + e) === s.charAt(o + e);
                     e++
                   );
                   e > b && ((b = e), (f = n), (i = o));
@@ -4690,7 +4769,8 @@ function match100(range) {
                   ? Number.MAX_VALUE
                   : new Date().getTime() + 1e3 * this.Diff_Timeout);
             if (null == a || null == b) throw Error('Null input. (diff_main)');
-            if (a == b) return a ? [new diff_match_patch.Diff(DIFF_EQUAL, a)] : [];
+            if (a == b)
+              return a ? [new diff_match_patch.Diff(DIFF_EQUAL, a)] : [];
             'undefined' == typeof c && (c = !0);
             var e = c,
               f = this.diff_commonPrefix(a, b);
@@ -4717,7 +4797,10 @@ function match100(range) {
               ? ((c = [
                   new diff_match_patch.Diff(DIFF_INSERT, e.substring(0, g)),
                   new diff_match_patch.Diff(DIFF_EQUAL, f),
-                  new diff_match_patch.Diff(DIFF_INSERT, e.substring(g + f.length)),
+                  new diff_match_patch.Diff(
+                    DIFF_INSERT,
+                    e.substring(g + f.length),
+                  ),
                 ]),
                 a.length > b.length && (c[0][0] = c[2][0] = DIFF_DELETE),
                 c)
@@ -4799,12 +4882,19 @@ function match100(range) {
                   v == -t || (v != t && h[n - 1] < h[n + 1])
                     ? h[n + 1]
                     : h[n - 1] + 1;
-                for (var y = r - v; r < d && y < e && a.charAt(r) == b.charAt(y); )
+                for (
+                  var y = r - v;
+                  r < d && y < e && a.charAt(r) == b.charAt(y);
+
+                )
                   r++, y++;
                 h[n] = r;
                 if (r > d) x += 2;
                 else if (y > e) p += 2;
-                else if (m && ((n = f + k - v), 0 <= n && n < g && -1 != l[n])) {
+                else if (
+                  m &&
+                  ((n = f + k - v), 0 <= n && n < g && -1 != l[n])
+                ) {
                   var u = d - l[n];
                   if (r >= u) return this.diff_bisectSplit_(a, b, r, y, c);
                 }
@@ -4840,7 +4930,13 @@ function match100(range) {
               new diff_match_patch.Diff(DIFF_INSERT, b),
             ];
           };
-          diff_match_patch.prototype.diff_bisectSplit_ = function (a, b, c, d, e) {
+          diff_match_patch.prototype.diff_bisectSplit_ = function (
+            a,
+            b,
+            c,
+            d,
+            e,
+          ) {
             var f = a.substring(0, c),
               g = b.substring(0, d);
             a = a.substring(c);
@@ -4851,7 +4947,11 @@ function match100(range) {
           };
           diff_match_patch.prototype.diff_linesToChars_ = function (a, b) {
             function c(a) {
-              for (var b = '', c = 0, g = -1, h = d.length; g < a.length - 1; ) {
+              for (
+                var b = '', c = 0, g = -1, h = d.length;
+                g < a.length - 1;
+
+              ) {
                 g = a.indexOf('\n', c);
                 -1 == g && (g = a.length - 1);
                 var l = a.substring(c, g + 1);
@@ -4883,7 +4983,11 @@ function match100(range) {
           };
           diff_match_patch.prototype.diff_commonPrefix = function (a, b) {
             if (!a || !b || a.charAt(0) != b.charAt(0)) return 0;
-            for (var c = 0, d = Math.min(a.length, b.length), e = d, f = 0; c < e; )
+            for (
+              var c = 0, d = Math.min(a.length, b.length), e = d, f = 0;
+              c < e;
+
+            )
               a.substring(f, e) == b.substring(f, e) ? (f = c = e) : (d = e),
                 (e = Math.floor((d - c) / 2 + c));
             return e;
@@ -4891,7 +4995,11 @@ function match100(range) {
           diff_match_patch.prototype.diff_commonSuffix = function (a, b) {
             if (!a || !b || a.charAt(a.length - 1) != b.charAt(b.length - 1))
               return 0;
-            for (var c = 0, d = Math.min(a.length, b.length), e = d, f = 0; c < e; )
+            for (
+              var c = 0, d = Math.min(a.length, b.length), e = d, f = 0;
+              c < e;
+
+            )
               a.substring(a.length - e, a.length - f) ==
               b.substring(b.length - e, b.length - f)
                 ? (f = c = e)
@@ -4912,7 +5020,8 @@ function match100(range) {
               f = b.indexOf(f);
               if (-1 == f) return d;
               e += f;
-              if (0 == f || a.substring(c - e) == b.substring(0, e)) (d = e), e++;
+              if (0 == f || a.substring(c - e) == b.substring(0, e))
+                (d = e), e++;
             }
           };
           diff_match_patch.prototype.diff_halfMatch_ = function (a, b) {
@@ -4946,7 +5055,8 @@ function match100(range) {
             var f = this,
               g = c(d, e, Math.ceil(d.length / 4));
             d = c(d, e, Math.ceil(d.length / 2));
-            if (g || d) g = d ? (g ? (g[4].length > d[4].length ? g : d) : d) : g;
+            if (g || d)
+              g = d ? (g ? (g[4].length > d[4].length ? g : d) : d) : g;
             else return null;
             if (a.length > b.length) {
               d = g[0];
@@ -4958,7 +5068,15 @@ function match100(range) {
           };
           diff_match_patch.prototype.diff_cleanupSemantic = function (a) {
             for (
-              var b = !1, c = [], d = 0, e = null, f = 0, g = 0, h = 0, l = 0, k = 0;
+              var b = !1,
+                c = [],
+                d = 0,
+                e = null,
+                f = 0,
+                g = 0,
+                h = 0,
+                l = 0,
+                k = 0;
               f < a.length;
 
             )
@@ -5017,7 +5135,9 @@ function match100(range) {
               f++;
             }
           };
-          diff_match_patch.prototype.diff_cleanupSemanticLossless = function (a) {
+          diff_match_patch.prototype.diff_cleanupSemanticLossless = function (
+            a,
+          ) {
             function b(a, b) {
               if (!a || !b) return 6;
               var c = a.charAt(a.length - 1),
@@ -5102,7 +5222,8 @@ function match100(range) {
                 : (a[f][0] == DIFF_DELETE ? (k = !0) : (l = !0),
                   e &&
                     ((g && h && l && k) ||
-                      (e.length < this.Diff_EditCost / 2 && 3 == g + h + l + k)) &&
+                      (e.length < this.Diff_EditCost / 2 &&
+                        3 == g + h + l + k)) &&
                     (a.splice(
                       c[d - 1],
                       0,
@@ -5159,10 +5280,18 @@ function match100(range) {
                       (b -= c + d),
                       a.splice(b, c + d),
                       e.length &&
-                        (a.splice(b, 0, new diff_match_patch.Diff(DIFF_DELETE, e)),
+                        (a.splice(
+                          b,
+                          0,
+                          new diff_match_patch.Diff(DIFF_DELETE, e),
+                        ),
                         b++),
                       f.length &&
-                        (a.splice(b, 0, new diff_match_patch.Diff(DIFF_INSERT, f)),
+                        (a.splice(
+                          b,
+                          0,
+                          new diff_match_patch.Diff(DIFF_INSERT, f),
+                        ),
                         b++),
                       b++)
                     : 0 !== b && a[b - 1][0] == DIFF_EQUAL
@@ -5180,13 +5309,17 @@ function match100(range) {
                 a[b - 1][1]
                   ? ((a[b][1] =
                       a[b - 1][1] +
-                      a[b][1].substring(0, a[b][1].length - a[b - 1][1].length)),
+                      a[b][1].substring(
+                        0,
+                        a[b][1].length - a[b - 1][1].length,
+                      )),
                     (a[b + 1][1] = a[b - 1][1] + a[b + 1][1]),
                     a.splice(b - 1, 1),
                     (c = !0))
                   : a[b][1].substring(0, a[b + 1][1].length) == a[b + 1][1] &&
                     ((a[b - 1][1] += a[b + 1][1]),
-                    (a[b][1] = a[b][1].substring(a[b + 1][1].length) + a[b + 1][1]),
+                    (a[b][1] =
+                      a[b][1].substring(a[b + 1][1].length) + a[b + 1][1]),
                     a.splice(b + 1, 1),
                     (c = !0))),
                 b++;
@@ -5282,7 +5415,10 @@ function match100(range) {
               switch (f[g].charAt(0)) {
                 case '+':
                   try {
-                    c[d++] = new diff_match_patch.Diff(DIFF_INSERT, decodeURI(h));
+                    c[d++] = new diff_match_patch.Diff(
+                      DIFF_INSERT,
+                      decodeURI(h),
+                    );
                   } catch (k) {
                     throw Error('Illegal escape in diff_fromDelta: ' + h);
                   }
@@ -5299,7 +5435,9 @@ function match100(range) {
                   break;
                 default:
                   if (f[g])
-                    throw Error('Invalid diff operation in diff_fromDelta: ' + f[g]);
+                    throw Error(
+                      'Invalid diff operation in diff_fromDelta: ' + f[g],
+                    );
               }
             }
             if (e != a.length)
@@ -5342,7 +5480,11 @@ function match100(range) {
               -1 != h && (g = Math.min(d(0, h), g)));
             var l = 1 << (b.length - 1);
             h = -1;
-            for (var k, m, p = b.length + a.length, x, w = 0; w < b.length; w++) {
+            for (
+              var k, m, p = b.length + a.length, x, w = 0;
+              w < b.length;
+              w++
+            ) {
               k = 0;
               for (m = p; k < m; )
                 d(w, c + m) <= g ? (k = m) : (p = m),
@@ -5371,7 +5513,8 @@ function match100(range) {
           };
           diff_match_patch.prototype.match_alphabet_ = function (a) {
             for (var b = {}, c = 0; c < a.length; c++) b[a.charAt(c)] = 0;
-            for (c = 0; c < a.length; c++) b[a.charAt(c)] |= 1 << (a.length - c - 1);
+            for (c = 0; c < a.length; c++)
+              b[a.charAt(c)] |= 1 << (a.length - c - 1);
             return b;
           };
           diff_match_patch.prototype.patch_addContext_ = function (a, b) {
@@ -5389,8 +5532,10 @@ function match100(range) {
               d += this.Patch_Margin;
               (c = b.substring(a.start2 - d, a.start2)) &&
                 a.diffs.unshift(new diff_match_patch.Diff(DIFF_EQUAL, c));
-              (d = b.substring(a.start2 + a.length1, a.start2 + a.length1 + d)) &&
-                a.diffs.push(new diff_match_patch.Diff(DIFF_EQUAL, d));
+              (d = b.substring(
+                a.start2 + a.length1,
+                a.start2 + a.length1 + d,
+              )) && a.diffs.push(new diff_match_patch.Diff(DIFF_EQUAL, d));
               a.start1 -= c.length;
               a.start2 -= c.length;
               a.length1 += c.length + d.length;
@@ -5473,7 +5618,10 @@ function match100(range) {
                 e = new diff_match_patch.patch_obj();
               e.diffs = [];
               for (var f = 0; f < d.diffs.length; f++)
-                e.diffs[f] = new diff_match_patch.Diff(d.diffs[f][0], d.diffs[f][1]);
+                e.diffs[f] = new diff_match_patch.Diff(
+                  d.diffs[f][0],
+                  d.diffs[f][1],
+                );
               e.start1 = d.start1;
               e.start2 = d.start2;
               e.length1 = d.length1;
@@ -5493,7 +5641,11 @@ function match100(range) {
                 h = this.diff_text1(a[f].diffs),
                 l = -1;
               if (h.length > this.Match_MaxBits) {
-                var k = this.match_main(b, h.substring(0, this.Match_MaxBits), g);
+                var k = this.match_main(
+                  b,
+                  h.substring(0, this.Match_MaxBits),
+                  g,
+                );
                 -1 != k &&
                   ((l = this.match_main(
                     b,
@@ -5520,7 +5672,8 @@ function match100(range) {
               else if (
                 ((g = this.diff_main(h, g, !1)),
                 h.length > this.Match_MaxBits &&
-                  this.diff_levenshtein(g) / h.length > this.Patch_DeleteThreshold)
+                  this.diff_levenshtein(g) / h.length >
+                    this.Patch_DeleteThreshold)
               )
                 e[f] = !1;
               else {
@@ -5546,7 +5699,8 @@ function match100(range) {
           diff_match_patch.prototype.patch_addPadding = function (a) {
             for (var b = this.Patch_Margin, c = '', d = 1; d <= b; d++)
               c += String.fromCharCode(d);
-            for (d = 0; d < a.length; d++) (a[d].start1 += b), (a[d].start2 += b);
+            for (d = 0; d < a.length; d++)
+              (a[d].start1 += b), (a[d].start2 += b);
             d = a[0];
             var e = d.diffs;
             if (0 == e.length || e[0][0] != DIFF_EQUAL)
@@ -5614,7 +5768,10 @@ function match100(range) {
                         (l = !1),
                         h.diffs.push(new diff_match_patch.Diff(g, k)),
                         d.diffs.shift())
-                      : ((k = k.substring(0, b - h.length1 - this.Patch_Margin)),
+                      : ((k = k.substring(
+                          0,
+                          b - h.length1 - this.Patch_Margin,
+                        )),
                         (h.length1 += k.length),
                         (e += k.length),
                         g === DIFF_EQUAL
@@ -5623,7 +5780,9 @@ function match100(range) {
                         h.diffs.push(new diff_match_patch.Diff(g, k)),
                         k == d.diffs[0][1]
                           ? d.diffs.shift()
-                          : (d.diffs[0][1] = d.diffs[0][1].substring(k.length)));
+                          : (d.diffs[0][1] = d.diffs[0][1].substring(
+                              k.length,
+                            )));
                   }
                   g = this.diff_text2(h.diffs);
                   g = g.substring(g.length - this.Patch_Margin);
@@ -5999,7 +6158,8 @@ function match100(range) {
               log(addClass);
               return {
                 text: tt,
-                removeClass: 'done doneAuto doneAutoSpace doneAutoNumber doneSmart',
+                removeClass:
+                  'done doneAuto doneAutoSpace doneAutoNumber doneSmart',
                 addClass,
               }; // 已有内容
             }
@@ -6596,7 +6756,9 @@ function calculationWorksStatus() {
     if (worksStatus) worksStatus.textContent = `${doneLength}/${totalLength}`;
 
     let progressDone = Math.floor((100 * doneLength) / totalLength);
-    let progressDoneSegment = Math.floor((100 * doneSegmentLength) / targets.length);
+    let progressDoneSegment = Math.floor(
+      (100 * doneSegmentLength) / targets.length,
+    );
     document.querySelector(
       '#worksStatus',
     ).style.backgroundImage = `linear-gradient(0deg, #c0ffc0 ${progressDone}%, transparent 0),linear-gradient(90deg, #c8ebff ${progressDoneSegment}%, transparent 0),linear-gradient(0deg, #fffe 100%, transparent 0)`;
@@ -6904,8 +7066,10 @@ function readFile(file, callback) {
     if (typeof callback.onload === 'function') onload = callback.onload;
     if (typeof callback.onloadstart === 'function')
       onloadstart = callback.onloadstart;
-    if (typeof callback.onloadend === 'function') onloadend = callback.onloadend;
-    if (typeof callback.onprogress === 'function') onprogress = callback.onprogress;
+    if (typeof callback.onloadend === 'function')
+      onloadend = callback.onloadend;
+    if (typeof callback.onprogress === 'function')
+      onprogress = callback.onprogress;
   }
 
   reader.onabort = onabort;
@@ -7010,7 +7174,8 @@ $(document).on('mouseup', function (e) {
 
 function onmousedownHandleByNo(e) {
   let { target } = e;
-  if (!(target && target.nodeType === 1 && target.classList.contains('no'))) return;
+  if (!(target && target.nodeType === 1 && target.classList.contains('no')))
+    return;
   e.preventDefault();
   if (e.which === 1) {
     if (e.shiftKey) {
@@ -7033,7 +7198,8 @@ function onmousedownHandleByNo(e) {
       startNoValue = parseInt(startNo.textContent);
       endNoValue = parseInt(endNo.textContent);
       let tr = startNo.parentElement;
-      let isStartNoSelected = lastSelectedNoElement.classList.contains('selected'); // 开始No的状态
+      let isStartNoSelected =
+        lastSelectedNoElement.classList.contains('selected'); // 开始No的状态
       let count = 0;
       do {
         if (
@@ -7115,7 +7281,9 @@ $(document).on('contextmenu', '#works tbody', function (e) {
   if (range.is('#works tbody')) {
     if (
       (e.ctrlKey && e.shiftKey && e.altKey) ||
-      confirm('[삭제] ' + range.attr('dataname') + '를 삭제합니다! 확인해 주세요.')
+      confirm(
+        '[삭제] ' + range.attr('dataname') + '를 삭제합니다! 확인해 주세요.',
+      )
     ) {
       range.remove();
     }
@@ -7203,13 +7371,17 @@ class DTime {
   get d() {
     this._d =
       this._d ||
-      this._date[`get${this._utc ? 'UTC' : ''}Date`]().toString().padStart(2, '0');
+      this._date[`get${this._utc ? 'UTC' : ''}Date`]()
+        .toString()
+        .padStart(2, '0');
     return this._d;
   }
   get H() {
     this._H =
       this._H ||
-      this._date[`get${this._utc ? 'UTC' : ''}Hours`]().toString().padStart(2, '0');
+      this._date[`get${this._utc ? 'UTC' : ''}Hours`]()
+        .toString()
+        .padStart(2, '0');
     return this._H;
   }
   get i() {
@@ -7422,7 +7594,9 @@ function saveSelectedHandle() {
   if (!document.querySelector('.currentEditRow td.no.selected')) return b;
 
   let nArr = [];
-  let selecteds = Array.from(document.querySelectorAll('#works td.no.selected'));
+  let selecteds = Array.from(
+    document.querySelectorAll('#works td.no.selected'),
+  );
   if (selecteds.length === 0) return b;
 
   selecteds.forEach((no) => {
@@ -7570,7 +7744,8 @@ $(document).on('keydown', '#works .target', (e) => {
 
       // 10个可选项目, 索引可以是 -10 ~ 9
       if (keyCode === 38) tipIndex = (tipIndex - 1) % $('#tips .target').length;
-      else if (keyCode === 40) tipIndex = (tipIndex + 1) % $('#tips .target').length;
+      else if (keyCode === 40)
+        tipIndex = (tipIndex + 1) % $('#tips .target').length;
       let tip = $('#tips').find('.target').eq(tipIndex);
       tipTargetText = tip.text();
 
@@ -7690,7 +7865,8 @@ function removeTips() {
   $('#tips tr')
     .sort(
       (a, b) =>
-        parseInt($(b).find('.index').text()) - parseInt($(a).find('.index').text()),
+        parseInt($(b).find('.index').text()) -
+        parseInt($(a).find('.index').text()),
     )
     .each((i, tr) => {
       let $tr = $(tr);
@@ -8062,7 +8238,8 @@ document.querySelector('#MatchWork100re').addEventListener('click', quandeng);
       let { target } = e;
       let s = target.classList;
       let isValidateScope =
-        (target.nodeName === 'TD' && s.contains('source')) || s.contains('target');
+        (target.nodeName === 'TD' && s.contains('source')) ||
+        s.contains('target');
       if (isValidateScope) {
         // console.log('开始记录历史', isValidateScope);
         records.push(target.textContent);
@@ -8090,7 +8267,8 @@ document.querySelector('#MatchWork100re').addEventListener('click', quandeng);
       let { target } = e;
       let s = target.classList;
       let isValidateScope =
-        (target.nodeName === 'TD' && s.contains('source')) || s.contains('target');
+        (target.nodeName === 'TD' && s.contains('source')) ||
+        s.contains('target');
       if (isValidateScope) {
         // console.log('结束记录历史', isValidateScope);
         target.removeEventListener('input', oninput);
@@ -8657,15 +8835,17 @@ window.addEventListener('message', (e) => {
 
 document.querySelector('#showAllButton').addEventListener('click', showAll);
 
-document.querySelector('#clearTargetButton').addEventListener('click', (event) => {
-  document.querySelectorAll('#works tr').forEach((tr) => {
-    if (tr.classList.contains('hide')) return;
-    if (tr.classList.contains('hide2')) return;
-    let td = tr.querySelector('.target');
-    td.textContent = '';
-    td.className = 'target';
+document
+  .querySelector('#clearTargetButton')
+  .addEventListener('click', (event) => {
+    document.querySelectorAll('#works tr').forEach((tr) => {
+      if (tr.classList.contains('hide')) return;
+      if (tr.classList.contains('hide2')) return;
+      let td = tr.querySelector('.target');
+      td.textContent = '';
+      td.className = 'target';
+    });
   });
-});
 
 //매치율 입력 제한
 function normalizeNumber(v, d = 50) {
@@ -8701,7 +8881,9 @@ function normalizeSimilarInput(input) {
   });
 }
 normalizeSimilarInput(document.querySelector('#similarPercent'));
-normalizeSimilarInput(document.querySelector('#similarPercentAutoReplaceTarget'));
+normalizeSimilarInput(
+  document.querySelector('#similarPercentAutoReplaceTarget'),
+);
 
 // 修改文档名称
 let lastMousedownTimestamp = 0;
@@ -9196,17 +9378,17 @@ function findAll(word) {
 document.querySelector('#removeDictForDoc').addEventListener('click', () => {
   //从翻译记录中，删除当前文档中的内容。
   let delete_indexs = new Set();
-  Array.from(document.querySelectorAll('#works tr:not(.hide):not(.hide2)')).some(
-    (tr, i) => {
-      let s = tr.querySelector('.source');
-      let t = tr.querySelector('.target');
-      let sx = s.textContent;
-      let tx = t.textContent;
-      dict.array.forEach(([dsx, dtx], di) =>
-        dsx === sx && dtx === tx ? delete_indexs.add(di) : false,
-      );
-    },
-  );
+  Array.from(
+    document.querySelectorAll('#works tr:not(.hide):not(.hide2)'),
+  ).some((tr, i) => {
+    let s = tr.querySelector('.source');
+    let t = tr.querySelector('.target');
+    let sx = s.textContent;
+    let tx = t.textContent;
+    dict.array.forEach(([dsx, dtx], di) =>
+      dsx === sx && dtx === tx ? delete_indexs.add(di) : false,
+    );
+  });
   let msg = `正在删除共 ${delete_indexs.size} 个记录。`;
   pushlog(msg);
   console.log(msg);
@@ -9353,12 +9535,20 @@ function translate(sourceText, sourceLanguage, targetLanguage, ack) {
           ack(o);
         }
       } else {
-        socket.emit('translate', sourceText, sourceLanguage, targetLanguage, (d) => {
-          console.log('emit MT');
-          translateCached[sourceText] = {};
-          translateCached[sourceText][`${sourceLanguage}->${targetLanguage}`] = d;
-          ack(d);
-        });
+        socket.emit(
+          'translate',
+          sourceText,
+          sourceLanguage,
+          targetLanguage,
+          (d) => {
+            console.log('emit MT');
+            translateCached[sourceText] = {};
+            translateCached[sourceText][
+              `${sourceLanguage}->${targetLanguage}`
+            ] = d;
+            ack(d);
+          },
+        );
       }
     }
   });
